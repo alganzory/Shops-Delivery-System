@@ -2,6 +2,7 @@
 
 Shop::Shop()
 {
+
 }
 
 Shop::Shop(ShopOwner* shopOwner, std::string name, Location location) :
@@ -53,7 +54,7 @@ void Shop::setLocation(Location location)
 
 void Shop::storeItem(std::shared_ptr<Item> newItem, int quantity)
 {
-	const auto findItem = find(items.begin(), items.end(), newItem);
+	auto findItem = find(items.begin(), items.end(), newItem);
 
 	if (findItem != items.end())
 	{
