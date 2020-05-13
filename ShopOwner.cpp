@@ -1,5 +1,6 @@
 #include "ShopOwner.h"
 
+
 ShopOwner::ShopOwner(std::string username, std::string password):
 	User(username, password)
 {
@@ -14,14 +15,14 @@ void ShopOwner::setInfo(std::string name, int age, double balance, Location loca
 
 	// prompt to ask for shop name:
 	// cout << "Enter your shop Info":
-	std::string name;
-	getline(std::cin, name);
+	std::string shopName;
+	getline(std::cin, shopName);
 	
 	// ask if location is same, if not get new location
 	// what is you location?
 	//
 	Location shopLocation;
-	createShop(name, shopLocation);
+	createShop(shopName, shopLocation);
 }
 
 Shop ShopOwner::getShop() const

@@ -20,4 +20,5 @@ public:
 	void setInStock(int inStock);
 	void addQuantity(int quantity);
 	void subQuantity(int quantity);
+	std::string getName() const;
 };

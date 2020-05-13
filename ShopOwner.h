@@ -18,8 +18,8 @@ public:
 	std::shared_ptr <Shop> getShopPtr();
 	void createShop(std::string shopName, Location shopLocation);
 
-	void respondToOrder(std::shared_ptr <Order> order);
-	void assignVolunteer(std::shared_ptr <Order> order);
+	void respondToOrder(std::shared_ptr < Order> order);
+	void assignVolunteer(std::shared_ptr < Order> order);
 	void addToStock(std::shared_ptr<Item> newItem, int quantity);
 	void sellItem(std::shared_ptr<Item> item, int quantity);
 	void rewardVolunteer(std::shared_ptr <Volunteer> volunteer, double reward);

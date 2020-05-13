@@ -40,3 +40,8 @@ void Item::subQuantity(const int quantity)
 {
 	inStock -= quantity;
 }
+
+std::string Item::getName() const
+{
+	return name;
+}
