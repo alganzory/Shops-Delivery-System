@@ -4,6 +4,8 @@
 ShopOwner::ShopOwner(std::string username, std::string password):
 	User(username, password)
 {
+	this->shop = Shop(this, "", this->location);
+	
 }
 
 void ShopOwner::setInfo(std::string name, int age, double balance, Location location)
@@ -37,7 +39,9 @@ std::shared_ptr<Shop> ShopOwner::getShopPtr()
 
 void ShopOwner::createShop(std::string shopName, Location shopLocation)
 {
-	this->shop = Shop(this, shopName, shopLocation);
+
+	shop.setName(shopName);
+	shop.setLocation(shopLocation);
 }
 
 void ShopOwner::respondToOrder(std::shared_ptr<Order> order)
@@ -55,9 +59,9 @@ void ShopOwner::assignVolunteer(std::shared_ptr <Order> order)
 	}
 }
 
-void ShopOwner::addToStock(std::shared_ptr<Item> newItem, int quantity)
+void ShopOwner::addToStock(std::shared_ptr<Item> newItem, int quantity, bool isNew)
 {
-	this->shop.storeItem(newItem, quantity);
+	this->shop.storeItem(newItem, quantity,isNew);
 
 }
 
@@ -91,4 +95,3 @@ void ShopOwner::setInfoFile(const std::string& cs, int age, double balance, cons
 	Location shopLocation(shoplocation);
 	this->shop = Shop(this, shopname, shoplocation);
 }
-

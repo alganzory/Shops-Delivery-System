@@ -20,12 +20,13 @@ public:
 
 	void respondToOrder(std::shared_ptr < Order> order);
 	void assignVolunteer(std::shared_ptr < Order> order);
-	void addToStock(std::shared_ptr<Item> newItem, int quantity);
+	void addToStock(std::shared_ptr<Item> newItem, int quantity, bool isNew);
 	void sellItem(std::shared_ptr<Item> item, int quantity);
 	void rewardVolunteer(std::shared_ptr <Volunteer> volunteer, double reward);
 
 	std::string getShopName() const;
 	int getShopSize() const;
 	void setInfoFile(const std::string& cs, int age, double balance, const std::string& location, const std::string& shopname, const std::string& shoplocation);
+
 };
 
