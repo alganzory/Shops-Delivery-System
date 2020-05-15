@@ -1,0 +1,27 @@
+class Location
+{
+	private:
+		string address;
+		pair<int,int> geoLocation;
+	public:
+		Location(string _address)
+		{
+			address=_address;
+		}
+		string getAddress() const
+		{
+			return address;
+		}
+		pair<int,int> getGeoLocation const
+		{
+			return geoLocation;
+		}
+		void setAddress(string _address)
+		{
+			address=_address;
+		}
+		void setGeoLocation(int longitude,int latitude)
+		{
+			geoLocation=make_pair(longitude,latitude);
+		}		
+};
