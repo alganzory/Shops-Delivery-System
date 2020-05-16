@@ -2,14 +2,13 @@
 
 Customer::Customer(string _username, string _password):User(_username,_password)
 {
-	cout<<"Enter the health status: ";
-	cin>>healthStatus;
+	
 }
-void Customer::setHS(string hs)
+void Customer::setHealthStatus(string hs)
 {
 	healthStatus=hs;
 }
-string Customer::getHS()
+string Customer::getHealthStatus()
 {
 	return healthStatus;
 }
@@ -19,12 +18,15 @@ void Customer::setInfo(string _name, int _age, double _balance, Location _locati
 	age=_age;
 	balance=_balance;
 	location=_location;
+	cout<<"Enter the health status: ";
+	cin>>healthStatus;
 }
-void Customer::placeOrder(Order *_order)
+void Customer::placeOrder()
 {
-	addOrder(_order);
+	orders.push_back(cart);
+	cart.reset();
 }
-void Customer::rewardVolunteer (Volunteer *volunteer,string reward)
+void Customer::rewardVolunteer (Volunteer *volunteer,double reward)
 {
 	volunteer->getReward(reward);
 }
