@@ -7,6 +7,7 @@ class Location
 		std::string address;
 		std::pair<int,int> geoLocation;
 	public:
+		Location (); // Default constructor will be needed
 		Location(std::string address);
 		std::string getAddress() const;
 		std::pair<int,int> getGeoLocation const;

@@ -1,5 +1,9 @@
 #include "location.h"
 
+Location::Location()
+{
+}
+
 Location::Location(std::string address)
 {
 	this->address=address;

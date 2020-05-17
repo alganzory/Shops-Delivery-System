@@ -6,16 +6,16 @@ class Customer:public User
 {
 	private:
 		std::string healthStatus;
-		std::vector <shared_ptr<Shop>> availableShops;
+		std::vector <std::shared_ptr<Shop> > availableShops;
 		std::shared_ptr <Order> cart;
 	public:
 		Customer(std::string username, std::string password);
 		void setHealthStatus(std::string healthStatus);
-		std::string getHealthStatus();
+		std::string getHealthStatus() const;
 		void setInfo(std::string name, int age, double balance, Location location);
 		void placeOrder();
-		void rewardVolunteer (Volunteer *volunteer,double reward);
-		//operators overloading
-		//friend classes and functions
+		void rewardVolunteer (std::shared_ptr<Volunteer> volunteer, double reward);
+		void addToCart(std::shared_ptr <Item> item, int quantity);
+		void removeFromCart(std::pair<std::shared_ptr<Item>, int> itemReq);
 };
 
