@@ -1,32 +1,34 @@
 #include "customer.h"
 
-Customer::Customer(string _username, string _password):User(_username,_password)
+Customer::Customer(std::string username, std::string password):User(username,password)
 {
 	
 }
-void Customer::setHealthStatus(string hs)
+void Customer::setHealthStatus(std::string healthStatus)
 {
-	healthStatus=hs;
+	this->healthStatus=healthStatus;
 }
-string Customer::getHealthStatus()
+std::string Customer::getHealthStatus()
 {
 	return healthStatus;
 }
-void Customer::setInfo(string _name, int _age, double _balance, Location _location)
+void Customer::setInfo(std::string name, int age, double balance, Location location)
 {
-	name=_name;
-	age=_age;
-	balance=_balance;
-	location=_location;
+	this->name=name;
+	this->age=age;
+	this->balance=balance;
+	this->location=location;
 	cout<<"Enter the health status: ";
 	cin>>healthStatus;
 }
 void Customer::placeOrder()
 {
 	orders.push_back(cart);
-	cart.reset();
+	balance -= cart.getTotalPrice;
+	cart.make_shared();
 }
 void Customer::rewardVolunteer (Volunteer *volunteer,double reward)
 {
 	volunteer->getReward(reward);
+	balance -= reward;
 }
