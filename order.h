@@ -1,10 +1,15 @@
 #ifndef order_H
 #define order_H
 #include <vector>
+#include"volunteer.h"
+#include"volunteer.cpp"
+//not sure
+#include"Item.h"
+#include"Item.cpp"
 
 class Order {
 private:
-	std::vector <pair<shared_ptr<Item>, int>> items;
+	std::vector <std::pair<std::shared_ptr<Item>, int>> items;
 	std::shared_ptr<Customer> customer;
 	std::vector <std::shared_ptr<Shop>> shop;
 	double totalPrice;
@@ -14,16 +19,17 @@ private:
 	int deliveryTime;
 
 public:
-	Order(std::shared_ptr<Customer> customer, std::vector <std::shared_ptr<Shop>> shop);
-	void addItem(pair<std::shared_ptr<Item>, int quantity>);
-	void removeItem(pair<std::shared_ptr<Item>, int quantity>);
+	Order(std::shared_ptr<Customer> customer, std::vector<std::shared_ptr<Shop>> shop);
+	void addItem(std::pair<std::shared_ptr<Item>, int quantity>);
+	void removeItem(std::pair<std::shared_ptr<Item>, int quantity>);
 	void setTotalPrice(double& totalPrice);
 	double getTotalPrice();
 	void setDelivery(Volunteer* volunteer, int deliveryTime);
 	void setPaymentStatus(std::shared_ptr<Customer> customer);
-	void setDeliveryStatus();
+	void setDeliveryStatus(bool& deliveryStatus);
+
 	//operator overloading to add prices???
-	//set delivery status???how to do tht for true, get from volunteer??so volunteer need to add deliverystatus??
+	//deliverystatus::so tht volunteer can call and chg the status
 	//operator overloading
 	//friend
 };
