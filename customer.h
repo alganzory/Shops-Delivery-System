@@ -5,14 +5,14 @@
 class Customer:public User
 {
 	private:
-		string healthStatus;
-		vector <shared_ptr<Shop>> availableShops[];
-		shared_ptr <Order> cart;
+		std::string healthStatus;
+		std::vector <shared_ptr<Shop>> availableShops;
+		std::shared_ptr <Order> cart;
 	public:
-		Customer(string _username, string _password):User(_username,_password);
-		void setHealthStatus(string hs);
-		string getHealthStatus();
-		void setInfo(string _name, int _age, double _balance, Location _location);
+		Customer(std::string username, std::string password);
+		void setHealthStatus(std::string healthStatus);
+		std::string getHealthStatus();
+		void setInfo(std::string name, int age, double balance, Location location);
 		void placeOrder();
 		void rewardVolunteer (Volunteer *volunteer,double reward);
 		//operators overloading
