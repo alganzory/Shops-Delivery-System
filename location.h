@@ -4,12 +4,12 @@
 class Location
 {
 	private:
-		string address;
-		pair<int,int> geoLocation;
+		std::string address;
+		std::pair<int,int> geoLocation;
 	public:
-		Location(string _address);
-		string getAddress() const;
-		pair<int,int> getGeoLocation const;
-		void setAddress(string _address);
+		Location(std::string address);
+		std::string getAddress() const;
+		std::pair<int,int> getGeoLocation const;
+		void setAddress(std::string address);
 		void setGeoLocation(int longitude,int latitude)	;	
 };
