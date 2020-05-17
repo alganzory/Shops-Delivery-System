@@ -1,15 +1,17 @@
 #include<iostream>
-#include"Item.h"
-#include"Item.cpp"
+//#include"Item.h"		//not sure
+//#include"Item.cpp"		//not sure
 #include"volunteer.h"
+#include"order.h"
+#include<vector>
 
 Order::Order(std::shared_ptr<Customer> customer, std::vector <std::shared_ptr<Shop>> shop) {
 	this->customer = customer;
 	this->shop = shop;
 }
 
-void Order::addItem(pair<std::shared_ptr<Item>, int quantity> items) {
-	items = make_pair(item, quantity);
+void Order::addItem(std::pair<std::shared_ptr<Item>, int quantity> items) {
+	items = std::make_pair(item, quantity);
 	//check item if its in the list
 	if (items.first == std::find(itemsList.begin(), itemsList.end(), item)) {
 		items.second += quantity;
@@ -17,15 +19,15 @@ void Order::addItem(pair<std::shared_ptr<Item>, int quantity> items) {
 	else { //add them into items
 		itemsList.push_back(items);
 		//substracts the quantity of items in stock
-		Item->subQuantity(items.second);
+		Item.subQuantity(items.second);
 	}
 
 }
 
-void Order::removeItem(pair<std::shared_ptr<Item>, int quantity> items) {
+void Order::removeItem(std::pair<std::shared_ptr<Item>, int quantity> items) {
 	if (items.first == std::find(itemsList.begin(), itemList.end(), items)) {
 		itemList.erase(items);
-		Item->addQuantity(items.second);
+		Item.addQuantity(items.second);
 	}
 }
 void Order::setTotalPrice(double& totalPrice) {
@@ -38,29 +40,29 @@ double Order::getTotalPrice() {
 
 void Order::setDelivery(Volunteer* volunteer, int deliveryTime) {
 
-	cout << "Please enter your desirable delivery time: ";
-	cin >> deliveryTime;
+	std::cout << "Please enter your desirable delivery time: ";
+	std::cin >> deliveryTime;
 	if (volunteer->isAvailable(deliveryTime) == 1) {
-		cout << "Your items will be delivered." << endl;
+		std::cout << "Your items will be delivered." << std::endl;
 	}
 	else {
-		cout << "No volunteers available." << endl;
+		std::cout << "No volunteers available." << std::endl;
 	}
 
 }
 
 void Order::setPaymentStatus(std::shared_ptr<Customer> customer) {
 	paymentStatus = false;
-	if (customer->getBalance() == 0) {
+	if (customer.getBalance() == 0) {
 		paymentStatus = true;
 	}
 }
 
-void Order::setDeliveryStatus() {
+void Order::setDeliveryStatus(bool& deliveryStatus) {
 	deliveryStatus = false;
 }
 
 //operator overloading to add prices???
-//set delivery status???how to do tht for true, get from volunteer??so volunteer need to add deliverystatus??
+//deliverystatus::so tht volunteer can call and chg the status
 //operator overloading
 //friend
