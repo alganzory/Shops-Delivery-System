@@ -15,10 +15,7 @@ void Volunteer::setTransport(std::string& transport) {
 }
 
 void Volunteer::setAvailableTimes(std::pair <int, int>availableTimes) {
-    int start, end;
-    std::cout << "Please enter your available times: ";
-    std::cin >> start >> end;
-    availableTimes = std::make_pair(start, end);
+    this->availableTimes = availableTimes;
 }
 
 std::string Volunteer::getTransport() const {
@@ -34,6 +31,17 @@ void Volunteer::setInfo(std::string name, int age, double balance, Location loca
     std::cout << "What is your transportation? ";
     getline(std::cin, transportation);
     setTransport(transportation);
+
+    std::cout << "When are you available?\n"
+        << "Start hour: ";
+    int startHour;
+    std::cin >> startHour;
+    std::cout << "End hour: ";
+    int endHour;
+    std::cin >> endHour;
+    std::cin.ignore();
+
+    setAvailableTimes({ startHour,endHour });
 
 }
 
@@ -52,13 +60,14 @@ void Volunteer::respondToOrder(std::shared_ptr<Order> order, bool accept) {
     if (accept == 1) {
         acceptedOrders.push_back(order);  //if accept will add into acceptedOrders
         orders.erase(std::find(orders.begin(), orders.end(), order));        //then delete from list of orders of user
+        order->setDelivery(std::make_shared<Volunteer>(*this));
+        order->setDeliveryStatus(true);
     }
 }
 
 void Volunteer::deliverOrder(std::shared_ptr<Order> order) {
     acceptedOrders.erase(std::find(acceptedOrders.begin(), acceptedOrders.end(), order));
-    bool doneDeliver = true;
-    order->setDeliveryStatus(doneDeliver);
+    orders.push_back(order);
 }
 
 void Volunteer::getReward(double reward) {
