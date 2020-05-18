@@ -1,33 +1,44 @@
 #include<iostream>
-//#include"Item.h"		//not sure
-//#include"Item.cpp"		//not sure
+#include"Item.h"
+#include"Customer.h"
+#include"Shop.h"
 #include"volunteer.h"
 #include"order.h"
 #include<vector>
+#include<iterator>
 
-Order::Order(std::shared_ptr<Customer> customer, std::vector <std::shared_ptr<Shop>> shop) {
+Order::Order(std::shared_ptr<Customer> customer, std::shared_ptr<Shop> shop) {
 	this->customer = customer;
 	this->shop = shop;
 }
 
-void Order::addItem(std::pair<std::shared_ptr<Item>, int quantity> items) {
-	items = std::make_pair(item, quantity);
+void Order::addItem(std::shared_ptr<Item> item, int quantity) {
+	std::pair<std::shared_ptr<Item>, int> newItem = std::make_pair(item, quantity);
 	//check item if its in the list
-	if (items.first == std::find(itemsList.begin(), itemsList.end(), item)) {
-		items.second += quantity;
+	auto found = std::find_if(items.begin(), items.end(), [item](const std::pair<std::shared_ptr<Item>, int>& newItem) {
+		return newItem.first->getName() == item->getName();
+		});
+	if (found != items.end()) {
+		newItem.second += quantity;
 	}
 	else { //add them into items
-		itemsList.push_back(items);
-		//substracts the quantity of items in stock
-		Item.subQuantity(items.second);
+		items.push_back(newItem);
 	}
 
+	item->subQuantity(newItem.second);		//substracts the quantity of items in stock
 }
 
-void Order::removeItem(std::pair<std::shared_ptr<Item>, int quantity> items) {
-	if (items.first == std::find(itemsList.begin(), itemList.end(), items)) {
-		itemList.erase(items);
-		Item.addQuantity(items.second);
+void Order::removeItem(std::pair<std::shared_ptr<Item>, int> theItem) {
+	std::shared_ptr<Item> item;
+	int quantity;
+	auto found = std::find_if(items.begin(), items.end(), [item](const std::pair<std::shared_ptr<Item>, int>& theItem) {
+		return theItem.first->getName() == item->getName();
+		});
+	if (found != items.end()) {
+		std::vector <std::pair<std::shared_ptr<Item>, int>>::iterator itemToRemove;
+		itemToRemove = found;
+		items.erase(itemToRemove);
+		item->addQuantity(theItem.second);
 	}
 }
 void Order::setTotalPrice(double& totalPrice) {
@@ -38,28 +49,20 @@ double Order::getTotalPrice() {
 	return totalPrice;
 }
 
-void Order::setDelivery(Volunteer* volunteer, int deliveryTime) {
-
-	std::cout << "Please enter your desirable delivery time: ";
-	std::cin >> deliveryTime;
-	if (volunteer->isAvailable(deliveryTime) == 1) {
-		std::cout << "Your items will be delivered." << std::endl;
-	}
-	else {
-		std::cout << "No volunteers available." << std::endl;
-	}
-
+void Order::setDelivery(std::shared_ptr<Volunteer> volunteer) {
+	delivery = volunteer;
 }
 
-void Order::setPaymentStatus(std::shared_ptr<Customer> customer) {
-	paymentStatus = false;
-	if (customer.getBalance() == 0) {
-		paymentStatus = true;
-	}
+void Order::setPaymentStatus(bool& paymentStatus) {
+	this->paymentStatus = paymentStatus;
 }
 
 void Order::setDeliveryStatus(bool& deliveryStatus) {
-	deliveryStatus = false;
+	this->deliveryStatus = deliveryStatus;
+}
+
+std::shared_ptr<Volunteer> Order::getDelivery() {
+	return delivery;
 }
 
 //operator overloading to add prices???
