@@ -12,13 +12,14 @@ static void C_List::addCustomer(Customer *customer)
 
 static void C_List::removeCustomer(Customer *customer)
 {
-	for (int i=0;i<getCustomerCount();i++)
+	int i=std::find(ALL_CUSTOMERS.begin(),ALL_CUSTOMERS.end(),customer);
+	if(i!=ALL_CUSTOMERS.end())
 	{
-		if(ALL_CUSTOMERS[i]->getUsername==customer->getUsername&&ALL_CUSTOMERS[i]->getPassword==customer->getPassword)
-		{
-			ALL_CUSTOMERS.erase(ALL_CUSTOMERS.begin()+i);
-			break;
-		}
+		ALL_CUSTOMERS.erase(ALL_CUSTOMERS.begin()+i);
+	}
+	else
+	{
+		std::cout<<"Customer Not Found"<<endl;
 	}
 }
 
