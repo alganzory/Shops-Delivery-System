@@ -1,20 +1,20 @@
 #include<iostream>
 #include<string>
 #include"volunteer.h"
+#include"Shop.h"
+#include"User.h"
+#include"Location.h"
+
 #include<vector>
 
-
 Volunteer::Volunteer(std::string username, std::string password) :User(username, password) {
-
 }
 
 void Volunteer::setTransport(std::string& transport) {
     transportation = transport;
-    std::cout << "What is your transportation? ";
-    getline(std::cin, transport);
 }
 
-void Volunteer::setAvailableTimes() {
+void Volunteer::setAvailableTimes(std::pair <int, int>availableTimes) {
     int start, end;
     std::cout << "Please enter your available times: ";
     std::cin >> start >> end;
@@ -31,6 +31,10 @@ void Volunteer::setInfo(std::string name, int age, double balance, Location loca
     this->balance = balance;
     this->location = location;
 
+    std::cout << "What is your transportation? ";
+    getline(std::cin, transportation);
+    setTransport(transportation);
+
 }
 
 bool Volunteer::isAvailable(int time) {
@@ -40,29 +44,27 @@ bool Volunteer::isAvailable(int time) {
     }
 }
 
-void Volunteer::registerToShop(std::vector<std::shared_ptr<Shop>> registeredShops) {
-    registeredShops.push_back(shop);
+void Volunteer::registerToShop(std::shared_ptr<Shop> newShop) {
+    registeredShops.push_back(newShop);
 }
 
-void Volunteer::respondToOrder(std::vector<std::shared_ptr<Order>> acceptedOrders, bool accept) {
-    if (accept = 1) {
+void Volunteer::respondToOrder(std::shared_ptr<Order> order, bool accept) {
+    if (accept == 1) {
         acceptedOrders.push_back(order);  //if accept will add into acceptedOrders
-        orderList.erase(std::find(orderList.begin(), orderList.end(), order);        //then delete from list of orders to be accepted
+        orders.erase(std::find(orders.begin(), orders.end(), order));        //then delete from list of orders of user
     }
 }
 
-void Volunteer::deliverOrder(std::vector<std::shared_ptr<Order>> acceptedOrders) {
-    acceptedOrders.push_back(order);
-    order.erase(std::find(order.begin(), order.end(), order));
-    order.setDeliveryStatus(true);
-
+void Volunteer::deliverOrder(std::shared_ptr<Order> order) {
+    acceptedOrders.erase(std::find(acceptedOrders.begin(), acceptedOrders.end(), order));
+    bool doneDeliver = true;
+    order->setDeliveryStatus(doneDeliver);
 }
 
-std::vector<double> Volunteer::getReward(std::vector<double> rewards) {
-    return rewards;
+void Volunteer::getReward(double reward) {
+    balance += reward;
 }
 
 
 //operators overloading
 //friend 
-
