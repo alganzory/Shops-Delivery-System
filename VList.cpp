@@ -4,6 +4,8 @@
 
 std::vector<std::shared_ptr<Volunteer>> V_List::ALL_VOLUNTEERS;
 std::fstream V_List::vFile;
+std::string V_List::filePath = "file.txt";
+
 int V_List::getVolunteersCount() {
 	return ALL_VOLUNTEERS.size();
 }
