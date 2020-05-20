@@ -70,3 +70,25 @@ void ShopOwner::rewardVolunteer(std::shared_ptr<Volunteer> volunteer, double rew
 {
 	volunteer->getReward(reward);
 }
+
+std::string ShopOwner::getShopName() const
+{
+	return shop.getName();
+}
+
+int ShopOwner::getShopSize() const
+{
+	return shop.getItemsCount();
+}
+
+void ShopOwner::setInfoFile(const std::string& cs, int age, double balance, const std::string& location,
+	const std::string& shopname, const std::string& shoplocation)
+{
+	this->name = cs;
+	this->age = age;
+	this->balance = balance;
+	this->location = Location(location);
+	Location shopLocation(shoplocation);
+	this->shop = Shop(this, shopname, shoplocation);
+}
+
