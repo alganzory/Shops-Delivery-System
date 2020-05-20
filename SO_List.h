@@ -8,12 +8,11 @@
 class SO_List
 {
 
-private:
-	static std::fstream dataFile;
-	static std::string filePath;
+
 public:
 	static std::vector <std::shared_ptr <ShopOwner> > SHOPOWNERS;
-
+	static std::fstream dataFile;
+	static std::string filePath;
 
 public:
 	static int getCount();
