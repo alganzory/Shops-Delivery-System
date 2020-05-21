@@ -1,40 +1,36 @@
 #include "C_List.h"
 
+std::ifstream C_List::fin;
+std::ofstream C_List::fout;
+std::string C_List::filePath="file.txt";
+
 static int C_List::getCustomerCount() const
 {
 	return ALL_CUSTOMERS.size();
 }
 
-static void C_List::addCustomer(Customer *customer)
+static void C_List::addCustomer(std::shared_pte<Customer> customer)
 {
 	ALL_CUSTOMERS.push_back(customer);
 }
 
-static void C_List::removeCustomer(Customer *customer)
+static void C_List::removeCustomer(std::shared_pte<Customer> customer)
 {
-	int i=std::find(ALL_CUSTOMERS.begin(),ALL_CUSTOMERS.end(),customer);
-	if(i!=ALL_CUSTOMERS.end())
-	{
-		ALL_CUSTOMERS.erase(ALL_CUSTOMERS.begin()+i);
-	}
-	else
-	{
-		std::cout<<"Customer Not Found"<<endl;
-	}
+	auto foundCustomer=std::find(ALL_CUSTOMERS.begin(),ALL_CUSTOMERS.end(),customer);
+	ALL_CUSTOMERS.erase(i);
+
 }
 
 static void C_List::readCustomers()
 {
-	ifstream fin;
-	fin.open("customerList.txt"); 
+	fin.open(filepath); 
 	//input
 	fin.close();
 }
 
 static void C_List::writeCustomer()
 {
-	ofstream fout;
-	fout.open("customerList.txt");
+	fout.open(filepath);
 	//output
 	fout.close();
 }
