@@ -1,4 +1,7 @@
-#include "customer.h"
+#include "Customer.h"
+
+#include <memory>
+#include "Shop.h"
 
 Customer::Customer(std::string username, std::string password):User(username,password)
 {
@@ -18,16 +21,16 @@ void Customer::setInfo(std::string name, int age, double balance, Location locat
 	this->age=age;
 	this->balance=balance;
 	this->location=location;
-	cout<<"Enter the health status: ";
-	getline (cin, this->healthStatus);
+	std::cout<<"Enter the health status: ";
+	getline (std::cin, this->healthStatus);
 }
 void Customer::placeOrder()
 {
 	orders.push_back(cart);
-	balance -= cart->getTotalPrice;
+	balance -= cart->getTotalPrice();
 	cart = std::make_shared<Order>();
 }
-void Customer::rewardVolunteer (Volunteer *volunteer,double reward)
+void Customer::rewardVolunteer (std::shared_ptr <Volunteer> volunteer ,double reward)
 {
 	//exception check to see if there is enough balance
 	volunteer->getReward(reward);

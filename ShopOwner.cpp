@@ -48,7 +48,7 @@ void ShopOwner::respondToOrder(std::shared_ptr<Order> order)
 void ShopOwner::assignVolunteer(std::shared_ptr <Order> order)
 {
 	const auto availableVolunteer = find_if(availableVolunteers.begin(), availableVolunteers.end(),
-	                                        [](std::shared_ptr<Volunteer> volunteer) {return volunteer->isAvailable(); });
+		[order](std::shared_ptr<Volunteer> volunteer) {return volunteer->isAvailable(order->getDeliveryTime()); });
 	if (availableVolunteer!= availableVolunteers.end())
 	{
 		order->setDelivery(*availableVolunteer);

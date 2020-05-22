@@ -1,11 +1,14 @@
-#include<iostream>
-#include"Item.h"
-#include"Customer.h"
-#include"Shop.h"
-#include"volunteer.h"
-#include"order.h"
+
+#include"Order.h"
 #include<vector>
-#include<iterator>
+
+#include <iomanip>
+#include "volunteer.h"
+
+
+Order::Order()
+{
+}
 
 Order::Order(std::shared_ptr<Customer> customer, std::shared_ptr<Shop> shop) {
 	this->customer = customer;
@@ -79,6 +82,11 @@ void Order::setDeliveryTime(int deliveryTime)
 bool Order::getPaymentStatus()
 {
 	return paymentStatus;
+}
+
+int Order::getDeliveryTime()
+{
+	return deliveryTime;
 }
 
 //operator overloading to add prices???

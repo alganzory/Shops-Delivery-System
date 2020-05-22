@@ -1,6 +1,4 @@
-#include"VList.h"
-#include<iostream>
-#include<fstream>
+#include"V_List.h"
 
 std::vector<std::shared_ptr<Volunteer>> V_List::ALL_VOLUNTEERS;
 std::fstream V_List::vFile;

@@ -1,7 +1,7 @@
-#ifndef volunteer_H
-#define volunteer_H
+#ifndef Volunteer_H
+#define Volunteer_H
 
-#include<vector>
+#include "User.h"
 
 class Volunteer : public User {
 private:

@@ -1,10 +1,14 @@
 #ifndef order_H
 #define order_H
 #include <vector>
-#include"volunteer.h"
-#include"customer.h"
-#include"Shop.h"
-#include"Item.h"
+#include <memory>
+#include "Item.h"
+
+class Shop;
+class Customer;
+class Volunteer;
+
+
 
 class Order {
 private:
@@ -18,6 +22,7 @@ private:
 	int deliveryTime;
 
 public:
+	Order();
 	Order(std::shared_ptr<Customer> customer, std::shared_ptr<Shop> shop);
 	void addItem(std::shared_ptr<Item> item, int quantity);
 	void removeItem(std::pair<std::shared_ptr<Item>, int>& itemReq);
@@ -30,6 +35,7 @@ public:
 	bool getDeliveryStatus();
 	void setDeliveryTime(int deliveryTime);
 	bool  getPaymentStatus();
+	int getDeliveryTime();
 	//operator overloading to add prices???
 	//deliverystatus::so tht volunteer can call and chg the status
 	//operator overloading
