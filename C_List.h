@@ -7,8 +7,7 @@
 class C_List
 {
 	private:
-		static std::ifstream fin;
-		static std::ofstream fout;
+		static std::fstream dataFile;
 		std::string filePath;
 		
 	public:
@@ -16,8 +15,8 @@ class C_List
 	
 	public:
 		static int getCustomerCount() const;
-		static void addCustomer(std::shared_pte<Customer> customer);
-		static void removeCustomer(std::shared_pte<Customer> customer);
+		static void addCustomer(std::shared_ptr<Customer> customer);
+		static void removeCustomer(std::shared_ptr<Customer> customer);
 		static void readCustomers();
 		static void writeCustomer();
 };
