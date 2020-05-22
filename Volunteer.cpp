@@ -1,11 +1,6 @@
-#include<iostream>
-#include<string>
-#include"volunteer.h"
-#include"Shop.h"
-#include"User.h"
-#include"Location.h"
 
-#include<vector>
+#include"Volunteer.h"
+#include<memory>
 
 Volunteer::Volunteer(std::string username, std::string password) :User(username, password) {
 }
@@ -55,19 +50,21 @@ bool Volunteer::isAvailable(int time) {
 void Volunteer::registerToShop(std::shared_ptr<Shop> newShop) {
     registeredShops.push_back(newShop);
 }
-
-void Volunteer::respondToOrder(std::shared_ptr<Order> order, bool accept) {
-    if (accept == 1) {
-        acceptedOrders.push_back(order);  //if accept will add into acceptedOrders
-        orders.erase(std::find(orders.begin(), orders.end(), order));        //then delete from list of orders of user
-        order->setDelivery(std::make_shared<Volunteer>(*this));
-        order->setDeliveryStatus(true);
-    }
+void Volunteer::respondToOrder(std::shared_ptr<Order> order, bool acceptance)
+{
+	if (acceptance == true)
+	{
+		acceptedOrders.push_back(order);
+		const auto orderPos = find(orders.begin(), orders.end(), order);
+		orders.erase(orderPos);
+	}
 }
 
-void Volunteer::deliverOrder(std::shared_ptr<Order> order) {
-    acceptedOrders.erase(std::find(acceptedOrders.begin(), acceptedOrders.end(), order));
-    orders.push_back(order);
+void Volunteer::deliverOrder(std::shared_ptr<Order> order)
+{
+	order->setDeliveryStatus(true);
+	const auto orderPos = find(acceptedOrders.begin(), acceptedOrders.end(), order);
+	acceptedOrders.erase(orderPos);
 }
 
 void Volunteer::getReward(double reward) {

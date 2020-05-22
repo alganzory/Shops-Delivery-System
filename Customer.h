@@ -1,7 +1,7 @@
 #pragma once
-#include <string>
-#include <vector>
-#include "user.h" 
+#include "User.h"
+#include "Volunteer.h"
+
 class Customer:public User
 {
 	private:
