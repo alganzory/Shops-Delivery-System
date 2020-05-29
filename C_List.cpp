@@ -31,20 +31,31 @@ void C_List::readCustomers()
 	double balance;
 	std::string address;
 	std::string healthStatus;
+	std::string blank;
 
 	do
 	{
+		username = "\0";
 		std::getline(dataFile, username);
+		if (username == "\0")
+		{
+			break;
+		}
 		std::getline(dataFile, password);
 		std::getline(dataFile, name);
 		dataFile >> age;
 		dataFile >> balance;
 		std::getline(dataFile, address);
 		std::getline(dataFile, healthStatus);
-		std::shared_ptr<Customer> customer(new Customer(username, password));
+		std::shared_ptr<Customer> customer(std::make_shared <Customer>(username, password));
 		Location location(address);
-		customer->setInfo(name, age, balance, location);
+		customer->setName(name);
+		customer->setAge(age);
+		customer->setBalance(balance);
+		customer->setLocation(location);
+		customer->setHealthStatus(healthStatus);
 		addCustomer(customer);
+		std::getline(dataFile, blank);
 	} while (username != "\0");
 
 	dataFile.close();
@@ -55,14 +66,14 @@ void C_List::writeCustomer()
 	dataFile.open(filePath,std::ios::out);
 	for (int i = 0; i < ALL_CUSTOMERS.size; i++)
 	{
-		dataFile << ALL_CUSTOMERS[i]->getUsername << std::endl;
+		dataFile << ALL_CUSTOMERS[i]->getUsername() << std::endl;
 		//dataFile << ALL_CUSTOMERS[i]->password << std::endl;
-		dataFile << ALL_CUSTOMERS[i]->getName << std::endl;
-		dataFile << ALL_CUSTOMERS[i]->getAge << std::endl;
-		dataFile << ALL_CUSTOMERS[i]->getBalance << std::endl;
-		Location address = ALL_CUSTOMERS[i]->getLocation;
-		dataFile << address.getAddress << std::endl;
-		dataFile << ALL_CUSTOMERS[i]->getHealthStatus << std::endl << std::endl;
+		dataFile << ALL_CUSTOMERS[i]->getName() << std::endl;
+		dataFile << ALL_CUSTOMERS[i]->getAge() << std::endl;
+		dataFile << ALL_CUSTOMERS[i]->getBalance() << std::endl;
+		Location address = ALL_CUSTOMERS[i]->getLocation();
+		dataFile << address.getAddress() << std::endl;
+		dataFile << ALL_CUSTOMERS[i]->getHealthStatus() << std::endl << std::endl;
 	}
 	dataFile.close();
 }
