@@ -14,56 +14,54 @@ void UserFlow::welcomeScreen()
 
 		switch (choice)
 		{
-		case 1:	login();
-			break;
-		case 2:	signUp();
-			break;
-		case 99:exit(0);
-			break;
-		default:std::cout << "Please choose the correct number." << std::endl;
+			case 1:	login();
+					break;
+			case 2:	signUp();
+					break;
+			case 99:exitScreen();
+					break;
+			default:std::cout << "Please choose the correct number." << std::endl;
 		}
 	}
-
+	
 }
 
-std::shared_ptr<User> UserFlow::verifyUsername(std::string username)
+bool UserFlow::verify(std::string username,std::string password)
 {
-	for (int i = 0; i < C_List::getCustomerCount(); i++)
-	{
-		if (username==C_List::ALL_CUSTOMERS[i]->getUsername)
-		{
-			return C_List::ALL_CUSTOMERS[i];
-		}
-	}
-	for (int j = 0; j < V_List::getVolunteersCount(); j++)
-	{
-		if (username==V_List::ALL_VOLUNTEERS[j]->getUsername)
-		{
-			return V_List::ALL_VOLUNTEERS[j];
-		}
-	}
-	for (int k = 0; k < SO_List::getCount(); k++)
-	{
-		if (username==SO_List::SHOPOWNERS[k]->getUsername)
-		{
-			return SO_List::SHOPOWNERS[k];
-		}
-	}
-	return std::make_shared <User>("\0", "\0");
-}
+	std::shared_ptr<User> ToCheck;
 
-bool UserFlow::verifyPassword(std::shared_ptr<User> user,std::string password)
-{
-	while (!user->isAuth(user->getUsername, password))
+	C_List CustomerList;
+	CustomerList.readCustomers();
+	for (int i = 0; i < CustomerList.getCustomerCount; i++)
 	{
-		std::cout << "Log in as " << user->getName << std::endl;
-		std::cout << "The password that you've entered is incorrect." << std::endl;
-		std::cout << "Reenter the password or enter 0 if not you."<< std::endl;
-		std::cin >> password;
-		if (password == "0")
+		ToCheck = CustomerList.ALL_CUSTOMERS[i];
+		if (ToCheck->isAuth(username, password))
 		{
-			return false;
+			return true;
 		}
 	}
-	return true;
+	
+	V_List VolunteerList;
+	VolunteerList.ReadVolunteers();
+	for (int j = 0; j < VolunteerList.getVolunteersCount; j++)
+	{
+		ToCheck = VolunteerList.ALL_VOLUNTEERS[j];
+		if (ToCheck->isAuth(username, password))
+		{
+			return true;
+		}
+	}
+
+	SO_List ShopOwnerList;
+	ShopOwnerList.readFromFile();
+	for (int k = 0; k < ShopOwnerList.getCount; k++)
+	{
+		ToCheck = ShopOwnerList.SHOPOWNERS[k];
+		if (ToCheck->isAuth(username, password))
+		{
+			return true;
+		}
+	}
+	
+	return false;
 }

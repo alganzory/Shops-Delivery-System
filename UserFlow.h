@@ -12,8 +12,7 @@ class UserFlow
 {
 	public:
 		void welcomeScreen();
-		std::shared_ptr<User> verifyUsername(std::string);
-		bool verifyPassword(std::shared_ptr<User>, std::string);
+		bool verify(std::string,std::string);
 		void login();
 		void signUp();
 		void exitScreen();
