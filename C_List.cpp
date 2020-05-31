@@ -23,12 +23,16 @@ void C_List::removeCustomer(std::shared_ptr<Customer> customer)
 void C_List::readCustomers()
 {
 	dataFile.open(filePath,std::ios::in); 
+	if (!dataFile)
+	{
+		std::cout << "fail" << std::endl;
+	}
 	
 	std::string username;
 	std::string password;
 	std::string name;
-	int age;
-	double balance;
+	int age=0;
+	double balance=0.00;
 	std::string address;
 	std::string healthStatus;
 	std::string blank;
@@ -45,14 +49,14 @@ void C_List::readCustomers()
 		std::getline(dataFile, name);
 		dataFile >> age;
 		dataFile >> balance;
+		dataFile.ignore();
 		std::getline(dataFile, address);
 		std::getline(dataFile, healthStatus);
 		std::shared_ptr<Customer> customer(std::make_shared <Customer>(username, password));
-		Location location(address);
 		customer->setName(name);
 		customer->setAge(age);
 		customer->setBalance(balance);
-		customer->setLocation(location);
+		customer->setLocation(Location (address));
 		customer->setHealthStatus(healthStatus);
 		addCustomer(customer);
 		std::getline(dataFile, blank);
@@ -64,7 +68,7 @@ void C_List::readCustomers()
 void C_List::writeCustomer()
 {
 	dataFile.open(filePath,std::ios::out);
-	for (int i = 0; i < ALL_CUSTOMERS.size; i++)
+	for (int i = 0; i < getCustomerCount(); i++)
 	{
 		dataFile << ALL_CUSTOMERS[i]->getUsername() << std::endl;
 		//dataFile << ALL_CUSTOMERS[i]->password << std::endl;
