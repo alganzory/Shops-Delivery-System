@@ -11,7 +11,6 @@ private:
 
 public:
 
-
 	Item();
 	Item(std::string name, double price, int inStock);
 	double getPrice() const;
