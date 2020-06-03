@@ -30,33 +30,33 @@ std::shared_ptr<User> UserFlow::verifyUsername(std::string username)
 {
 	for (int i = 0; i < C_List::getCustomerCount(); i++)
 	{
-		if (username==C_List::ALL_CUSTOMERS[i]->getUsername)
+		if (username==C_List::ALL_CUSTOMERS[i]->getUsername())
 		{
 			return C_List::ALL_CUSTOMERS[i];
 		}
 	}
 	for (int j = 0; j < V_List::getVolunteersCount(); j++)
 	{
-		if (username==V_List::ALL_VOLUNTEERS[j]->getUsername)
+		if (username==V_List::ALL_VOLUNTEERS[j]->getUsername())
 		{
 			return V_List::ALL_VOLUNTEERS[j];
 		}
 	}
 	for (int k = 0; k < SO_List::getCount(); k++)
 	{
-		if (username==SO_List::SHOPOWNERS[k]->getUsername)
+		if (username==SO_List::SHOPOWNERS[k]->getUsername())
 		{
 			return SO_List::SHOPOWNERS[k];
 		}
 	}
-	return std::make_shared <User>("\0", "\0");
+	return nullptr;
 }
 
 bool UserFlow::verifyPassword(std::shared_ptr<User> user,std::string password)
 {
-	while (!user->isAuth(user->getUsername, password))
+	while (!user->isAuth(user->getUsername(), password))
 	{
-		std::cout << "Log in as " << user->getName << std::endl;
+		std::cout << "Log in as " << user->getName() << std::endl;
 		std::cout << "The password that you've entered is incorrect." << std::endl;
 		std::cout << "Reenter the password or enter 0 if not you."<< std::endl;
 		std::cin >> password;
