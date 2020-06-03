@@ -14,9 +14,9 @@ void UserFlow::welcomeScreen()
 
 		switch (choice)
 		{
-		case 1:	login();
+		case 1:	/*login();*/
 			break;
-		case 2:	signUp();
+		case 2:	/*signUp();*/
 			break;
 		case 99:exit(0);
 			break;
@@ -54,16 +54,5 @@ std::shared_ptr<User> UserFlow::verifyUsername(std::string username)
 
 bool UserFlow::verifyPassword(std::shared_ptr<User> user,std::string password)
 {
-	while (!user->isAuth(user->getUsername(), password))
-	{
-		std::cout << "Log in as " << user->getName() << std::endl;
-		std::cout << "The password that you've entered is incorrect." << std::endl;
-		std::cout << "Reenter the password or enter 0 if not you."<< std::endl;
-		std::cin >> password;
-		if (password == "0")
-		{
-			return false;
-		}
-	}
-	return true;
+	return user->isAuth(user->getUsername(), password);
 }
