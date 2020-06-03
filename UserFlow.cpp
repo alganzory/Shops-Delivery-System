@@ -5,15 +5,28 @@
 #include"V_List.h"
 #include"SO_List.h"
 
-std::shared_ptr<User> currentUser;
 
-void userFlow::signUp() {
+std::shared_ptr<User> UserFlow::currentUser;
+
+std::shared_ptr<User> UserFlow::verifyUsername(std::string username)
+{
+
+	return nullptr;
+}
+
+
+void UserFlow::signUp() {
 	//ask for username,p/w,name,age,balance,location,transport,availabletime
 	//depends on volunteer,shopowner,user
 	//use currentUser shared ptr
+
+	// read the input, username and password
+	// check the existence of this user with this username
+	// we will prompt them to login instead
+	
 	std::string userName, password, name, location, healthStatus, shop;
-	int age;
-	double balance;
+	int age {};
+	double balance {};
 	while (true) {
 		char character;
 		std::cout << "Who are you? \n";
@@ -23,46 +36,62 @@ void userFlow::signUp() {
 		std::cin >> userName;
 		std::cout << "Enter a password: ";
 		std::cin >> password;
+		std::cin.ignore();
+
+		// perform the check of the user
+
+		if (verifyUsername(userName) != nullptr)
+		{
+			std::cout << "This user already exists, press L to login instead or press B to go back\n";
+			char choice;
+			std::cin >> choice;
+			std::cin.ignore();
+
+			if (choice == 'L' || choice == 'l') login();
+			else if (choice == 'B' || choice == 'b') welcomeScreen();
+		}
+
+
+		//
+		std::cout << "We will need some additional info\n";
 		std::cout << "Enter your name: ";
-		std::cin >> name;
+		std::getline(std::cin, name);
 		std::cout << "How old are you? ";
 		std::cin >> age;
+		std::cin.ignore();
 		std::cout << "Enter your location: ";
-		std::cin >> location;
+		std::getline(std::cin, location);
 		if (character == 'C' || character == 'c') {
-			std::cout << "Enter your health status: ";
-			std::cin >> healthStatus;
 			std::shared_ptr <Customer> newCustomer = std::make_shared<Customer>(userName, password);
 			currentUser = newCustomer;
 			C_List::addCustomer(newCustomer);
-			
 		}
 		else if (character == 'S' || character == 's') {
-			std::cout << "Enter your shop(s): ";
-			std::cin >> shop;
 			std::shared_ptr <ShopOwner> newShopOwner = std::make_shared<ShopOwner>(userName, password);
 			currentUser = newShopOwner;
 			SO_List::addShopOwner(newShopOwner);
 			
 		}
 		else if (character == 'V' || character == 'v') {
-			balance = 0;
-			//add volunteer into list
 			std::shared_ptr <Volunteer> newVolunteer = std::make_shared<Volunteer>(userName, password);
 			currentUser = newVolunteer;
 			V_List::AddVolunteer(newVolunteer);
-			
 		}
 		else {
 			std::cout << "This choice does not exist.";
-			break;
+			continue;
 		}
+
+		std::cout << "few more questions...\n";
 		currentUser->setInfo(name, age, balance, location);
+
+		std::cout << "Account registered successfully, you will be directed to main Menu\n";
+		welcomeScreen();
 	}
 }
 
-void userFlow::login() {
-	//ask for username,p/w,verifythemfromHelperFunction
+void UserFlow::login() {
+	//ask for username,p/w,verify them from Helper Function
 	//if not ask to sign up,if gt then cont verify the p/w
 	//if p/w correct then show menu screen
 	//incorrect ask to enter again
@@ -73,25 +102,24 @@ void userFlow::login() {
 		std::cin >> userName;
 		std::cout << "Password: ";
 		std::cin >> password;
-		if (verify(userName, password) == 0) {
-			//sign up if username wrong
-			signUp();
-			break;
+		std::cin.ignore();
+
+		currentUser = verifyUsername(userName);
+		if (currentUser == nullptr)
+		{
+			std::cout << "This user does not exist,\nPress S to sign up instead: "
+				<< "or press B to go back instead\n";
+
+			// read the answer
+
+			// act		
 		}
-		else if (verify(userName, password) == 1) {
-			//incorrect pw
-			break;
-		}
-		else if (verify(userName, password) == 2) { //correct
-			mainMenu();
-			break;
-		}
+
+		currentUser->welcome();
 	}
 }
 
-void userFlow::mainMenu() {
+void UserFlow::mainMenu() {
 }
-void userFlow::welcomeScreen() {
-}
-int userFlow::verify(std::string username, std::string password) {
+void UserFlow::welcomeScreen() {
 }
