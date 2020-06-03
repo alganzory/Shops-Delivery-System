@@ -32,7 +32,7 @@ void Shop::setName(std::string name)
 	this->name = name;
 }
 
-std::vector<std::shared_ptr<Item>> Shop::getItems() const
+const std::vector<std::shared_ptr<Item>> & Shop::getItems() 
 {
 	return items;
 }
@@ -52,19 +52,19 @@ void Shop::setLocation(Location location)
 	this->location = location;
 }
 
-void Shop::storeItem(std::shared_ptr<Item> newItem, int quantity)
+void Shop::storeItem(std::shared_ptr<Item> newItem, int quantity, bool isNew)
 {
-	auto findItem = find(items.begin(), items.end(), newItem);
+	auto findItem = find(items.begin(), items.end(), newItem->getName());
 
 	if (findItem != items.end())
 	{
-		newItem->addQuantity(quantity);
+		if (isNew) throw "Item already exists!";
+		(*findItem)->addQuantity(quantity);
 	}
 
 	else
 	{
 		items.push_back(newItem);
-		newItem->addQuantity(quantity);
 	}
 }
 
@@ -76,4 +76,9 @@ void Shop::sellItem(std::shared_ptr<Item> item, int quantity)
 	{
 		item->subQuantity(quantity);
 	}
+}
+
+int Shop::getItemsCount() const
+{
+	return items.size();
 }

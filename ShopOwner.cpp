@@ -4,6 +4,8 @@
 ShopOwner::ShopOwner(std::string username, std::string password):
 	User(username, password)
 {
+	this->shop = Shop(this, "", this->location);
+	
 }
 
 void ShopOwner::setInfo(std::string name, int age, double balance, Location location)
@@ -37,7 +39,9 @@ std::shared_ptr<Shop> ShopOwner::getShopPtr()
 
 void ShopOwner::createShop(std::string shopName, Location shopLocation)
 {
-	this->shop = Shop(this, shopName, shopLocation);
+
+	shop.setName(shopName);
+	shop.setLocation(shopLocation);
 }
 
 void ShopOwner::respondToOrder(std::shared_ptr<Order> order)
@@ -55,9 +59,9 @@ void ShopOwner::assignVolunteer(std::shared_ptr <Order> order)
 	}
 }
 
-void ShopOwner::addToStock(std::shared_ptr<Item> newItem, int quantity)
+void ShopOwner::addToStock(std::shared_ptr<Item> newItem, int quantity, bool isNew)
 {
-	this->shop.storeItem(newItem, quantity);
+	this->shop.storeItem(newItem, quantity,isNew);
 
 }
 
@@ -71,8 +75,30 @@ void ShopOwner::rewardVolunteer(std::shared_ptr<Volunteer> volunteer, double rew
 	volunteer->getReward(reward);
 }
 
+
 void ShopOwner::welcome()
 {
 	std::cout << "Welcome Shop owner\n";
 	// flow controller 
+}
+
+std::string ShopOwner::getShopName() const
+{
+	return shop.getName();
+}
+
+int ShopOwner::getShopSize() const
+{
+	return shop.getItemsCount();
+}
+
+void ShopOwner::setInfoFile(const std::string& cs, int age, double balance, const std::string& location,
+	const std::string& shopname, const std::string& shoplocation)
+{
+	this->name = cs;
+	this->age = age;
+	this->balance = balance;
+	this->location = Location(location);
+	Location shopLocation(shoplocation);
+	this->shop = Shop(this, shopname, shoplocation);
 }

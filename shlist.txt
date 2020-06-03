@@ -1,0 +1,38 @@
+shop1
+s
+shopowner1
+20
+500
+taman uni
+shop1
+taman uni, jalan
+items
+banana 10 20
+apple 20 10
+orange 30 5
+
+shop2
+s
+shopowner2
+22
+1600
+azizyah
+shop2
+azizyah, rashed
+items
+tide 67 110
+persil 240 880
+orange 50 138
+noodles 49 1200
+
+shop3
+s
+shopowner3
+40
+50000
+olaya
+shop3
+Olaya, dar
+items
+gold 1000 230
+silver 2092 530
