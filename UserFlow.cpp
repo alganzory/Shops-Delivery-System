@@ -1,5 +1,6 @@
 #include "UserFlow.h"
 
+#include "Helper.h"
 
 
 std::shared_ptr<User> UserFlow::currentUser;
@@ -8,12 +9,12 @@ void UserFlow::welcomeScreen()
 	int choice = -1;
 	while (choice != 99)
 	{
-		std::cout << "COVID-19 SHOPS DELIVERY SYSTEM" << std::endl;
-		std::cout << "1.  Log in" << std::endl;
-		std::cout << "2.  Sign up" << std::endl;
-		std::cout << "99. Exit" << std::endl;
+		std::cout << "\nCOVID-19 SHOPS DELIVERY SYSTEM" << std::endl;
+		Helper::dLine();
+		Helper::displayMenu({ "Log in", "Sign up", "Exit" });
+		Helper::line();
 		std::cout << "Your choice: ";
-		std::cin >> choice;
+		choice = Helper::readChoice(1, 3);
 
 		switch (choice)
 		{
@@ -21,7 +22,7 @@ void UserFlow::welcomeScreen()
 			break;
 		case 2:	signUp();
 			break;
-		case 99:exit(0);
+		case 3:exit(0);
 			break;
 		default:std::cout << "Please choose the correct number." << std::endl;
 		}
@@ -55,10 +56,6 @@ std::shared_ptr<User> UserFlow::verifyUsername(std::string username)
 	return nullptr;
 }
 
-bool UserFlow::verifyPassword(std::shared_ptr<User> user,std::string password)
-{
-	return user->isAuth(user->getUsername(), password);
-}
 
 void UserFlow::signUp() {
 	//ask for username,p/w,name,age,balance,location,transport,availabletime
@@ -72,11 +69,11 @@ void UserFlow::signUp() {
 	std::string userName, password, name, location, healthStatus, shop;
 	int age {};
 	double balance {};
+	int character;
 	while (true) {
-		char character;
-		std::cout << "Who are you? \n";
-		std::cout << "C: Customer \n S: Shop Owner \n V: Volunteer\n";
-		std::cin >> character;
+		
+		std::cout << "\nSign up\n";
+		Helper::dLine();
 		std::cout << "Enter your username: ";
 		std::cin >> userName;
 		std::cout << "Enter a password: ";
@@ -96,9 +93,13 @@ void UserFlow::signUp() {
 			else if (choice == 'B' || choice == 'b') welcomeScreen();
 		}
 
+		Helper::line();
+		std::cout << "I am a? \n";
+		std::cout << "C: Customer \nS: Shop Owner \nV: Volunteer\n";
+		character = Helper::readChoice(0, 0, "CcsSvV");
 
-		//
-		std::cout << "We will need some additional info\n";
+		Helper::line();
+		std::cout << "We will need some additional info...\n";
 		std::cout << "Enter your name: ";
 		std::getline(std::cin, name);
 		std::cout << "How old are you? ";
@@ -127,9 +128,9 @@ void UserFlow::signUp() {
 			continue;
 		}
 
-		std::cout << "few more questions...\n";
+		std::cout << "Just a few more questions...\n";
 		currentUser->setInfo(name, age, balance, location);
-
+		Helper::line();
 		std::cout << "Account registered successfully, you will be directed to main Menu\n";
 		welcomeScreen();
 	}
@@ -142,6 +143,8 @@ void UserFlow::login() {
 	//incorrect ask to enter again
 	while (true)
 	{
+		std::cout << "\nLogin\n";
+		Helper::dLine();
 		std::string userName, password;
 		std::cout << "Username: ";
 		std::cin >> userName;
@@ -152,8 +155,8 @@ void UserFlow::login() {
 		currentUser = verifyUsername(userName);
 		if (currentUser == nullptr)
 		{
-			std::cout << "This user does not exist,\nPress S to sign up instead: "
-				<< "or press B to go back instead\n";
+			std::cout << "This user does not exist,\npress S to sign up, "
+				<< "or press B to go back instead: ";
 
 			char choice;
 			std::cin >> choice;
@@ -164,7 +167,12 @@ void UserFlow::login() {
 			break;
 		}
 
-		currentUser->welcome();
+		if (currentUser->isAuth(userName, password))
+			currentUser->welcome();
+		else
+		{
+			std::cout << "Incorrect password, please try again...\n";
+		}
 	}
 }
 

@@ -12,6 +12,5 @@ public:
 	static void signUp();
 	static std::shared_ptr<User> verifyUsername(std::string username);
 	static std::shared_ptr<User> currentUser;
-	static bool verifyPassword(std::shared_ptr<User>, std::string);
 };
 
