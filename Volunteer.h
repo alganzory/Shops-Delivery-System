@@ -22,6 +22,7 @@ public:
     void respondToOrder(std::shared_ptr<Order> acceptedOrders, bool accept);
     void deliverOrder(std::shared_ptr<Order> acceptedOrders);
     void getReward(double reward);
+    void welcome() override;
 
 
     //operators overloading

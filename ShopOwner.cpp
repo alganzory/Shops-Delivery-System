@@ -70,3 +70,9 @@ void ShopOwner::rewardVolunteer(std::shared_ptr<Volunteer> volunteer, double rew
 {
 	volunteer->getReward(reward);
 }
+
+void ShopOwner::welcome()
+{
+	std::cout << "Welcome Shop owner\n";
+	// flow controller 
+}

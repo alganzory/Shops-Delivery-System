@@ -1,18 +1,17 @@
 #pragma once
-#include <iostream>
-#include "User.h"
+
 #include "C_List.h"
 #include "V_List.h"
 #include "SO_List.h"
-#include "Customer.h"
-#include "ShopOwner.h"
-#include "Volunteer.h"
 
-class UserFlow
-{
-	public:
-		void welcomeScreen();
-		std::shared_ptr<User> verifyUsername(std::string);
-		bool verifyPassword(std::shared_ptr<User>, std::string);
 
+class UserFlow {
+public:
+	static void login();
+	static void welcomeScreen();
+	static void signUp();
+	static std::shared_ptr<User> verifyUsername(std::string username);
+	static std::shared_ptr<User> currentUser;
+	static bool verifyPassword(std::shared_ptr<User>, std::string);
 };
+
