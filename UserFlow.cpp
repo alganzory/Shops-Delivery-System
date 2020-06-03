@@ -18,7 +18,7 @@ void UserFlow::welcomeScreen()
 					break;
 			case 2:	signUp();
 					break;
-			case 99:exit(0);
+			case 99:exitScreen();
 					break;
 			default:std::cout << "Please choose the correct number." << std::endl;
 		}
@@ -26,62 +26,42 @@ void UserFlow::welcomeScreen()
 	
 }
 
-int UserFlow::verify(std::string username,std::string password)
+bool UserFlow::verify(std::string username,std::string password)
 {
-	//return 0 -> username does not exist
-	//return 1 -> username exist, password incorrect
-	//return 2 -> username exist, password correct
-	for (int i = 0; i < C_List::getCustomerCount(); i++)
+	std::shared_ptr<User> ToCheck;
+
+	C_List CustomerList;
+	CustomerList.readCustomers();
+	for (int i = 0; i < CustomerList.getCustomerCount; i++)
 	{
-		if (username == C_List::ALL_CUSTOMERS[i]->getUsername())
+		ToCheck = CustomerList.ALL_CUSTOMERS[i];
+		if (ToCheck->isAuth(username, password))
 		{
-			if (C_List::ALL_CUSTOMERS[i]->isAuth(username, password))
-			{
-				return 2;
-			}
-			else
-			{
-				return 1;
-			}
+			return true;
 		}
 	}
-	for (int j = 0; j < V_List::getVolunteersCount(); j++)
+	
+	V_List VolunteerList;
+	VolunteerList.ReadVolunteers();
+	for (int j = 0; j < VolunteerList.getVolunteersCount; j++)
 	{
-		if (username == V_List::ALL_VOLUNTEERS[j]->getUsername())
+		ToCheck = VolunteerList.ALL_VOLUNTEERS[j];
+		if (ToCheck->isAuth(username, password))
 		{
-			if (V_List::ALL_VOLUNTEERS[j]->isAuth(username, password))
-			{
-				return 2;
-			}
-			else
-			{
-				return 1;
-			}
+			return true;
 		}
 	}
-	for (int k = 0; k < SO_List::getCount(); k++)
+
+	SO_List ShopOwnerList;
+	ShopOwnerList.readFromFile();
+	for (int k = 0; k < ShopOwnerList.getCount; k++)
 	{
-		if (username == SO_List::SHOPOWNERS[k]->getUsername())
+		ToCheck = ShopOwnerList.SHOPOWNERS[k];
+		if (ToCheck->isAuth(username, password))
 		{
-			if (SO_List::SHOPOWNERS[k]->isAuth(username, password))
-			{
-				return 2;
-			}
-			else
-			{
-				return 1;
-			}
+			return true;
 		}
 	}
-	return 0;
-}
-
-void UserFlow::login()
-{
-
-}
-
-void UserFlow::signUp()
-{
-
+	
+	return false;
 }

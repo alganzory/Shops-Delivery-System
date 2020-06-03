@@ -12,8 +12,8 @@ class UserFlow
 {
 	public:
 		void welcomeScreen();
-		int verify(std::string,std::string);
+		bool verify(std::string,std::string);
 		void login();
 		void signUp();
-		//void exitScreen();
+		void exitScreen();
 };
