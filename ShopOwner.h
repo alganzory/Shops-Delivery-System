@@ -23,6 +23,6 @@ public:
 	void addToStock(std::shared_ptr<Item> newItem, int quantity);
 	void sellItem(std::shared_ptr<Item> item, int quantity);
 	void rewardVolunteer(std::shared_ptr <Volunteer> volunteer, double reward);
-	
+	void welcome();
 };
 

@@ -41,6 +41,7 @@ public:
 	bool isAuth(std::string username, std::string password) const;
 	
 	virtual ~User();
+	virtual void welcome() = 0;
 };
 
 

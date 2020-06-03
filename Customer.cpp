@@ -46,3 +46,8 @@ void Customer::removeFromCart(std::pair<std::shared_ptr<Item>, int> itemReq)
 {
 	this->cart->removeItem(itemReq);
 }
+
+void Customer::welcome()
+{
+	std::cout << "Welcome Customer\n";
+}

@@ -71,6 +71,13 @@ void Volunteer::getReward(double reward) {
     balance += reward;
 }
 
+void Volunteer::welcome()
+{
+    std::cout << "Welcome volunteer\n";
+    return;
+   // VolunteerFlow::welcomeScreen();
+}
+
 
 //operators overloading
 //friend 
