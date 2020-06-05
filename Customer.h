@@ -17,5 +17,6 @@ class Customer:public User
 		void rewardVolunteer (std::shared_ptr<Volunteer> volunteer, double reward);
 		void addToCart(std::shared_ptr <Item> item, int quantity);
 		void removeFromCart(std::pair<std::shared_ptr<Item>, int> itemReq);
+		void welcome() override;
 };
 

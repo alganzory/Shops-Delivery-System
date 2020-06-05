@@ -14,6 +14,6 @@ public:
 
 public:
 	static int getCount();
-	void setList();
+	static void setList();
 };
 

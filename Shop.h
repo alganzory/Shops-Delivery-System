@@ -27,13 +27,13 @@ public:
 	void setShopOwner(ShopOwner* shopOwner);
 	std::string getName() const;
 	void setName(std::string name);
-	std::vector<std::shared_ptr<Item>> getItems() const;
+	const std::vector<std::shared_ptr<Item>>& getItems();
 	void setItems(std::vector<std::shared_ptr<Item>> items);
 	Location getLocation() const;
 	void setLocation(Location location);
 
-	void storeItem(std::shared_ptr <Item> newItem, int quantity);
+	void storeItem(std::shared_ptr <Item> newItem, int quantity, bool isNew = false);
 	void sellItem(std::shared_ptr<Item> item, int quantity);
-	
+	int getItemsCount() const;
 };
 

@@ -1,5 +1,8 @@
 #include "Item.h"
 
+#include <iomanip>
+#include <iostream>
+
 Item::Item()
 {
 }
@@ -44,4 +47,16 @@ void Item::subQuantity(const int quantity)
 std::string Item::getName() const
 {
 	return name;
+}
+
+void Item::display(int width1, int width2, const char* append)
+{
+	std::cout << std::left << std::setw(width1) << name
+		<< std::setw(width2) << price << inStock << append;
+}
+
+
+bool operator==(std::shared_ptr<Item> lhs, std::string itemName)
+{
+	return lhs->name == itemName;
 }
