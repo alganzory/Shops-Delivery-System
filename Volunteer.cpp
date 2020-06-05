@@ -2,6 +2,8 @@
 #include"Volunteer.h"
 #include<memory>
 
+#include "VolunteerFlow.h"
+
 Volunteer::Volunteer(std::string username, std::string password) :User(username, password) {
 }
 
@@ -73,9 +75,8 @@ void Volunteer::getReward(double reward) {
 
 void Volunteer::welcome()
 {
-    std::cout << "Welcome volunteer\n";
-    return;
-   // VolunteerFlow::welcomeScreen();
+    VolunteerFlow::currentVolunteer = shared_from_this();
+    VolunteerFlow::mainMenu();
 }
 
 

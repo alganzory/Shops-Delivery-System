@@ -4,7 +4,8 @@
 #include "Volunteer.h"
 
 class ShopOwner :
-	public User
+	public User,
+	public std::enable_shared_from_this<ShopOwner>
 {
 private:
 	Shop shop;
@@ -27,5 +28,6 @@ public:
 	std::string getShopName() const;
 	int getShopSize() const;
 	void setInfoFile(const std::string& cs, int age, double balance, const std::string& location, const std::string& shopname, const std::string& shoplocation);
+	friend class ShopOwnerFlow;
 };
 
