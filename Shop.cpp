@@ -82,3 +82,10 @@ int Shop::getItemsCount() const
 {
 	return items.size();
 }
+
+void Shop::display() 
+{
+
+	std::cout << getName() << "\n";
+
+}
