@@ -104,8 +104,14 @@ void CustomerFlow::findAvailableShops()
 
 void CustomerFlow::displayShops()
 {
-
+	int numShops = availableShops.getCount();
 	// loop through shops and display
+	for (int i = 1; i <= numShops; i++) {
+		std::cout << i << ". ";
+		std::cout << availableShops[i].display() << "\n";
+		//availableShops[i].display();
+		//std::cout << i << ". " << availableShops.getName() << "\n";
+	}
 	// better define display function in shop class
 }
 
@@ -115,15 +121,36 @@ void CustomerFlow::viewShop()
 	{
 		std::cout << "List of items in ";
 		// display the shop
-		
+		std::cout << currentShop->getName() << " :\n";
 		// list shop items
+		int numItems = currentShop->getItemsCount();
+		std::vector<std::shared_ptr<Item>> shopItem = currentShop->getItems();
+		for (int i = 1; i <= numItems; i++) {
+			//std::shared_ptr<Item> shopItems[100];
+			//std::cout << i << ". " << shopItems[i]<< "\n";
+			std::cout << i << shopItem[i] << "\n";
+		}
 
 		Helper::line(60);
 		std::cout << "Choose an item number followed by quantity to add it to cart,\n"
 			<< " press C to go to cart or press B to go back: ";
+		int itemChoice, itemQuantity;
+		char inputAlphabet;
+		itemChoice = Helper::readChoice(1, numItems);
+		std::cin >> itemQuantity;
+		inputAlphabet = Helper::readChoice(0, 0, "CcBb");
 
-		
+		for (int c = 1; c <= numItems; c++) {
+			if (itemChoice == c) {
+				currentCustomer->addToCart(shopItem[c], itemQuantity);
+			}
+		}
+		if (inputAlphabet == 'C' || inputAlphabet == 'c') {
+			myCart();
+		}
+		else if (inputAlphabet == 'B' || inputAlphabet == 'b') {
+			break;
+		}
 		// call respective functions
-		
 	}
 }
