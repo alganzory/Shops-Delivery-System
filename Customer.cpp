@@ -7,7 +7,7 @@
 
 Customer::Customer(std::string username, std::string password):User(username,password)
 {
-	
+	cart = std::make_shared<Order>();
 }
 void Customer::setHealthStatus(std::string healthStatus)
 {
