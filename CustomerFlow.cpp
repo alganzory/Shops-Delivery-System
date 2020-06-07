@@ -46,14 +46,57 @@ void CustomerFlow::myCart()
 	while (true) {
 		std::cout << "My cart:\n";
 		Helper::dLine(60);
+		int choice;
 
 		// check if cart is empty
 		// else display cart : define display function in order class (to display any order not just cart)
+		if (currentCustomer->cart->getOrderSize()==0)
+		{
+			std::cout << "No Products Yet." << std::endl;
+			std::cout << "Press B to go back." << std::endl;
+			choice=Helper::readChoice(0,0,"Bb");
+			break;
+		}
+		else
+		{
+			currentCustomer->cart->orderDisplay();
+			std::cout << "Choose an Item number to remove it from the cart\n"
+				<< "or press B to go back or C to checkout\n"
+				<< "Your Choice: ";
+			choice = Helper::readChoice(1,currentCustomer->cart->getOrderSize(),"BbCc");
+			if (choice == 'B' || choice == 'b')
+			{
+				break;
+			}
+			else if (choice == 'C' || choice == 'c')
+			{
+				currentCustomer->placeOrder();
+			}
+			else
+			{
+				std::pair<std::shared_ptr<Item>, int> item=currentCustomer->cart->getItem(choice);
+				std::cout << "You choose to remove:\n"
+					<< item.first->getName() << "\tRM" << item.first->getPrice() << "\tquantity: " << item.second << std::endl;
+				std::cout << "Enter the quantity you want reduce or press D to remove the item.\n"
+					<< "or press B to go back\n";
+				choice = Helper::readChoice(0, item.second, "dDbB");
+				if (choice == 'd' || choice == 'D')
+				{
+					currentCustomer->cart->removeItem(item);
+				}
+				else if (choice == 'b' || choice == 'B')
+				{
+					continue;
+				}
+				else
+				{
+					currentCustomer->cart->removeItem(item);
+					item.second -= choice;
+					currentCustomer->cart->addItem(item.first,item.second);
+				}
+			}
+		}	
 		
-		
-		std::cout << "Choose an Item number to remove it from the cart\n"
-			<< "or press B to go back or C to checkout\n"
-			<< "Your Choice: ";
 
 		// call respective functions
 		// if item number call removeItem
