@@ -36,7 +36,7 @@ public:
 	void setDeliveryTime(int deliveryTime);
 	bool  getPaymentStatus();
 	int getDeliveryTime();
-	void orderDisplay();
+	void display(char userType ='c');
 	int getOrderSize();
 	std::pair<std::shared_ptr<Item>, int>& getItem(int);
 	//operator overloading to add prices???

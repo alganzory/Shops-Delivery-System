@@ -3,6 +3,8 @@
 #include<vector>
 
 #include <iomanip>
+
+#include "Helper.h"
 #include "volunteer.h"
 
 
@@ -49,6 +51,11 @@ void Order::setTotalPrice(double totalPrice) {
 }
 
 double Order::getTotalPrice() {
+	double totalPrice = 0;
+	for (int i = 0; i < items.size();i++) {
+		totalPrice += items[i].second * items[i].first->getPrice();
+	}
+
 	return totalPrice;
 }
 
@@ -89,16 +96,19 @@ int Order::getDeliveryTime()
 	return deliveryTime;
 }
 
-void Order::orderDisplay()
+void Order::display(char userType /*='c'*/)
 {
-	double total=0;
-	std::cout << std::setw(4) << "No." << std::setw(20) << "Name" << std::setw(5) << "Qty" << "Price (RM)"<<std::endl;
 	for (int i = 0; i < getOrderSize(); i++)
 	{
-		std::cout << std::setw(4) << i+1 << std::setw(20) << items[i].first->getName()<< std::setw(5) << items[i].second << items[i].second*items[i].first->getPrice() << std::endl;
-		total += items[i].second * items[i].first->getPrice();
+		
+		std::cout << std::setw(4) << i + 1 << std::setw(20)
+			<< items[i].first->getName() << std::setw(5)
+			<< items[i].second << items[i].second * items[i].first->getPrice()
+			<< '\n';
+
 	}
-	std::cout << "Total price (" << getOrderSize() << " items) : RM" << total << std::endl;
+	Helper::line(60);
+	std::cout << "Total price (" << getOrderSize() << " items) : RM" << getTotalPrice() << '\n';
 }
 
 int Order::getOrderSize()
