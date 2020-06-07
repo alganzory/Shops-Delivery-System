@@ -27,7 +27,7 @@ void Order::addItem(std::shared_ptr<Item> item, int quantity) {
 		found->second += quantity;
 	}
 	else { //add them into items
-		items.push_back(*found);
+		items.push_back({ item,quantity });
 	}
 
 	item->subQuantity(quantity);		//subtracts the quantity of items in stock
@@ -106,7 +106,7 @@ int Order::getOrderSize()
 	return items.size();
 }
 
-std::pair<std::shared_ptr<Item>, int> Order::getItem(int position)
+std::pair<std::shared_ptr<Item>, int>& Order::getItem(int position)
 {
 	return items.at(position);
 }
