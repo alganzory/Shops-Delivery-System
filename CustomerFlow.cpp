@@ -19,21 +19,16 @@ void CustomerFlow::makeAnOrder()
 		std::cout << "List of available shops for you\n";
 		Helper::dLine(60);
 
-
-		// Display header
-		// Display Shops
 		CustomerFlow::displayShops();
 		int shopChoices = currentCustomer->availableShops.size();
-		std::cout << "Please select a shop : \n"
-			<< "or Press B to go back. \n";
+		Helper::line(60);
+		std::cout << "Please select a shop "
+			<< "or Press B to go back: ";
 		int chosenShop = Helper::readChoice(1, shopChoices, "Bb");
-		currentShop = currentCustomer->availableShops[chosenShop - 1];
-		// Choose shop or go back
 		if (chosenShop == 'B' || chosenShop == 'b') {
 			break;
 		}
-		// set currentShop to chosen shop out of availableShops
-		// vieShop
+		currentShop = currentCustomer->availableShops[chosenShop - 1];
 		CustomerFlow::viewShop();
 	}
 }
@@ -46,60 +41,60 @@ void CustomerFlow::myCart()
 	while (true) {
 		std::cout << "My cart:\n";
 		Helper::dLine(60);
-		int choice;
+		int choice{};
 
-		// check if cart is empty
-		// else display cart : define display function in order class (to display any order not just cart)
 		if (currentCustomer->cart->getOrderSize()==0)
 		{
-			std::cout << "No Products Yet." << std::endl;
-			std::cout << "Press B to go back." << std::endl;
-			choice=Helper::readChoice(0,0,"Bb");
+			std::cout << "No Items Yet." << '\n';
+			std::cout << "You will be directed back...\n";
 			break;
+		}
+		std::cout << std::setw(4) << "No." << std::setw(20)
+			<< "Name" << std::setw(5) << "Qty" << "Price (RM)"
+			<< '\n';
+		Helper::line(60);
+		currentCustomer->cart->display();
+		Helper::line(60);
+		std::cout << "Choose an Item number to remove it from the cart\n"
+			<< "or press B to go back or C to checkout\n";
+		Helper::line(60);
+		std::cout << "Your Choice: ";
+		choice = Helper::readChoice(1, currentCustomer->cart->getOrderSize(), "BbCc");
+		if (choice == 'B' || choice == 'b')
+		{
+			break;
+		}
+		else if (choice == 'C' || choice == 'c')
+		{
+			currentCustomer->placeOrder();
 		}
 		else
 		{
-			currentCustomer->cart->orderDisplay();
-			std::cout << "Choose an Item number to remove it from the cart\n"
-				<< "or press B to go back or C to checkout\n"
-				<< "Your Choice: ";
-			choice = Helper::readChoice(1,currentCustomer->cart->getOrderSize(),"BbCc");
-			if (choice == 'B' || choice == 'b')
+			std::pair<std::shared_ptr<Item>, int>& item = currentCustomer->cart->getItem(choice - 1);
+			std::cout << "You choose to remove:\n\n"
+				<< item.first->getName() << "\tRM"
+				<< item.first->getPrice() << "\tQuantity: " << item.second << '\n';
+			Helper::line(60);
+			std::cout << "Enter the quantity you want reduce, press R to remove the item.\n"
+				<< "or press B to go back\n";
+			choice = Helper::readChoice(0, item.second, "rRbB");
+			if (choice == 'r' || choice == 'R')
 			{
-				break;
+				currentCustomer->cart->removeItem(item);
 			}
-			else if (choice == 'C' || choice == 'c')
+			else if (choice == 'b' || choice == 'B')
 			{
-				currentCustomer->placeOrder();
+				continue;
 			}
 			else
 			{
-				std::pair<std::shared_ptr<Item>, int> item=currentCustomer->cart->getItem(choice);
-				std::cout << "You choose to remove:\n"
-					<< item.first->getName() << "\tRM" << item.first->getPrice() << "\tquantity: " << item.second << std::endl;
-				std::cout << "Enter the quantity you want reduce or press D to remove the item.\n"
-					<< "or press B to go back\n";
-				choice = Helper::readChoice(0, item.second, "dDbB");
-				if (choice == 'd' || choice == 'D')
-				{
-					currentCustomer->cart->removeItem(item);
-				}
-				else if (choice == 'b' || choice == 'B')
-				{
-					continue;
-				}
-				else
-				{
-					currentCustomer->cart->removeItem(item);
-					item.second -= choice;
-					currentCustomer->cart->addItem(item.first,item.second);
-				}
+				int quantity = item.second - choice;
+				currentCustomer->cart->removeItem(item);
+				currentCustomer->cart->addItem(item.first, quantity);
 			}
+
 		}	
 		
-
-		// call respective functions
-		// if item number call removeItem
 	}
 
 }
@@ -158,7 +153,6 @@ void CustomerFlow::displayShops()
 	for (int i = 1; i <= numShops; i++) {
 		std::cout << i << ". ";
 		currentCustomer->availableShops[i - 1]->display();
-		std::cout << "\n";
 	}
 	// better define display function in shop class
 }
@@ -170,37 +164,38 @@ void CustomerFlow::viewShop()
 		std::cout << "List of items in ";
 		// display the shop
 		std::cout << currentShop->getName() << " :\n";
+		Helper::dLine(60);
 		// list shop items
 		int numItems = currentShop->getItemsCount();
-		std::vector<std::shared_ptr<Item>> shopItem = currentShop->getItems();
-		std::cout << std::left << std::setw(30) << " NAME"
-			<< std::setw(20) << "PRICE(RM)" << "STOCK" << "\n";
+		std::vector<std::shared_ptr<Item>> shopItems = currentShop->getItems();
+		std::cout << std::left << std::setw(30) << "Name"
+			<< std::setw(20) << "Price" << "In Stock" << "\n";
 		for (int i = 1; i <= numItems; i++) {
-			std::cout << i;
-			shopItem[i - 1]->display();
-			std::cout << "\n";
+			std::cout << i << "- ";
+			shopItems[i - 1]->display();
 		}
 
 		Helper::line(60);
 		std::cout << "Choose an item number followed by quantity to add it to cart,\n"
-			<< " press C to go to cart or press B to go back: ";
+			<< " press C to go to cart or press B to go back:\n";
+		Helper::line(60);
+		std::cout << "Your choice: ";
 		int itemChoice, itemQuantity;
-		char inputAlphabet;
-		itemChoice = Helper::readChoice(1, numItems);
-		std::cin >> itemQuantity;
-		inputAlphabet = Helper::readChoice(0, 0, "CcBb");
 
-		for (int c = 1; c <= numItems; c++) {
-			if (itemChoice == c) {
-				currentCustomer->addToCart(shopItem[c - 1], itemQuantity);
-			}
-		}
-		if (inputAlphabet == 'C' || inputAlphabet == 'c') {
+		itemChoice = Helper::readChoice(1, numItems, "CcBb");
+		if (itemChoice == 'C' || itemChoice == 'c') {
 			myCart();
 		}
-		else if (inputAlphabet == 'B' || inputAlphabet == 'b') {
+		else if (itemChoice == 'B' || itemChoice == 'b') {
 			break;
 		}
+		else {
+			std::cout << "Quantity: ";
+			itemQuantity = Helper::readChoice(0, shopItems[itemChoice - 1]->getInStock());
+			currentCustomer->addToCart(shopItems[itemChoice - 1], itemQuantity);
+		}
+		
+		
 		// call respective functions
 	}
 }

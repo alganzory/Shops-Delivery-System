@@ -86,6 +86,6 @@ int Shop::getItemsCount() const
 void Shop::display() 
 {
 
-	std::cout << getName() << "\n";
+	std::cout << getName() << '\t' << getLocation().getAddress() << "\n";
 
 }
