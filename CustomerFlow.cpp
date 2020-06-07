@@ -23,9 +23,15 @@ void CustomerFlow::makeAnOrder()
 		// Display header
 		// Display Shops
 		CustomerFlow::displayShops();
-		
+		int shopChoices = currentCustomer->availableShops.size();
+		std::cout << "Please select a shop : \n"
+			<< "or Press B to go back. \n";
+		int chosenShop = Helper::readChoice(1, shopChoices, "Bb");
+		currentShop = currentCustomer->availableShops[chosenShop - 1];
 		// Choose shop or go back
-
+		if (chosenShop == 'B' || chosenShop == 'b') {
+			break;
+		}
 		// set currentShop to chosen shop out of availableShops
 		// vieShop
 		CustomerFlow::viewShop();
@@ -108,9 +114,8 @@ void CustomerFlow::displayShops()
 	// loop through shops and display
 	for (int i = 1; i <= numShops; i++) {
 		std::cout << i << ". ";
-		std::cout << availableShops[i].display() << "\n";
-		//availableShops[i].display();
-		//std::cout << i << ". " << availableShops.getName() << "\n";
+		currentCustomer->availableShops[i - 1]->display();
+		std::cout << "\n";
 	}
 	// better define display function in shop class
 }
@@ -125,10 +130,12 @@ void CustomerFlow::viewShop()
 		// list shop items
 		int numItems = currentShop->getItemsCount();
 		std::vector<std::shared_ptr<Item>> shopItem = currentShop->getItems();
+		std::cout << std::left << std::setw(30) << " NAME"
+			<< std::setw(20) << "PRICE(RM)" << "STOCK" << "\n";
 		for (int i = 1; i <= numItems; i++) {
-			//std::shared_ptr<Item> shopItems[100];
-			//std::cout << i << ". " << shopItems[i]<< "\n";
-			std::cout << i << shopItem[i] << "\n";
+			std::cout << i;
+			shopItem[i - 1]->display();
+			std::cout << "\n";
 		}
 
 		Helper::line(60);
@@ -142,7 +149,7 @@ void CustomerFlow::viewShop()
 
 		for (int c = 1; c <= numItems; c++) {
 			if (itemChoice == c) {
-				currentCustomer->addToCart(shopItem[c], itemQuantity);
+				currentCustomer->addToCart(shopItem[c - 1], itemQuantity);
 			}
 		}
 		if (inputAlphabet == 'C' || inputAlphabet == 'c') {
