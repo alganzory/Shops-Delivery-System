@@ -15,7 +15,53 @@ void ShopOwnerFlow::editItem(const std::shared_ptr<Item> item)
 
 void ShopOwnerFlow::addNewItem()
 {
-	std::cout << "Add Item\n";	
+	while (true) {
+		std::cout << "Add Item\n";
+		Helper::dLine();
+
+		std::cout << "Enter the name of the new item: ";
+		std::string itemName;
+		getline(std::cin, itemName);
+
+		std::cout << "Enter Item price: ";
+		double itemPrice{};
+		std::cin >> itemPrice;
+		std::cin.ignore();
+
+		std::cout << "Enter item quantity: ";
+		int quantity{};
+		std::cin >> quantity;
+		std::cin.ignore();
+		auto newItem = std::make_shared<Item>(itemName, itemPrice, quantity);
+		char ans;
+
+		try {
+			currentSO->addToStock(newItem, quantity, true);
+		}
+		catch (const char* itemExists) {
+			std::cout << itemExists
+				<< ", Do you want to add the quantity to it instead (Y/N)? : ";
+			std::cin >> ans;
+			std::cin.ignore();
+
+			if (ans == 'y' || ans == 'Y')
+			{
+				currentSO->addToStock(newItem, quantity, false);
+			}
+			else {
+				std::cout << "Item discarded\n";
+				break;
+			}
+		}
+
+		std::cout << "Item updated!\n"
+			<< "Press N to add a new one or B to go back: ";
+		std::cin >> ans;
+		std::cin.ignore();
+
+		if (ans == 'B' or ans == 'b') break;
+	}
+
 }
 
 void ShopOwnerFlow::myShop()
