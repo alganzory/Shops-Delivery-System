@@ -36,6 +36,9 @@ public:
 	void setDeliveryTime(int deliveryTime);
 	bool  getPaymentStatus();
 	int getDeliveryTime();
+	void display(char userType ='c');
+	int getOrderSize();
+	std::pair<std::shared_ptr<Item>, int>& getItem(int);
 	//operator overloading to add prices???
 	//deliverystatus::so tht volunteer can call and chg the status
 	//operator overloading

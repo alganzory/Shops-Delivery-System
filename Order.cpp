@@ -3,6 +3,8 @@
 #include<vector>
 
 #include <iomanip>
+
+#include "Helper.h"
 #include "volunteer.h"
 
 
@@ -27,7 +29,7 @@ void Order::addItem(std::shared_ptr<Item> item, int quantity) {
 		found->second += quantity;
 	}
 	else { //add them into items
-		items.push_back(*found);
+		items.push_back({ item,quantity });
 	}
 
 	item->subQuantity(quantity);		//subtracts the quantity of items in stock
@@ -49,6 +51,11 @@ void Order::setTotalPrice(double totalPrice) {
 }
 
 double Order::getTotalPrice() {
+	double totalPrice = 0;
+	for (int i = 0; i < items.size();i++) {
+		totalPrice += items[i].second * items[i].first->getPrice();
+	}
+
 	return totalPrice;
 }
 
@@ -87,6 +94,31 @@ bool Order::getPaymentStatus()
 int Order::getDeliveryTime()
 {
 	return deliveryTime;
+}
+
+void Order::display(char userType /*='c'*/)
+{
+	for (int i = 0; i < getOrderSize(); i++)
+	{
+		
+		std::cout << std::setw(4) << i + 1 << std::setw(20)
+			<< items[i].first->getName() << std::setw(5)
+			<< items[i].second << items[i].second * items[i].first->getPrice()
+			<< '\n';
+
+	}
+	Helper::line(60);
+	std::cout << "Total price (" << getOrderSize() << " items) : RM" << getTotalPrice() << '\n';
+}
+
+int Order::getOrderSize()
+{
+	return items.size();
+}
+
+std::pair<std::shared_ptr<Item>, int>& Order::getItem(int position)
+{
+	return items.at(position);
 }
 
 //operator overloading to add prices???

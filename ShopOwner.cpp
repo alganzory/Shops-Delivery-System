@@ -1,5 +1,7 @@
 #include "ShopOwner.h"
 
+#include "ShopOwnerFlow.h"
+
 
 ShopOwner::ShopOwner(std::string username, std::string password):
 	User(username, password)
@@ -78,8 +80,8 @@ void ShopOwner::rewardVolunteer(std::shared_ptr<Volunteer> volunteer, double rew
 
 void ShopOwner::welcome()
 {
-	std::cout << "Welcome Shop owner\n";
-	// flow controller 
+	ShopOwnerFlow::currentSO = shared_from_this();
+	ShopOwnerFlow::mainMenu();
 }
 
 std::string ShopOwner::getShopName() const

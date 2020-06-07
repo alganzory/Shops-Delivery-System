@@ -3,7 +3,10 @@
 
 #include "User.h"
 
-class Volunteer : public User {
+class Volunteer :
+    public User,
+    public std::enable_shared_from_this <Volunteer>
+{
 private:
     std::string transportation;
     std::pair<int, int> availableTimes;
@@ -26,7 +29,8 @@ public:
 
 
     //operators overloading
-    //friend 
+    //friend
+    friend class VolunteerFlow;
 };
 
 #endif

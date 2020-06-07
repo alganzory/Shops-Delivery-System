@@ -11,6 +11,7 @@ public:
 	static void welcomeScreen();
 	static void signUp();
 	static std::shared_ptr<User> verifyUsername(std::string username);
+	static void logout();
 	static std::shared_ptr<User> currentUser;
 };
 

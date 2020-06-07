@@ -35,5 +35,7 @@ public:
 	void storeItem(std::shared_ptr <Item> newItem, int quantity, bool isNew = false);
 	void sellItem(std::shared_ptr<Item> item, int quantity);
 	int getItemsCount() const;
+
+	void display();
 };
 

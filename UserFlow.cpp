@@ -56,6 +56,12 @@ std::shared_ptr<User> UserFlow::verifyUsername(std::string username)
 	return nullptr;
 }
 
+void UserFlow::logout()
+{
+	currentUser = nullptr;
+	welcomeScreen();
+}
+
 
 void UserFlow::signUp() {
 	//ask for username,p/w,name,age,balance,location,transport,availabletime

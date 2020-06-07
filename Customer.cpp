@@ -1,11 +1,13 @@
 #include "Customer.h"
 
 #include <memory>
+
+#include "CustomerFlow.h"
 #include "Shop.h"
 
 Customer::Customer(std::string username, std::string password):User(username,password)
 {
-	
+	cart = std::make_shared<Order>();
 }
 void Customer::setHealthStatus(std::string healthStatus)
 {
@@ -49,5 +51,6 @@ void Customer::removeFromCart(std::pair<std::shared_ptr<Item>, int> itemReq)
 
 void Customer::welcome()
 {
-	std::cout << "Welcome Customer\n";
+	CustomerFlow::currentCustomer = shared_from_this();
+	CustomerFlow::mainMenu();
 }
