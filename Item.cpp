@@ -55,6 +55,11 @@ void Item::display(int width1, int width2, const char* append)
 		<< std::setw(width2) << price << inStock << append;
 }
 
+void Item::setName(const std::string& cs)
+{
+	name = cs;
+}
+
 
 bool operator==(std::shared_ptr<Item> lhs, std::string itemName)
 {
