@@ -110,7 +110,7 @@ void CustomerFlow::findAvailableShops()
 
 void CustomerFlow::displayShops()
 {
-	int numShops = availableShops.getCount();
+	int numShops = currentCustomer->availableShops.size();
 	// loop through shops and display
 	for (int i = 1; i <= numShops; i++) {
 		std::cout << i << ". ";
