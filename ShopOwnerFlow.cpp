@@ -190,7 +190,7 @@ void ShopOwnerFlow::mainMenu()
 			break;
 		default:
 			currentSO= nullptr;
-			/*UserFlow::logout();*/
+			UserFlow::logout();
 		}
 
 	}

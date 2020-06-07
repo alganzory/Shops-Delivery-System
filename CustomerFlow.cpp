@@ -131,7 +131,7 @@ void CustomerFlow::mainMenu()
 			break;
 		default:
 			currentCustomer = nullptr;
-			/*UserFlow::logout();*/
+			UserFlow::logout();
 		}
 
 	}

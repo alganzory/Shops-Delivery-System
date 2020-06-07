@@ -36,7 +36,7 @@ void VolunteerFlow::mainMenu()
 			break;
 		default:
 			currentVolunteer= nullptr;
-			/*UserFlow::logout();*/
+			UserFlow::logout();
 		}
 
 	}
