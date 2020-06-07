@@ -10,7 +10,44 @@ std::shared_ptr <ShopOwner> ShopOwnerFlow::currentSO;
 
 void ShopOwnerFlow::editItem(const std::shared_ptr<Item> item)
 {
-	std::cout << "Edit item" << std::endl;
+	while (true)
+	{
+		std::cout << '\n'; //clrscr
+		std::cout << "Edit item" << std::endl;
+		Helper::line(60);
+		std::cout << std::setw(30) << "Name" << std::setw(20)
+			<< "Price" << "Quantity" << '\n';
+		item->display();
+		Helper::line(60);
+		std::cout << "Press N to change Item Name, P to change price,\n"
+			<< "Q to change quantity, or B to go back: ";
+		int choice = Helper::readChoice(0, 0, "nbNBPQpq");
+		if (choice == 'N' || choice == 'n') {
+			Helper::line(60);
+			std::cout << "Enter the new name: \n";
+			std::string newName;
+			getline(std::cin, newName);
+			item->setName(newName);
+			continue;
+		}
+		if (choice == 'q' || choice == 'Q') {
+			Helper::line(60);
+			std::cout << "Enter the new quantity: \n";
+			int newQuantity{};
+			std::cin >> newQuantity;
+			std::cin.ignore();
+			item->setInStock(newQuantity);
+		}
+		else if (choice == 'p' || choice == 'P') {
+			Helper::line(60);
+			std::cout << "Enter the new price: \n";
+			double newPrice{};
+			std::cin >> newPrice;
+			std::cin.ignore();
+			item->setPrice(newPrice);
+		}
+		else break;
+	}
 }
 
 void ShopOwnerFlow::addNewItem()
