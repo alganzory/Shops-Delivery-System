@@ -41,6 +41,7 @@ public:
 	std::pair<std::shared_ptr<Item>, int>& getItem(int);
 	void setShop(const std::shared_ptr<Shop>& shop);
 	void setCustomer(const std::shared_ptr<Customer>& shared);
+	void buyItems();
 	//operator overloading to add prices???
 	//deliverystatus::so tht volunteer can call and chg the status
 	//operator overloading
