@@ -195,3 +195,28 @@ void ShopOwnerFlow::mainMenu()
 
 	}
 }
+
+void ShopOwnerFlow::allOrders(bool pendingOnly)
+{
+	// do I need to sort them based on something?
+	// I will want to sort them based on time? ex: bonus
+	// display the orders from the list of orders:
+	// prompt the shopOwner to view a certain order
+	// if he was viewing all orders, u prompt to see only pending ones
+	// or else go back
+	
+}
+
+void ShopOwnerFlow::viewOrder(std::shared_ptr<Order> order)
+{
+	/*
+	->display the summary
+		->see the details of the order
+		-> if the order is pending:
+			- assign volunteer: releaseOrder();
+			- cancel the order. cancelOrder();
+			- todo list; todolist()
+			- feel free to add them here or there
+			
+		*/
+}

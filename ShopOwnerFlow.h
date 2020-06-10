@@ -10,6 +10,8 @@ public:
 	static void addNewItem();
 	static void myShop();
 	static void mainMenu();
+	static void allOrders(bool pendingOnly = false);
+	static void viewOrder(std::shared_ptr <Order> order);
 	
 };
 

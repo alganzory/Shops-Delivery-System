@@ -33,7 +33,15 @@ void CustomerFlow::makeAnOrder()
 	}
 }
 
-
+void CustomerFlow::checkout()
+{
+	//	- Review order : display the order again
+	//	- Ask for delivery time, also prompt to go back to the cart
+	//	- Confirm to place order
+	//	- set the info needed for the order, the shop and the customer
+	//	- call placeOrder function : I will work on that deduction of the items 
+	
+}
 
 
 void CustomerFlow::myCart()
@@ -66,7 +74,7 @@ void CustomerFlow::myCart()
 		}
 		else if (choice == 'C' || choice == 'c')
 		{
-			currentCustomer->placeOrder();
+			CustomerFlow::checkout();
 		}
 		else
 		{
@@ -99,6 +107,40 @@ void CustomerFlow::myCart()
 
 }
 
+void CustomerFlow::myOrders(bool pendingOnly)
+{
+
+	
+	// displaying from the order vector
+
+	// shop, customer, number of items, *status*, delivery status, payment status
+	
+	// select an order to view, view only pending orders or go back
+	
+	// viewOrder (order);
+	// 
+	// if customer asks to see only pending orders -> myOrders (true)
+	// break;
+}
+
+void CustomerFlow::viewOrder(std::shared_ptr<Order> order)
+{/*
+	-view order :
+	-see details :
+	
+		- if the order is pending : cancel the order
+			- removeOrder(); // undoing the order placement
+				- balance goes back
+				- return the items to the shop -> similar?
+				- we remove it from the array of orders
+					- for both the shopOwner and the Customer
+			
+		- if it's a past order: reOrder:
+			- currentCustomer -> cart = that order;
+			- send them to the cart
+		*/
+}
+
 
 void CustomerFlow::mainMenu()
 {
@@ -123,7 +165,7 @@ void CustomerFlow::mainMenu()
 		{
 		case 1: makeAnOrder();
 			break;
-		case 2:/* myOrders();*/
+		case 2: myOrders();
 			break;
 		case 3: myCart();
 			break;
