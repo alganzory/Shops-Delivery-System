@@ -121,6 +121,16 @@ std::pair<std::shared_ptr<Item>, int>& Order::getItem(int position)
 	return items.at(position);
 }
 
+void Order::setShop(const std::shared_ptr<Shop>& shop)
+{
+	this->shop = shop;
+}
+
+void Order::setCustomer(const std::shared_ptr<Customer>& customer)
+{
+	this->customer = customer;
+}
+
 //operator overloading to add prices???
 //deliverystatus::so tht volunteer can call and chg the status
 //operator overloading

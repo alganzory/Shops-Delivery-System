@@ -35,11 +35,54 @@ void CustomerFlow::makeAnOrder()
 
 void CustomerFlow::checkout()
 {
-	//	- Review order : display the order again
-	//	- Ask for delivery time, also prompt to go back to the cart
-	//	- Confirm to place order
-	//	- set the info needed for the order, the shop and the customer
-	//	- call placeOrder function : I will work on that deduction of the items 
+	while (true)
+	{
+		// Display the order and the total price
+		std::cout << "Review Order\n";
+		Helper::dLine(60);
+		currentCustomer->cart->display();
+		Helper::line(70);
+		// ask for delivery time
+		std::cout << "Enter delivery time in (HH:MM) format or Press B to go back to cart: ";
+		std::string input;
+		getline(std::cin, input);
+		std::stringstream inputStream(input);
+		int hour{};
+		char character;
+		int minutes{};
+		bool isTime = true;
+		inputStream >> hour;
+		if (inputStream.fail())
+		{
+			isTime = false;
+		}
+
+		inputStream >> character;
+		if (isTime) inputStream >> minutes;
+
+		if (!isTime) break;
+		currentCustomer->cart->setDeliveryTime(hour);
+		Helper::line(80);
+		// place or cancel
+		std::cout << "All set, press P to proceed with the checkout or Press B to go back to cart\n";
+		Helper::line(80);
+		std::cout << "Your choice: ";
+		int choice = Helper::readChoice(0, 0, "PBbp");
+		if (choice == 'B' || choice == 'b') break;
+		if (currentCustomer->getBalance() < currentCustomer->cart->getTotalPrice())
+		{
+			std::cout << "Insufficient balance, taking you back to cart...";
+			break;
+		}
+		currentCustomer->cart->setShop(currentShop);
+		// add to list of orders for the respective shop
+		currentShop->recieveOrder(currentCustomer->cart);
+		currentCustomer->cart->setCustomer(currentCustomer);
+		// add to list of orders
+		currentCustomer->placeOrder();
+		std::cout << "Your order has been placed successfully, you will be directed to main menu...\n";
+		mainMenu();
+	}
 	
 }
 
