@@ -32,7 +32,6 @@ void Order::addItem(std::shared_ptr<Item> item, int quantity) {
 		items.push_back({ item,quantity });
 	}
 
-	item->subQuantity(quantity);		//subtracts the quantity of items in stock
 }
 
 void Order::removeItem(std::pair<std::shared_ptr<Item>, int>& itemReq)
@@ -119,6 +118,24 @@ int Order::getOrderSize()
 std::pair<std::shared_ptr<Item>, int>& Order::getItem(int position)
 {
 	return items.at(position);
+}
+
+void Order::setShop(const std::shared_ptr<Shop>& shop)
+{
+	this->shop = shop;
+}
+
+void Order::setCustomer(const std::shared_ptr<Customer>& customer)
+{
+	this->customer = customer;
+}
+
+void Order::buyItems()
+{
+	for (int i=0; i< static_cast<int>(items.size()); i++)
+	{
+		items[i].first->subQuantity(items[i].second);
+	}
 }
 
 //operator overloading to add prices???

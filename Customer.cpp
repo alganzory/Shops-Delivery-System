@@ -28,6 +28,7 @@ void Customer::setInfo(std::string name, int age, double balance, Location locat
 }
 void Customer::placeOrder()
 {
+	cart->buyItems();
 	orders.push_back(cart);
 	balance -= cart->getTotalPrice();
 	cart = std::make_shared<Order>();
