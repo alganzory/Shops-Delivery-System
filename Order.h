@@ -11,6 +11,14 @@ class Volunteer;
 
 
 class Order {
+public:
+	enum Status  // this is the class that groups the statuses together
+	{
+		Pending,  // the initial state of the order, the shop owner did not deal with it yet
+		Preparing, // once the shop owner starts preparing the order (the todo check list)
+		Delivering, // once a volunteer chooses to deliver
+		Complete // once the volunteer is done delivering the order
+	};
 private:
 	std::vector <std::pair<std::shared_ptr<Item>, int> > items;
 	std::shared_ptr<Customer> customer;
@@ -21,6 +29,7 @@ private:
 	bool deliveryStatus;
 	int deliveryTime;
 
+	Status orderStatus; // this is the status of each order 
 public:
 	Order();
 	Order(std::shared_ptr<Customer> customer, std::shared_ptr<Shop> shop);
@@ -42,10 +51,9 @@ public:
 	void setShop(const std::shared_ptr<Shop>& shop);
 	void setCustomer(const std::shared_ptr<Customer>& shared);
 	void buyItems();
-	//operator overloading to add prices???
-	//deliverystatus::so tht volunteer can call and chg the status
-	//operator overloading
-	//friend
+
+	Status getStatus();
+	void setStatus(Status newStatus);
 };
 
 #endif

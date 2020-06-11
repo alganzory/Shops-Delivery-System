@@ -10,6 +10,7 @@
 
 Order::Order()
 {
+	orderStatus = Order::Pending;
 }
 
 Order::Order(std::shared_ptr<Customer> customer, std::shared_ptr<Shop> shop) {
@@ -18,6 +19,7 @@ Order::Order(std::shared_ptr<Customer> customer, std::shared_ptr<Shop> shop) {
 	this->deliveryStatus = false;
 	this->paymentStatus = false;
 	this->delivery = nullptr;
+	orderStatus = Order::Pending;
 }
 
 void Order::addItem(std::shared_ptr<Item> item, int quantity) {
@@ -136,6 +138,16 @@ void Order::buyItems()
 	{
 		items[i].first->subQuantity(items[i].second);
 	}
+}
+
+Order::Status Order::getStatus()
+{
+	return orderStatus;
+}
+
+void Order::setStatus(Status newStatus)
+{
+	orderStatus = newStatus;
 }
 
 //operator overloading to add prices???
