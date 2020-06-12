@@ -10,7 +10,8 @@ class Volunteer;
 
 
 
-class Order {
+class Order: public std::enable_shared_from_this <Order>
+{
 public:
 	enum Status  // this is the class that groups the statuses together
 	{
@@ -19,6 +20,7 @@ public:
 		Delivering, // once a volunteer chooses to deliver
 		Complete // once the volunteer is done delivering the order
 	};
+	void cancelOrder();
 private:
 	std::vector <std::pair<std::shared_ptr<Item>, int> > items;
 	std::shared_ptr<Customer> customer;

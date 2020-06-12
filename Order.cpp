@@ -6,7 +6,18 @@
 
 #include "Helper.h"
 #include "volunteer.h"
+#include "Customer.h"
+#include "Shop.h"
 
+
+void Order::cancelOrder()
+{
+	customer->removeOrder(shared_from_this());
+	shop->removeOrder(shared_from_this());
+	for (auto& item : items) {
+		removeItem(item);
+	}
+}
 
 Order::Order()
 {
