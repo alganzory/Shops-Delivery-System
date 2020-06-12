@@ -57,6 +57,7 @@ public:
 	void setStatus(Status newStatus);
 	std::shared_ptr<Customer> getCustomer();
 	void setPreparationStatus(int num);
+	bool isReady();
 };
 
 #endif

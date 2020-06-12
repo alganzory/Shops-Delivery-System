@@ -194,6 +194,11 @@ void Order::setPreparationStatus(int num)
 	preparationStatus[num] = !preparationStatus[num];
 }
 
+bool Order::isReady()
+{
+	return find(preparationStatus.begin(),
+		preparationStatus.end(), false) == preparationStatus.end();
+}
 
 //operator overloading to add prices???
 //deliverystatus::so tht volunteer can call and chg the status
