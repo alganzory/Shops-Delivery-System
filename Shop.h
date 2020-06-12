@@ -38,5 +38,6 @@ public:
 
 	void display();
 	void recieveOrder(const std::shared_ptr<Order>& cart);
+	void removeOrder(const std::shared_ptr<Order>& order);
 };
 

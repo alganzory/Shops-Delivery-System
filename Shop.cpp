@@ -96,3 +96,8 @@ void Shop::recieveOrder(const std::shared_ptr<Order>& cart)
 {
 	shopOwner->addOrder(cart);
 }
+
+void Shop::removeOrder(const std::shared_ptr<Order>& order)
+{
+	shopOwner->removeOrder(order);
+}
