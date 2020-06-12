@@ -32,6 +32,7 @@ void Order::addItem(std::shared_ptr<Item> item, int quantity) {
 	}
 	else { //add them into items
 		items.push_back({ item,quantity });
+		preparationStatus.push_back(false);
 	}
 
 }
@@ -99,14 +100,48 @@ int Order::getDeliveryTime()
 
 void Order::display(char userType /*='c'*/)
 {
-	for (int i = 0; i < getOrderSize(); i++)
+	const std::string status[] = { "Pending","Preparing","Delivering","Complete" };
+	if (userType == 'c')
 	{
-		
-		std::cout << std::setw(4) << i + 1 << std::setw(20)
-			<< items[i].first->getName() << std::setw(5)
-			<< items[i].second << items[i].second * items[i].first->getPrice()
-			<< '\n';
+		for (int i = 0; i < getOrderSize(); i++)
+		{
+			std::cout << std::setw(4) << i + 1 << std::setw(20)
+				<< items[i].first->getName() << std::setw(5)
+				<< items[i].second << items[i].second * items[i].first->getPrice()
+				<< '\n';
+		}
+	}
+	else if (userType == 't')
+	{
+		for (int i = 0; i < getOrderSize(); i++)
+		{
+			std::cout << std::setw(4) << i + 1 << std::setw(20)
+				<< items[i].first->getName() << std::setw(5)
+				<< items[i].second;
+			if (preparationStatus[i] == true)
+			{
+				std::cout << "Prepared";
+			}
+			std::cout << '\n';
+		}
+	}
 
+	else if (userType == 's')
+	{
+		std::cout << "Status: " << status[getStatus()] << std::endl;
+		Helper::line();
+		std::cout << std::setw(4) << "No." << std::setw(20)
+			<< "Item Name" << std::setw(5)
+			<< "Qty" << "Price" << '\n';
+		Helper::line();
+		for (int i = 0; i < getOrderSize(); i++)
+		{
+			std::cout << std::setw(4) << i + 1 << std::setw(20)
+				<< items[i].first->getName() << std::setw(5)
+				<< items[i].second << items[i].second * items[i].first->getPrice() << '\n';
+		}
+		Helper::line();
+		std::cout << "Delivery Time: " << getDeliveryTime() << std::endl;
 	}
 	Helper::line(60);
 	std::cout << "Total price (" << getOrderSize() << " items) : RM" << getTotalPrice() << '\n';
@@ -132,6 +167,10 @@ void Order::setCustomer(const std::shared_ptr<Customer>& customer)
 	this->customer = customer;
 }
 
+std::shared_ptr<Customer> Order::getCustomer() {
+	return customer;
+}
+
 void Order::buyItems()
 {
 	for (int i=0; i< static_cast<int>(items.size()); i++)
@@ -149,6 +188,12 @@ void Order::setStatus(Status newStatus)
 {
 	orderStatus = newStatus;
 }
+
+void Order::setPreparationStatus(int num)
+{
+	preparationStatus[num] = !preparationStatus[num];
+}
+
 
 //operator overloading to add prices???
 //deliverystatus::so tht volunteer can call and chg the status

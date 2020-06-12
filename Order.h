@@ -30,6 +30,7 @@ private:
 	int deliveryTime;
 
 	Status orderStatus; // this is the status of each order 
+	std::vector<bool> preparationStatus;
 public:
 	Order();
 	Order(std::shared_ptr<Customer> customer, std::shared_ptr<Shop> shop);
@@ -54,6 +55,8 @@ public:
 
 	Status getStatus();
 	void setStatus(Status newStatus);
+	std::shared_ptr<Customer> getCustomer();
+	void setPreparationStatus(int num);
 };
 
 #endif
