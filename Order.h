@@ -13,12 +13,12 @@ class Volunteer;
 class Order: public std::enable_shared_from_this <Order>
 {
 public:
-	enum Status  // this is the class that groups the statuses together
+	enum Status
 	{
-		Pending,  // the initial state of the order, the shop owner did not deal with it yet
-		Preparing, // once the shop owner starts preparing the order (the todo check list)
-		Delivering, // once a volunteer chooses to deliver
-		Complete // once the volunteer is done delivering the order
+		Pending,  
+		Preparing,
+		Delivering, 
+		Complete 
 	};
 	void cancelOrder();
 private:
@@ -32,6 +32,7 @@ private:
 	int deliveryTime;
 
 	Status orderStatus; // this is the status of each order 
+	std::vector<bool> preparationStatus;
 public:
 	Order();
 	Order(std::shared_ptr<Customer> customer, std::shared_ptr<Shop> shop);
@@ -57,7 +58,11 @@ public:
 
 	Status getStatus();
 	void setStatus(Status newStatus);
+
 	friend std::ostream& operator << (std::ostream& output, const Order::Status& status);
+	void setPreparationStatus(int num);
+	bool isReady();
+
 };
 
 #endif

@@ -43,6 +43,7 @@ void Order::addItem(std::shared_ptr<Item> item, int quantity) {
 	}
 	else { //add them into items
 		items.push_back({ item,quantity });
+		preparationStatus.push_back(false);
 	}
 
 }
@@ -124,6 +125,7 @@ void Order::display()
 			<< std::setw(20) << item.first->getPrice()
 			<< std::setw(20) << item.second
 			<< item.second * item.first->getPrice() << '\n';
+
 	}
 }
 
@@ -177,10 +179,18 @@ void Order::setStatus(Status newStatus)
 	orderStatus = newStatus;
 }
 
-//operator overloading to add prices???
-//deliverystatus::so tht volunteer can call and chg the status
-//operator overloading
-//friend
+void Order::setPreparationStatus(int num)
+{
+	preparationStatus[num] = !preparationStatus[num];
+}
+
+bool Order::isReady()
+{
+	return find(preparationStatus.begin(),
+		preparationStatus.end(), false) == preparationStatus.end();
+}
+
+
 
 std::ostream& operator<<(std::ostream& output, const Order::Status& status)
 {
