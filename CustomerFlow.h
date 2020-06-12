@@ -17,7 +17,7 @@ public:
 	static void checkout();
 	static void myCart();
 	static void myOrders(bool pendingOnly = false);
-	static void viewOrder(std::shared_ptr <Order> order);
+	static void viewOrder(const std::shared_ptr <Order>& order);
 
 };
 

@@ -152,36 +152,133 @@ void CustomerFlow::myCart()
 
 void CustomerFlow::myOrders(bool pendingOnly)
 {
+	while (true)
+	{
 
-	
-	// displaying from the order vector
+		std::cout << (pendingOnly ? "Pending Order" : "All Orders") << '\n';
+		Helper::dLine(110);
+		int anyPending = 0;
+		std::vector <std::shared_ptr<Order> > pendingOrders;
 
-	// shop, customer, number of items, *status*, delivery status, payment status
-	
-	// select an order to view, view only pending orders or go back
-	
-	// viewOrder (order);
-	// 
-	// if customer asks to see only pending orders -> myOrders (true)
-	// break;
+		if (currentCustomer->orders.empty())
+		{
+			std::cout << "No orders yet, you will be directed to main menu...\n";
+			mainMenu();
+		}
+
+		else if (pendingOnly)
+		{
+			pendingOrders.reserve(currentCustomer->orders.size());
+			for (const auto& order : currentCustomer->orders)
+			{
+				if (order->getStatus() <= Order::Delivering) {
+					anyPending++;
+					pendingOrders.emplace_back(order);
+				}
+			}
+			if (!anyPending) {
+				std::cout << "No pending orders, you will be directed to main menu...\n";
+				mainMenu();
+			}
+		}
+
+		std::cout << std::setw(18) << "Shop"
+			<< std::setw(15) << "Total Price"
+			<< std::setw(20) << "Payment Status"
+			<< std::setw(20) << "Order Status"
+			<< '\n';
+		Helper::line(110);
+
+		int counter{};
+		if (!pendingOnly) {
+			for (const auto& order : currentCustomer->orders)
+			{
+				std::cout << ++counter << "- ";
+				order->display('c');
+			}
+		}
+
+		else if (pendingOnly) {
+			for (const auto& order : pendingOrders)
+			{
+				std::cout << ++counter << "- ";
+				order->display('c');
+			}
+		}
+
+		// can select an order to view or simply go back
+		Helper::line(110);
+		std::cout << "Select an order to view in detail, "
+			<< (!pendingOnly ? "Press P to view Pending orders " : " ")
+			<< "or press B to back\n";
+
+		Helper::line(110);
+		std::cout << "Your choice: ";
+		int choice = (!pendingOnly ? Helper::readChoice(1, currentCustomer->orders.size(), "bPBp")
+			: Helper::readChoice(1, anyPending, "bB"));
+
+		if (choice == 'B' || choice == 'b') break;
+		if (!pendingOnly && (choice == 'P' || choice == 'p')) myOrders(true);
+		else 
+			try {
+			if (!pendingOnly)
+				viewOrder(currentCustomer->orders.at(choice - 1));
+			else if (pendingOnly)
+				viewOrder(pendingOrders.at(choice - 1));
+		}
+		catch (const std::out_of_range& error)
+		{
+			std::cout << "Please choose an order from the ones shown\n";
+			continue;
+		}
+	}
 }
 
-void CustomerFlow::viewOrder(std::shared_ptr<Order> order)
-{/*
-	-view order :
-	-see details :
-	
-		- if the order is pending : cancel the order
-			- removeOrder(); // undoing the order placement
-				- balance goes back
-				- return the items to the shop -> similar?
-				- we remove it from the array of orders
-					- for both the shopOwner and the Customer
-			
-		- if it's a past order: reOrder:
-			- currentCustomer -> cart = that order;
-			- send them to the cart
-		*/
+void CustomerFlow::viewOrder(const std::shared_ptr<Order>& order)
+{
+	while (true) {
+		// Display:
+		std::cout << "View Order\n";
+		Helper::dLine(110);
+		std::cout << std::setw(18) << "Shop"
+			<< std::setw(15) << "Total Price"
+			<< std::setw(20) << "Payment Status"
+			<< std::setw(20) << "Order Status"
+			<< '\n';
+		Helper::line(110);
+
+		std::cout << ">> ";
+		order->display('c');
+		// Items just like cart
+		Helper::line(70);
+		std::cout << "Order content:\n";
+		Helper::line(70);
+		order->display();
+		Helper::line(110);
+		std::cout << std::setw(61) << ">>>Total: " << order->getTotalPrice() << "\n";
+		Helper::line(110);
+
+		if (order->getStatus() < Order::Delivering) std::cout << "Press C to cancel this order, ";
+		std::cout << "Press O to reorder this order, or press B to go back\n";
+		Helper::line(110);
+		std::cout << "Your choice: ";
+		int choice = Helper::readChoice(0, 0, "obOBcC");
+		if (choice == 'b' || choice == 'B') break;
+		if (choice == 'O' || choice == 'o')
+		{
+			currentCustomer->cart = order;
+			std::cout << "Order added to cart, you will be directed to your cart...\n";
+			myCart();
+			break;
+		}
+		if (choice == 'C' || choice == 'c') {
+			order->cancelOrder();
+			std::cout << "Order has been canceled, you will be directed to main menu...\n";
+			mainMenu();
+			break;
+		}
+
+	}
 }
 
 
