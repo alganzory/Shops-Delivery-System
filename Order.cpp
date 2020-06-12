@@ -108,20 +108,36 @@ int Order::getDeliveryTime()
 	return deliveryTime;
 }
 
-void Order::display(char userType /*='c'*/)
+void Order::display()
 {
-	for (int i = 0; i < getOrderSize(); i++)
-	{
-		
-		std::cout << std::setw(4) << i + 1 << std::setw(20)
-			<< items[i].first->getName() << std::setw(5)
-			<< items[i].second << items[i].second * items[i].first->getPrice()
-			<< '\n';
+	int counter = 0;
+	std::cout << std::left << std::setw(20)
+		<< "Item" << std::setw(20) << "Price"
+		<< std::setw(20) << "Quantity"
+		<< "Total" << '\n';
 
+	Helper::line(70);
+	for (const auto& item : items)
+	{
+		std::cout << ++counter << "- ";
+		std::cout << std::setw(18) << item.first->getName()
+			<< std::setw(20) << item.first->getPrice()
+			<< std::setw(20) << item.second
+			<< item.second * item.first->getPrice() << '\n';
 	}
-	Helper::line(60);
-	std::cout << "Total price (" << getOrderSize() << " items) : RM" << getTotalPrice() << '\n';
 }
+
+void Order::summary(char userType)
+{
+	std::cout << std::setw(15) << shop->getName()
+		<< std::setw(15) << getTotalPrice();
+	userType != 'c' ? std::cout << std::setw(20) << customer->getName() : std::cout << "";
+	std::cout << std::setw(20) << (paymentStatus == true ? "Paid" : "Pending")
+		<< std::setw(20) << getStatus();
+	userType != 'c' ? std::cout << std::setw(10) << deliveryTime : std::cout << "";
+	std::cout << '\n';
+}
+
 
 int Order::getOrderSize()
 {
@@ -165,3 +181,21 @@ void Order::setStatus(Status newStatus)
 //deliverystatus::so tht volunteer can call and chg the status
 //operator overloading
 //friend
+
+std::ostream& operator<<(std::ostream& output, const Order::Status& status)
+{
+	const char* s = "0";
+	switch (status)
+	{
+	case Order::Pending: s = "Pending";
+		break;
+	case Order::Preparing: s = "Preparing";
+		break;
+	case Order::Delivering: s = "Delivering";
+		break;
+	case Order::Complete: s = "Complete";
+		break;
+	}
+	output << s;
+	return output;
+}

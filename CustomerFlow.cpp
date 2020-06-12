@@ -39,7 +39,7 @@ void CustomerFlow::checkout()
 	{
 		// Display the order and the total price
 		std::cout << "Review Order\n";
-		Helper::dLine(60);
+		Helper::dLine(70);
 		currentCustomer->cart->display();
 		Helper::line(70);
 		// ask for delivery time
@@ -78,6 +78,7 @@ void CustomerFlow::checkout()
 		// add to list of orders for the respective shop
 		currentShop->recieveOrder(currentCustomer->cart);
 		currentCustomer->cart->setCustomer(currentCustomer);
+		currentCustomer->cart->setPaymentStatus(true);
 		// add to list of orders
 		currentCustomer->placeOrder();
 		std::cout << "Your order has been placed successfully, you will be directed to main menu...\n";
@@ -91,7 +92,7 @@ void CustomerFlow::myCart()
 {
 	while (true) {
 		std::cout << "My cart:\n";
-		Helper::dLine(60);
+		Helper::dLine(70);
 		int choice{};
 
 		if (currentCustomer->cart->getOrderSize()==0)
@@ -100,10 +101,6 @@ void CustomerFlow::myCart()
 			std::cout << "You will be directed back...\n";
 			break;
 		}
-		std::cout << std::setw(4) << "No." << std::setw(20)
-			<< "Name" << std::setw(5) << "Qty" << "Price (RM)"
-			<< '\n';
-		Helper::line(60);
 		currentCustomer->cart->display();
 		Helper::line(60);
 		std::cout << "Choose an Item number to remove it from the cart\n"
@@ -194,7 +191,7 @@ void CustomerFlow::myOrders(bool pendingOnly)
 			for (const auto& order : currentCustomer->orders)
 			{
 				std::cout << ++counter << "- ";
-				order->display('c');
+				order->summary('c');
 			}
 		}
 
@@ -202,7 +199,7 @@ void CustomerFlow::myOrders(bool pendingOnly)
 			for (const auto& order : pendingOrders)
 			{
 				std::cout << ++counter << "- ";
-				order->display('c');
+				order->summary('c');
 			}
 		}
 
@@ -248,15 +245,15 @@ void CustomerFlow::viewOrder(const std::shared_ptr<Order>& order)
 		Helper::line(110);
 
 		std::cout << ">> ";
-		order->display('c');
+		order->summary('c');
 		// Items just like cart
-		Helper::line(70);
-		std::cout << "Order content:\n";
+		Helper::dLine(110);
+		std::cout << "\nOrder content:\n";
 		Helper::line(70);
 		order->display();
-		Helper::line(110);
-		std::cout << std::setw(61) << ">>>Total: " << order->getTotalPrice() << "\n";
-		Helper::line(110);
+		Helper::line(70);
+		std::cout << std::setw(61) << ">>>Total: " << order->getTotalPrice() << "\n\n";
+		Helper::dLine(110);
 
 		if (order->getStatus() < Order::Delivering) std::cout << "Press C to cancel this order, ";
 		std::cout << "Press O to reorder this order, or press B to go back\n";

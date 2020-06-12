@@ -47,7 +47,8 @@ public:
 	void setDeliveryTime(int deliveryTime);
 	bool  getPaymentStatus();
 	int getDeliveryTime();
-	void display(char userType ='c');
+	void display();
+	void summary(char userType ='c');
 	int getOrderSize();
 	std::pair<std::shared_ptr<Item>, int>& getItem(int);
 	void setShop(const std::shared_ptr<Shop>& shop);
@@ -56,6 +57,7 @@ public:
 
 	Status getStatus();
 	void setStatus(Status newStatus);
+	friend std::ostream& operator << (std::ostream& output, const Order::Status& status);
 };
 
 #endif
