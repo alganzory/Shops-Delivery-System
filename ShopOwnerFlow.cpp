@@ -5,6 +5,10 @@
 
 #include "Helper.h"
 #include "UserFlow.h"
+#include "User.h"
+
+bool sortByDeliveryTime(const std::shared_ptr<Order> lhs, const std::shared_ptr<Order> rhs) { return lhs->getDeliveryTime() < rhs->getDeliveryTime(); }
+
 
 std::shared_ptr <ShopOwner> ShopOwnerFlow::currentSO;
 
@@ -182,9 +186,9 @@ void ShopOwnerFlow::mainMenu()
 		{
 		case 1: myShop();
 			break;
-		case 2: /*allOrders(true);*/
+		case 2: allOrders(true);
 			break;
-		case 3: /*allOrders();*/
+		case 3: allOrders();
 			break;
 		case 4: /*UserFlow::myProfile();*/
 			break;
@@ -196,27 +200,154 @@ void ShopOwnerFlow::mainMenu()
 	}
 }
 
+
 void ShopOwnerFlow::allOrders(bool pendingOnly)
 {
 	// do I need to sort them based on something?
 	// I will want to sort them based on time? ex: bonus
 	// display the orders from the list of orders:
-	// prompt the shopOwner to view a certain order
+	// prompt the shopOwner to view a certain order //delivery status & amount paid
 	// if he was viewing all orders, u prompt to see only pending ones
 	// or else go back
+	const std::string status[] = { "Pending","Preparing","Delivering","Complete" };
+	while (true)
+	{
+		if (currentSO->orders.size() == 0)
+		{
+			Helper::dLine();
+			std::cout << "No Order Yet." << std::endl;
+			Helper::line();
+			break;
+		}
+		Helper::dLine();
+		std::cout << std::setw(4) << "No." << std::setw(15) << "Delivery Time" << std::setw(10) << "Status" << "Total Price (RM)" << std::endl;
+		Helper::line();
+		std::vector <std::shared_ptr<Order> > sortedOrder;
+
+		std::sort(currentSO->orders.begin(), currentSO->orders.end(), sortByDeliveryTime);
+		for (int i = 0; i < currentSO->orders.size(); i++)
+		{
+			if ( pendingOnly == (currentSO->orders[i]->getStatus() == 0) || !pendingOnly)
+			{
+				std::cout << std::setw(4) << i+1 << std::setw(15) << currentSO->orders[i]->getDeliveryTime() << std::setw(10) << status[currentSO->orders[i]->getStatus()] << currentSO->orders[i]->getTotalPrice() << std::endl;
+				sortedOrder.push_back(currentSO->orders[i]);
+			}
+		}
+
+		Helper::line();
+		if (pendingOnly)
+		{
+			std::cout << "Choose the order number to view detail\n" << "or press P to view all Orders\n" << "or press B to go back.\n";
+		}
+		else
+		{
+			std::cout << "Choose the order number to view detail\n" << "or press P to view Pending Orders only\n" << "or press B to go back.\n";
+		}
+		std::cout << "Your choice: ";
+		char choice = Helper::readChoice(1, currentSO->orders.size(), "PpBb");
+		if (choice == 'B' || choice == 'b')
+		{
+			break;
+		}
+		else if (choice == 'P' || choice == 'p')
+		{
+			pendingOnly = !pendingOnly;
+			continue;
+		}
+		else
+		{
+			viewOrder(sortedOrder[choice-1]);
+			continue;
+		}
+	}
 	
 }
 
 void ShopOwnerFlow::viewOrder(std::shared_ptr<Order> order)
 {
-	/*
-	->display the summary
-		->see the details of the order
-		-> if the order is pending:
-			- assign volunteer: releaseOrder();
-			- cancel the order. cancelOrder();
-			- todo list; todolist()
-			- feel free to add them here or there
-			
-		*/
+	//->display the summary
+		//->see the details of the order
+		/*int numOrder= currentSO->orders.size();
+		int orderDetail=Helper::readChoice(1,numOrder);
+		for(int i=1;i<=numOrder;i++){
+			if (orderDetail==i-1){
+				std::pair<std::shared_ptr<Item>, int> seeOrderDetail = currentSO->orders[orderDetail]->getItem(orderDetail);
+				//currentOrder
+			}
+		}*/
+		//order //from allorder to know which order is called
+	while (true) {
+		Helper::dLine();
+		std::cout << "Order Details: \n";
+		Helper::dLine();
+		order->display('s');
+		//-> if the order is pending:
+		if (order->getStatus() == 0) {
+			std::cout << "Do you want to assign a volunteer (A) "
+				<< ", cancel the order (C) "
+				<<", preparation list (S)"
+				<< "or go back (B) ?\n";
+			char action = Helper::readChoice(0, 0, "AaBbCcSs");
+			if (action == 'B' || action == 'b') {
+				break;
+			}
+			else if (action == 'A' || action == 'a') {
+				//- assign volunteer: releaseOrder();
+			}
+			else if (action == 'C' || action == 'c') {
+				cancelOrder(order);
+				break;
+				//- cancel the order. cancelOrder();
+			}
+			else if (action == 'S' || action == 's') {
+				todoList(order);
+			}
+			//- todo list; todolist()
+			//- feel free to add them here or there
+		}
+	}
 }
+
+void ShopOwnerFlow::cancelOrder(std::shared_ptr<Order> order) {
+	//ok so canceling an order basically removes it from all the users that have it, 
+//that is the shop owner and the customer, it also returns the stuff to the stock
+	int numOrder = order->getOrderSize();
+	//std::vector <std::pair<std::shared_ptr<Item>, int> > orderItem;
+	for (int i = 0; i < numOrder; i++) {
+		//orderItem[i] = order->getItem(i);
+		currentSO->addToStock(order->getItem(i).first, order->getItem(i).second, false);
+	}
+	currentSO->removeOrder(order);
+	std::shared_ptr<Customer> theCustomer = order->getCustomer();
+	theCustomer->removeOrder(order);
+}
+
+void ShopOwnerFlow::todoList(std::shared_ptr<Order>order)
+{
+	while (true)
+	{
+		Helper::dLine();
+		std::cout << "Delivery Time: " << order->getDeliveryTime() << std::endl;
+		Helper::line();
+		std::cout << std::setw(4) << "No." << std::setw(20)
+			<< "Item Name" << std::setw(5)
+			<< "Qty" << "Preparation Status" << '\n';
+		Helper::line();
+		order->display('t');
+
+		std::cout << "Enter the item number that has prepared\n" << "or press B to go back\n";
+		std::cout << "Your choice: ";
+		char choice = Helper::readChoice(1, order->getOrderSize(), "Bb");
+		if (choice == 'b' || choice == 'B')
+		{
+			break;
+		}
+		else
+		{
+			order->setPreparationStatus(choice-1);
+			continue;
+		}
+	}
+
+}
+

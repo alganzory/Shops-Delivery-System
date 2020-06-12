@@ -1,5 +1,6 @@
 #pragma once
 #include "ShopOwner.h"
+#include <algorithm>
 
 class ShopOwnerFlow
 {
@@ -12,6 +13,8 @@ public:
 	static void mainMenu();
 	static void allOrders(bool pendingOnly = false);
 	static void viewOrder(std::shared_ptr <Order> order);
+	static void todoList(std::shared_ptr<Order>order);
+	static void cancelOrder(std::shared_ptr<Order> order);
 	
 };
 
