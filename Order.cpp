@@ -50,10 +50,6 @@ void Order::addItem(std::shared_ptr<Item> item, int quantity) {
 void Order::removeItem(std::pair<std::shared_ptr<Item>, int>& itemReq)
 {
 
-	const int toBeReturned = itemReq.second;
-	// return that quantity to the stock 
-	itemReq.first->addQuantity(toBeReturned);
-	itemReq.second = 0;
 	const auto itemPosition = find(items.begin(), items.end(), itemReq);
 	items.erase(itemPosition);
 
