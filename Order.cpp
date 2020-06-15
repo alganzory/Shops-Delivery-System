@@ -1,4 +1,3 @@
-
 #include"Order.h"
 #include<vector>
 
@@ -65,7 +64,7 @@ void Order::setTotalPrice(double totalPrice) {
 
 double Order::getTotalPrice() {
 	double totalPrice = 0;
-	for (int i = 0; i < items.size();i++) {
+	for (int i = 0; i < items.size(); i++) {
 		totalPrice += items[i].second * items[i].first->getPrice();
 	}
 
@@ -109,34 +108,36 @@ int Order::getDeliveryTime()
 	return deliveryTime;
 }
 
-void Order::display()
+void Order::display(bool showPreparationStatus)
 {
 	int counter = 0;
 	std::cout << std::left << std::setw(20)
 		<< "Item" << std::setw(20) << "Price"
 		<< std::setw(20) << "Quantity"
-		<< "Total" << '\n';
+		<<std::setw(10)<< "Total";
+	showPreparationStatus ? std::cout << "Preparation Status" << std::endl : std::cout << std::endl;
 
-	Helper::line(70);
+	showPreparationStatus ? Helper::line(110) : Helper::line(70);
 	for (const auto& item : items)
 	{
 		std::cout << ++counter << "- ";
 		std::cout << std::setw(18) << item.first->getName()
 			<< std::setw(20) << item.first->getPrice()
-			<< std::setw(20) << item.second
-			<< item.second * item.first->getPrice() << '\n';
-
+			<< std::setw(20) << item.second << std::setw(10)
+			<< item.second * item.first->getPrice();
+		showPreparationStatus ? std::cout <<( preparationStatus.at(counter-1)?"Prepared":"Not Prepared") << std::endl : std::cout << std::endl;
 	}
 }
 
 void Order::summary(char userType)
 {
-	std::cout << std::setw(15) << shop->getName()
-		<< std::setw(15) << getTotalPrice();
+	
+	userType == 'c' ? std::cout << std::setw(15) << shop->getName()
+		<< std::setw(15) << getTotalPrice(): std::cout<<"";
 	userType != 'c' ? std::cout << std::setw(20) << customer->getName() : std::cout << "";
 	std::cout << std::setw(20) << (paymentStatus == true ? "Paid" : "Pending")
-		<< std::setw(20) << getStatus();
-	userType != 'c' ? std::cout << std::setw(10) << deliveryTime : std::cout << "";
+		<< std::setw(15) << getStatus();
+	userType != 'c' ? std::cout << std::setw(15) << deliveryTime <<getTotalPrice(): std::cout << "";
 	std::cout << '\n';
 }
 
@@ -163,7 +164,7 @@ void Order::setCustomer(const std::shared_ptr<Customer>& customer)
 
 void Order::buyItems()
 {
-	for (int i=0; i< static_cast<int>(items.size()); i++)
+	for (int i = 0; i < static_cast<int>(items.size()); i++)
 	{
 		items[i].first->subQuantity(items[i].second);
 	}
@@ -178,18 +179,6 @@ void Order::setStatus(Status newStatus)
 {
 	orderStatus = newStatus;
 }
-
-void Order::setPreparationStatus(int num)
-{
-	preparationStatus[num] = !preparationStatus[num];
-}
-
-bool Order::isReady()
-{
-	return find(preparationStatus.begin(),
-		preparationStatus.end(), false) == preparationStatus.end();
-}
-
 
 
 std::ostream& operator<<(std::ostream& output, const Order::Status& status)
@@ -208,4 +197,17 @@ std::ostream& operator<<(std::ostream& output, const Order::Status& status)
 	}
 	output << s;
 	return output;
+}
+
+void Order::setPreparationStatus(int num)
+{
+	preparationStatus[num] = true;
+	
+}
+
+
+bool Order::isReady()
+{
+	return std::find(preparationStatus.begin(),
+		preparationStatus.end(), false) == preparationStatus.end();
 }

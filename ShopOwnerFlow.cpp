@@ -201,12 +201,7 @@ void ShopOwnerFlow::mainMenu()
 
 void ShopOwnerFlow::allOrders(bool pendingOnly)
 {
-	// do I need to sort them based on something?
-	// I will want to sort them based on time? ex: bonus
-	// display the orders from the list of orders:
-	// prompt the shopOwner to view a certain order //delivery status & amount paid
-	// if he was viewing all orders, u prompt to see only pending ones
-	// or else go back
+	
 	const std::string status[] = { "Pending","Preparing","Delivering","Complete" };
 	while (true)
 	{
@@ -217,11 +212,11 @@ void ShopOwnerFlow::allOrders(bool pendingOnly)
 			Helper::line();
 			break;
 		}
-		Helper::dLine();
+		Helper::dLine(110);
 		std::cout << std::setw(4) << "No." << std::setw(20) << "Customer Name"
-			<< std::setw(20) << "Payment status" << std::setw(20) << "Status"
+			<< std::setw(20) << "Payment status" << std::setw(15) << "Status"
 			<<std::setw(15)<< "Delivery Time" <<  "Total Price (RM)" << std::endl;
-		Helper::line();
+		Helper::line(110);
 		std::vector <std::shared_ptr<Order> > sortedOrder;
 
 
@@ -237,14 +232,10 @@ void ShopOwnerFlow::allOrders(bool pendingOnly)
 			}
 
 			std::cout << std::setw(4) << i + 1;
-			//<< std::setw(15)
-			//	<< currentSO->orders[i]->getDeliveryTime()
-			//	<< std::setw(10) << status[currentSO->orders[i]->getStatus()]
-			//	<< currentSO->orders[i]->getTotalPrice() << std::endl;
 			currentSO->orders[i]->summary('s');
 		}
 
-		Helper::line();
+		Helper::line(110);
 		if (pendingOnly)
 		{
 			std::cout << "Choose the order number to view detail\n"
@@ -287,23 +278,24 @@ void ShopOwnerFlow::allOrders(bool pendingOnly)
 
 void ShopOwnerFlow::viewOrder(std::shared_ptr<Order> order)
 {
-	//->display the summary
-		//->see the details of the order
-		/*int numOrder= currentSO->orders.size();
-		int orderDetail=Helper::readChoice(1,numOrder);
-		for(int i=1;i<=numOrder;i++){
-			if (orderDetail==i-1){
-				std::pair<std::shared_ptr<Item>, int> seeOrderDetail = currentSO->orders[orderDetail]->getItem(orderDetail);
-				//currentOrder
-			}
-		}*/
-		//order //from allorder to know which order is called
-
 	while (true) {
-		Helper::dLine(60);
+		Helper::dLine(70);
 		std::cout << "Order Details: \n";
-		Helper::dLine(60);
+		Helper::dLine(70);
+		std::cout << std::setw(18) << "Shop"
+			<< std::setw(15) << "Total Price"
+			<< std::setw(20) << "Payment Status"
+			<< std::setw(20) << "Order Status"
+			<< '\n';
+		Helper::line(70);
+		std::cout << ">>> ";
+		order->summary();
+		Helper::dLine(70);
+		std::cout << "Order Content: \n";
+		Helper::dLine(70);
 		order->display();
+		Helper::line(70);
+
 		//-> if the order is pending:
 		if (order->getDelivery() == nullptr)
 			std::cout << "Assign a volunteer (A), ";
@@ -343,16 +335,13 @@ void ShopOwnerFlow::todoList(std::shared_ptr<Order>order)
 {
 	while (true)
 	{
-		Helper::dLine();
+		Helper::dLine(110);
 		std::cout << "Delivery Time: " << order->getDeliveryTime() << std::endl;
-		Helper::line();
-		//std::cout << std::setw(4) << "No." << std::setw(20)
-		//	<< "Item Name" << std::setw(5)
-		//	<< "Qty" << "Preparation Status" << '\n';
-		//Helper::line();
+		Helper::line(110);
 		order->display(true);
-		
 
+
+		Helper::line(110);
 		if (!order->isReady())
 			std::cout << "Enter the item number that has prepared or ";
 
