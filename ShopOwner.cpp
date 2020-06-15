@@ -17,15 +17,15 @@ void ShopOwner::setInfo(std::string name, int age, double balance, Location loca
 	this->balance = balance;
 	this->location = location;
 
-	// prompt to ask for shop name:
-	// cout << "Enter your shop Info":
+	std::cout << "What is the name of your Shop?\n";
 	std::string shopName;
 	getline(std::cin, shopName);
-	
-	// ask if location is same, if not get new location
-	// what is you location?
-	//
-	Location shopLocation;
+
+	std::cout << "What is the address of your shop?\n";
+	std::string shopAddress;
+	std::getline(std::cin, shopAddress);
+
+	Location shopLocation(shopAddress);
 	createShop(shopName, shopLocation);
 }
 

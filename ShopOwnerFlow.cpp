@@ -5,8 +5,11 @@
 
 #include "Helper.h"
 #include "UserFlow.h"
+#include "User.h"
 
 std::shared_ptr <ShopOwner> ShopOwnerFlow::currentSO;
+bool sortByDeliveryTime(const std::shared_ptr<Order> &lhs, const std::shared_ptr<Order> rhs) { return lhs->getDeliveryTime() < rhs->getDeliveryTime(); }
+
 
 void ShopOwnerFlow::editItem(const std::shared_ptr<Item> item)
 {
@@ -182,9 +185,9 @@ void ShopOwnerFlow::mainMenu()
 		{
 		case 1: myShop();
 			break;
-		case 2: /*allOrders(true);*/
+		case 2: allOrders(true);
 			break;
-		case 3: /*allOrders();*/
+		case 3: allOrders();
 			break;
 		case 4: /*UserFlow::myProfile();*/
 			break;
@@ -195,3 +198,165 @@ void ShopOwnerFlow::mainMenu()
 
 	}
 }
+
+void ShopOwnerFlow::allOrders(bool pendingOnly)
+{
+	
+	const std::string status[] = { "Pending","Preparing","Delivering","Complete" };
+	while (true)
+	{
+		if (currentSO->orders.size() == 0)
+		{
+			Helper::dLine();
+			std::cout << "No Order Yet." << std::endl;
+			Helper::line();
+			break;
+		}
+		Helper::dLine(110);
+		std::cout << std::setw(4) << "No." << std::setw(20) << "Customer Name"
+			<< std::setw(20) << "Payment status" << std::setw(15) << "Status"
+			<<std::setw(15)<< "Delivery Time" <<  "Total Price (RM)" << std::endl;
+		Helper::line(110);
+		std::vector <std::shared_ptr<Order> > sortedOrder;
+
+
+		std::sort(currentSO->orders.begin(), currentSO->orders.end(), sortByDeliveryTime);
+		for (int i = 0; i < currentSO->orders.size(); i++)
+		{
+			if (pendingOnly) {
+
+				if ((currentSO->orders[i]->getStatus() <= Order::Preparing))
+					sortedOrder.push_back(currentSO->orders[i]);
+				else
+					continue;
+			}
+
+			std::cout << std::setw(4) << i + 1;
+			currentSO->orders[i]->summary('s');
+		}
+
+		Helper::line(110);
+		if (pendingOnly)
+		{
+			std::cout << "Choose the order number to view detail\n"
+				<< "or press P to view all Orders\n"
+				<< "or press B to go back.\n";
+		}
+		else
+		{
+			std::cout << "Choose the order number to view detail\n"
+				<< "or press P to view Pending Orders only\n"
+				<< "or press B to go back.\n";
+		}
+		std::cout << "Your choice: ";
+		int choice{};
+
+		if (!pendingOnly)
+			choice = Helper::readChoice(1, currentSO->orders.size(), "PpBb");
+		else
+			choice = Helper::readChoice(1, sortedOrder.size(), "pPBb");
+
+		if (choice == 'B' || choice == 'b')
+		{
+			break;
+		}
+		else if (choice == 'P' || choice == 'p')
+		{
+			pendingOnly = !pendingOnly;
+			continue;
+		}
+		else
+		{
+			if (pendingOnly)
+				viewOrder(sortedOrder.at(choice - 1));
+			else
+				viewOrder(currentSO->orders.at(choice - 1));
+		}
+	}
+
+}
+
+void ShopOwnerFlow::viewOrder(std::shared_ptr<Order> order)
+{
+	while (true) {
+		Helper::dLine(70);
+		std::cout << "Order Details: \n";
+		Helper::dLine(70);
+		std::cout << std::setw(18) << "Shop"
+			<< std::setw(15) << "Total Price"
+			<< std::setw(20) << "Payment Status"
+			<< std::setw(20) << "Order Status"
+			<< '\n';
+		Helper::line(70);
+		std::cout << ">>> ";
+		order->summary();
+		Helper::dLine(70);
+		std::cout << "Order Content: \n";
+		Helper::dLine(70);
+		order->display();
+		Helper::line(70);
+
+		//-> if the order is pending:
+		if (order->getDelivery() == nullptr)
+			std::cout << "Assign a volunteer (A), ";
+
+		if (order->getStatus() <= Order::Preparing)
+			std::cout << "Cancel the order (C), "
+			<< ", preparation list (S), ";
+
+		std::cout << "Go back (B) ?\n";
+		Helper::line(60);
+		std::cout << "Your choice: ";
+
+		int action{};
+		if (order->getStatus() <= Order::Preparing)
+			action = (order->getDelivery() == nullptr) ?
+			Helper::readChoice(0, 0, "aABbCcSs") : Helper::readChoice(0, 0, "BbCcSs");
+		else action = Helper::readChoice(0, 0, "Bb");
+
+		if (action == 'B' || action == 'b') {
+			break;
+		}
+
+		else if (action == 'A' || action == 'a') {
+			//- assign volunteer: releaseOrder();
+		}
+		else if (action == 'C' || action == 'c') {
+			order->cancelOrder();
+			break;
+		}
+		else if (action == 'S' || action == 's') {
+			todoList(order);
+		}
+	}
+}
+
+void ShopOwnerFlow::todoList(std::shared_ptr<Order>order)
+{
+	while (true)
+	{
+		Helper::dLine(110);
+		std::cout << "Delivery Time: " << order->getDeliveryTime() << std::endl;
+		Helper::line(110);
+		order->display(true);
+
+
+		Helper::line(110);
+		if (!order->isReady())
+			std::cout << "Enter the item number that has prepared or ";
+
+		std::cout << "press B to go back\n";
+		std::cout << "Your choice: ";
+		int choice = Helper::readChoice(1, order->getOrderSize(), "Bb");
+		if (choice == 'b' || choice == 'B')
+		{
+			break;
+		}
+		else
+		{
+			order->setPreparationStatus(choice - 1);
+			order->setStatus(Order::Preparing);
+		}
+	}
+}
+

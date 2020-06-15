@@ -33,14 +33,66 @@ void CustomerFlow::makeAnOrder()
 	}
 }
 
+void CustomerFlow::checkout()
+{
+	while (true)
+	{
+		// Display the order and the total price
+		std::cout << "Review Order\n";
+		Helper::dLine(70);
+		currentCustomer->cart->display();
+		Helper::line(70);
+		// ask for delivery time
+		std::cout << "Enter delivery time in (HH:MM) format or Press B to go back to cart: ";
+		std::string input;
+		getline(std::cin, input);
+		std::stringstream inputStream(input);
+		int hour{};
+		char character;
+		int minutes{};
+		bool isTime = true;
+		inputStream >> hour;
+		if (inputStream.fail())
+		{
+			isTime = false;
+		}
 
+		inputStream >> character;
+		if (isTime) inputStream >> minutes;
+
+		if (!isTime) break;
+		currentCustomer->cart->setDeliveryTime(hour);
+		Helper::line(80);
+		// place or cancel
+		std::cout << "All set, press P to proceed with the checkout or Press B to go back to cart\n";
+		Helper::line(80);
+		std::cout << "Your choice: ";
+		int choice = Helper::readChoice(0, 0, "PBbp");
+		if (choice == 'B' || choice == 'b') break;
+		if (currentCustomer->getBalance() < currentCustomer->cart->getTotalPrice())
+		{
+			std::cout << "Insufficient balance, taking you back to cart...";
+			break;
+		}
+		currentCustomer->cart->setShop(currentShop);
+		// add to list of orders for the respective shop
+		currentShop->recieveOrder(currentCustomer->cart);
+		currentCustomer->cart->setCustomer(currentCustomer);
+		currentCustomer->cart->setPaymentStatus(true);
+		// add to list of orders
+		currentCustomer->placeOrder();
+		std::cout << "Your order has been placed successfully, you will be directed to main menu...\n";
+		mainMenu();
+	}
+	
+}
 
 
 void CustomerFlow::myCart()
 {
 	while (true) {
 		std::cout << "My cart:\n";
-		Helper::dLine(60);
+		Helper::dLine(70);
 		int choice{};
 
 		if (currentCustomer->cart->getOrderSize()==0)
@@ -49,10 +101,6 @@ void CustomerFlow::myCart()
 			std::cout << "You will be directed back...\n";
 			break;
 		}
-		std::cout << std::setw(4) << "No." << std::setw(20)
-			<< "Name" << std::setw(5) << "Qty" << "Price (RM)"
-			<< '\n';
-		Helper::line(60);
 		currentCustomer->cart->display();
 		Helper::line(60);
 		std::cout << "Choose an Item number to remove it from the cart\n"
@@ -66,7 +114,7 @@ void CustomerFlow::myCart()
 		}
 		else if (choice == 'C' || choice == 'c')
 		{
-			currentCustomer->placeOrder();
+			CustomerFlow::checkout();
 		}
 		else
 		{
@@ -99,6 +147,137 @@ void CustomerFlow::myCart()
 
 }
 
+void CustomerFlow::myOrders(bool pendingOnly)
+{
+	while (true)
+	{
+
+		std::cout << (pendingOnly ? "Pending Order" : "All Orders") << '\n';
+		Helper::dLine(110);
+		int anyPending = 0;
+		std::vector <std::shared_ptr<Order> > pendingOrders;
+
+		if (currentCustomer->orders.empty())
+		{
+			std::cout << "No orders yet, you will be directed to main menu...\n";
+			mainMenu();
+		}
+
+		else if (pendingOnly)
+		{
+			pendingOrders.reserve(currentCustomer->orders.size());
+			for (const auto& order : currentCustomer->orders)
+			{
+				if (order->getStatus() <= Order::Delivering) {
+					anyPending++;
+					pendingOrders.emplace_back(order);
+				}
+			}
+			if (!anyPending) {
+				std::cout << "No pending orders, you will be directed to main menu...\n";
+				mainMenu();
+			}
+		}
+
+		std::cout << std::setw(18) << "Shop"
+			<< std::setw(15) << "Total Price"
+			<< std::setw(20) << "Payment Status"
+			<< std::setw(20) << "Order Status"
+			<< '\n';
+		Helper::line(110);
+
+		int counter{};
+		if (!pendingOnly) {
+			for (const auto& order : currentCustomer->orders)
+			{
+				std::cout << ++counter << "- ";
+				order->summary('c');
+			}
+		}
+
+		else if (pendingOnly) {
+			for (const auto& order : pendingOrders)
+			{
+				std::cout << ++counter << "- ";
+				order->summary('c');
+			}
+		}
+
+		// can select an order to view or simply go back
+		Helper::line(110);
+		std::cout << "Select an order to view in detail, "
+			<< (!pendingOnly ? "Press P to view Pending orders " : " ")
+			<< "or press B to back\n";
+
+		Helper::line(110);
+		std::cout << "Your choice: ";
+		int choice = (!pendingOnly ? Helper::readChoice(1, currentCustomer->orders.size(), "bPBp")
+			: Helper::readChoice(1, anyPending, "bB"));
+
+		if (choice == 'B' || choice == 'b') break;
+		if (!pendingOnly && (choice == 'P' || choice == 'p')) myOrders(true);
+		else 
+			try {
+			if (!pendingOnly)
+				viewOrder(currentCustomer->orders.at(choice - 1));
+			else if (pendingOnly)
+				viewOrder(pendingOrders.at(choice - 1));
+		}
+		catch (const std::out_of_range& error)
+		{
+			std::cout << "Please choose an order from the ones shown\n";
+			continue;
+		}
+	}
+}
+
+void CustomerFlow::viewOrder(const std::shared_ptr<Order>& order)
+{
+	while (true) {
+		// Display:
+		std::cout << "View Order\n";
+		Helper::dLine(110);
+		std::cout << std::setw(18) << "Shop"
+			<< std::setw(15) << "Total Price"
+			<< std::setw(20) << "Payment Status"
+			<< std::setw(20) << "Order Status"
+			<< '\n';
+		Helper::line(110);
+
+		std::cout << ">> ";
+		order->summary('c');
+		// Items just like cart
+		Helper::dLine(110);
+		std::cout << "\nOrder content:\n";
+		Helper::line(70);
+		order->display();
+		Helper::line(70);
+		std::cout << std::setw(61) << ">>>Total: " << order->getTotalPrice() << "\n\n";
+		Helper::dLine(110);
+
+		if (order->getStatus() < Order::Delivering) std::cout << "Press C to cancel this order, ";
+		std::cout << "Press O to reorder this order, or press B to go back\n";
+		Helper::line(110);
+		std::cout << "Your choice: ";
+		int choice = Helper::readChoice(0, 0, "obOBcC");
+		if (choice == 'b' || choice == 'B') break;
+		if (choice == 'O' || choice == 'o')
+		{
+			currentCustomer->cart = order;
+			std::cout << "Order added to cart, you will be directed to your cart...\n";
+			myCart();
+			break;
+		}
+		if (choice == 'C' || choice == 'c') {
+			order->cancelOrder();
+			std::cout << "Order has been canceled, you will be directed to main menu...\n";
+			mainMenu();
+			break;
+		}
+
+	}
+}
+
 
 void CustomerFlow::mainMenu()
 {
@@ -123,7 +302,7 @@ void CustomerFlow::mainMenu()
 		{
 		case 1: makeAnOrder();
 			break;
-		case 2:/* myOrders();*/
+		case 2: myOrders();
 			break;
 		case 3: myCart();
 			break;

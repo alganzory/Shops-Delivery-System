@@ -14,6 +14,10 @@ public:
 	static void displayShops();
 	static void viewShop();
 	static void makeAnOrder();
+	static void checkout();
 	static void myCart();
+	static void myOrders(bool pendingOnly = false);
+	static void viewOrder(const std::shared_ptr <Order>& order);
+
 };
 

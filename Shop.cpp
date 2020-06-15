@@ -1,5 +1,7 @@
 #include "Shop.h"
 
+#include "ShopOwner.h"
+
 Shop::Shop()
 {
 
@@ -88,4 +90,14 @@ void Shop::display()
 
 	std::cout << getName() << '\t' << getLocation().getAddress() << "\n";
 
+}
+
+void Shop::recieveOrder(const std::shared_ptr<Order>& cart)
+{
+	shopOwner->addOrder(cart);
+}
+
+void Shop::removeOrder(const std::shared_ptr<Order>& order)
+{
+	shopOwner->removeOrder(order);
 }

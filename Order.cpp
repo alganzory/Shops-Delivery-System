@@ -1,4 +1,3 @@
-
 #include"Order.h"
 #include<vector>
 
@@ -6,10 +5,22 @@
 
 #include "Helper.h"
 #include "volunteer.h"
+#include "Customer.h"
+#include "Shop.h"
 
+
+void Order::cancelOrder()
+{
+	customer->removeOrder(shared_from_this());
+	shop->removeOrder(shared_from_this());
+	for (auto& item : items) {
+		removeItem(item);
+	}
+}
 
 Order::Order()
 {
+	orderStatus = Order::Pending;
 }
 
 Order::Order(std::shared_ptr<Customer> customer, std::shared_ptr<Shop> shop) {
@@ -18,6 +29,7 @@ Order::Order(std::shared_ptr<Customer> customer, std::shared_ptr<Shop> shop) {
 	this->deliveryStatus = false;
 	this->paymentStatus = false;
 	this->delivery = nullptr;
+	orderStatus = Order::Pending;
 }
 
 void Order::addItem(std::shared_ptr<Item> item, int quantity) {
@@ -30,18 +42,14 @@ void Order::addItem(std::shared_ptr<Item> item, int quantity) {
 	}
 	else { //add them into items
 		items.push_back({ item,quantity });
+		preparationStatus.push_back(false);
 	}
 
-	item->subQuantity(quantity);		//subtracts the quantity of items in stock
 }
 
 void Order::removeItem(std::pair<std::shared_ptr<Item>, int>& itemReq)
 {
 
-	const int toBeReturned = itemReq.second;
-	// return that quantity to the stock 
-	itemReq.first->addQuantity(toBeReturned);
-	itemReq.second = 0;
 	const auto itemPosition = find(items.begin(), items.end(), itemReq);
 	items.erase(itemPosition);
 
@@ -52,7 +60,7 @@ void Order::setTotalPrice(double totalPrice) {
 
 double Order::getTotalPrice() {
 	double totalPrice = 0;
-	for (int i = 0; i < items.size();i++) {
+	for (int i = 0; i < items.size(); i++) {
 		totalPrice += items[i].second * items[i].first->getPrice();
 	}
 
@@ -96,20 +104,39 @@ int Order::getDeliveryTime()
 	return deliveryTime;
 }
 
-void Order::display(char userType /*='c'*/)
+void Order::display(bool showPreparationStatus)
 {
-	for (int i = 0; i < getOrderSize(); i++)
-	{
-		
-		std::cout << std::setw(4) << i + 1 << std::setw(20)
-			<< items[i].first->getName() << std::setw(5)
-			<< items[i].second << items[i].second * items[i].first->getPrice()
-			<< '\n';
+	int counter = 0;
+	std::cout << std::left << std::setw(20)
+		<< "Item" << std::setw(20) << "Price"
+		<< std::setw(20) << "Quantity"
+		<<std::setw(10)<< "Total";
+	showPreparationStatus ? std::cout << "Preparation Status" << std::endl : std::cout << std::endl;
 
+	showPreparationStatus ? Helper::line(110) : Helper::line(70);
+	for (const auto& item : items)
+	{
+		std::cout << ++counter << "- ";
+		std::cout << std::setw(18) << item.first->getName()
+			<< std::setw(20) << item.first->getPrice()
+			<< std::setw(20) << item.second << std::setw(10)
+			<< item.second * item.first->getPrice();
+		showPreparationStatus ? std::cout <<( preparationStatus.at(counter-1)?"Prepared":"Not Prepared") << std::endl : std::cout << std::endl;
 	}
-	Helper::line(60);
-	std::cout << "Total price (" << getOrderSize() << " items) : RM" << getTotalPrice() << '\n';
 }
+
+void Order::summary(char userType)
+{
+	
+	userType == 'c' ? std::cout << std::setw(15) << shop->getName()
+		<< std::setw(15) << getTotalPrice(): std::cout<<"";
+	userType != 'c' ? std::cout << std::setw(20) << customer->getName() : std::cout << "";
+	std::cout << std::setw(20) << (paymentStatus == true ? "Paid" : "Pending")
+		<< std::setw(15) << getStatus();
+	userType != 'c' ? std::cout << std::setw(15) << deliveryTime <<getTotalPrice(): std::cout << "";
+	std::cout << '\n';
+}
+
 
 int Order::getOrderSize()
 {
@@ -121,7 +148,62 @@ std::pair<std::shared_ptr<Item>, int>& Order::getItem(int position)
 	return items.at(position);
 }
 
-//operator overloading to add prices???
-//deliverystatus::so tht volunteer can call and chg the status
-//operator overloading
-//friend
+void Order::setShop(const std::shared_ptr<Shop>& shop)
+{
+	this->shop = shop;
+}
+
+void Order::setCustomer(const std::shared_ptr<Customer>& customer)
+{
+	this->customer = customer;
+}
+
+void Order::buyItems()
+{
+	for (int i = 0; i < static_cast<int>(items.size()); i++)
+	{
+		items[i].first->subQuantity(items[i].second);
+	}
+}
+
+Order::Status Order::getStatus()
+{
+	return orderStatus;
+}
+
+void Order::setStatus(Status newStatus)
+{
+	orderStatus = newStatus;
+}
+
+
+std::ostream& operator<<(std::ostream& output, const Order::Status& status)
+{
+	const char* s = "0";
+	switch (status)
+	{
+	case Order::Pending: s = "Pending";
+		break;
+	case Order::Preparing: s = "Preparing";
+		break;
+	case Order::Delivering: s = "Delivering";
+		break;
+	case Order::Complete: s = "Complete";
+		break;
+	}
+	output << s;
+	return output;
+}
+
+void Order::setPreparationStatus(int num)
+{
+	preparationStatus[num] = true;
+	
+}
+
+
+bool Order::isReady()
+{
+	return std::find(preparationStatus.begin(),
+		preparationStatus.end(), false) == preparationStatus.end();
+}
