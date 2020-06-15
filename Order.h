@@ -17,6 +17,7 @@ public:
 	{
 		Pending,  // the initial state of the order, the shop owner did not deal with it yet
 		Preparing, // once the shop owner starts preparing the order (the todo check list)
+		VolunteerFound, // once a volunteer is Assigned
 		Delivering, // once a volunteer chooses to deliver
 		Complete // once the volunteer is done delivering the order
 	};

@@ -132,7 +132,7 @@ void Order::summary(char userType)
 		<< std::setw(15) << getTotalPrice(): std::cout<<"";
 	userType != 'c' ? std::cout << std::setw(20) << customer->getName() : std::cout << "";
 	std::cout << std::setw(20) << (paymentStatus == true ? "Paid" : "Pending")
-		<< std::setw(15) << getStatus();
+		<< std::setw(20) << getStatus();
 	userType != 'c' ? std::cout << std::setw(15) << deliveryTime <<getTotalPrice(): std::cout << "";
 	std::cout << '\n';
 }
@@ -185,6 +185,8 @@ std::ostream& operator<<(std::ostream& output, const Order::Status& status)
 	case Order::Pending: s = "Pending";
 		break;
 	case Order::Preparing: s = "Preparing";
+		break;
+	case Order::VolunteerFound:  s = "Volunteer Found";
 		break;
 	case Order::Delivering: s = "Delivering";
 		break;
