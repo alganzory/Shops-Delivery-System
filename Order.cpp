@@ -18,6 +18,11 @@ void Order::cancelOrder()
 	}
 }
 
+std::string Order::getDlvryAddress() const
+{
+	return customer->getLocation().getAddress();
+}
+
 Order::Order()
 {
 	orderStatus = Order::Pending;

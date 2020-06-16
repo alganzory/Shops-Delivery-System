@@ -22,6 +22,7 @@ public:
 		Complete // once the volunteer is done delivering the order
 	};
 	void cancelOrder();
+	std::string getDlvryAddress() const;
 private:
 	std::vector <std::pair<std::shared_ptr<Item>, int> > items;
 	std::shared_ptr<Customer> customer;
