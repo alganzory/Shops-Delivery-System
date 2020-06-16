@@ -275,6 +275,17 @@ void ShopOwnerFlow::allOrders(bool pendingOnly)
 
 }
 
+void ShopOwnerFlow::assignVolunteer(const std::shared_ptr<Order>& order)
+{
+	// finding available volunteers
+	auto availableVol = findAvailableVolunteers(order->getDeliveryTime());
+	// displaying the list of available volunteers
+	// prompting the shop owner to choose one volunteer
+	// the volunteer gets the order in his list of orders
+	// the order gets the volunteer as the delivery
+	// the order state changes to volunteerFound
+}
+
 void ShopOwnerFlow::viewOrder(const std::shared_ptr<Order>& order)
 {
 	while (true) {
@@ -323,7 +334,7 @@ void ShopOwnerFlow::viewOrder(const std::shared_ptr<Order>& order)
 		}
 
 		else if (action == 'A' || action == 'a') {
-			order->setStatus(Order::VolunteerFound);
+			assignVolunteer(order);
 			continue;
 		}
 		else if (action == 'C' || action == 'c') {
@@ -363,5 +374,12 @@ void ShopOwnerFlow::todoList(std::shared_ptr<Order>order)
 			order->setStatus(Order::Preparing);
 		}
 	}
+}
+
+std::vector<std::shared_ptr<Volunteer>> ShopOwnerFlow::findAvailableVolunteers(double time)
+{
+	std::vector<std::shared_ptr<Volunteer>> availableVolunteers;
+	availableVolunteers.reserve(currentSO->registeredVolunteers.size());
+	return V_List::ALL_VOLUNTEERS;
 }
 
