@@ -23,6 +23,7 @@ public:
 	};
 	void cancelOrder();
 	std::string getDlvryAddress() const;
+	std::string getCustomerName() const;
 private:
 	std::vector <std::pair<std::shared_ptr<Item>, int> > items;
 	std::shared_ptr<Customer> customer;
@@ -64,7 +65,7 @@ public:
 	friend std::ostream& operator << (std::ostream& output, const Order::Status& status);
 	bool isReady();
 	void setPreparationStatus(int num);
-
+	friend bool operator < (const std::shared_ptr <Order> lhs, const std::shared_ptr <Order> rhs);
 };
 
 #endif
