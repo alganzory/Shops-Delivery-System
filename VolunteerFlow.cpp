@@ -4,17 +4,23 @@
 
 
 std::shared_ptr<Volunteer> VolunteerFlow::currentVolunteer;
-std::shared_ptr<Volunteer> VolunteerFlow::currentOrder;
+std::shared_ptr<Order> VolunteerFlow::currentOrder;
 
 
 void VolunteerFlow::ongoingOrder()
 {
-	// This function keeps track of the order which state is Delivery
-	// actually this order is the one called currentOrder
-	// it display the order summary and the option to hand over the order
-	// if the volunteer chooses to handover the order, its state should then change
-	// to complete order and if the order had any tips it should be added to his balance
-	// and notify him about that tip
+	while (true) {
+		currentOrder->summary('v');
+		std::cout << "Do you want to hand over the order (H) "
+			<< "or go back (B) ?\n";
+		int option = Helper::readChoice(0, 0, "HhBb");
+		if (option == 'B' || option == 'b') {
+			break;
+		}
+		else if (option == 'H' || option == 'h') {
+			currentOrder->setStatus(Order::Complete);
+		}
+	}
 }
 
 void VolunteerFlow::myOrders(bool pendingOnly)
