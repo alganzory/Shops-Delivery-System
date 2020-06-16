@@ -1,7 +1,7 @@
 #include "VolunteerFlow.h"
 
 #include "Helper.h"
-
+#include<iomanip>
 
 std::shared_ptr<Volunteer> VolunteerFlow::currentVolunteer;
 std::shared_ptr<Order> VolunteerFlow::currentOrder;
@@ -10,6 +10,13 @@ std::shared_ptr<Order> VolunteerFlow::currentOrder;
 void VolunteerFlow::ongoingOrder()
 {
 	while (true) {
+		Helper::dLine(110);
+		std::cout << std::setw(18) << "Shop"
+			<< std::setw(15) << "Shop Address"
+			<< std::setw(20) << "Order's Destination"
+			<< std::setw(20) << "Delivery Time"
+			<< '\n';
+		Helper::line(110);
 		currentOrder->summary('v');
 		std::cout << "Do you want to hand over the order (H) "
 			<< "or go back (B) ?\n";
