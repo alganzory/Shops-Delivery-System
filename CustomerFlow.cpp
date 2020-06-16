@@ -74,6 +74,17 @@ void CustomerFlow::checkout()
 			std::cout << "Insufficient balance, taking you back to cart...";
 			break;
 		}
+		std::cout<<"Do you wish to tip the volunteer? Y (Yes) or N (No)"<<std::endl;
+		int ans= Helper::readChoice(0,0,"YyNn");
+		double reward=0;
+		if (ans=='Y'||ans=='y')
+		{
+			std::cout << "Your balance: " << currentCustomer->getBalance() - currentCustomer->cart->getTotalPrice() << std::endl;
+			std::cout<<"Enter the amount of the tip: RM";
+			reward=Helper::readChoice(0,currentCustomer->getBalance()-currentCustomer->cart->getTotalPrice());
+			currentCustomer->cart->setReward(reward);
+			currentCustomer->balance -= reward;
+		}
 		currentCustomer->cart->setShop(currentShop);
 		// add to list of orders for the respective shop
 		currentShop->recieveOrder(currentCustomer->cart);

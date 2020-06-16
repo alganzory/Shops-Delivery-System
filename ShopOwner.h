@@ -9,7 +9,7 @@ class ShopOwner :
 {
 private:
 	Shop shop;
-	std::vector <std::shared_ptr<Volunteer> > availableVolunteers;
+	std::vector <std::shared_ptr<Volunteer> > registeredVolunteers;
 public:
 
 	ShopOwner(std::string username, std::string password);

@@ -12,10 +12,21 @@
 void Order::cancelOrder()
 {
 	customer->removeOrder(shared_from_this());
+	customer->setBalance(customer->getBalance() + reward);
 	shop->removeOrder(shared_from_this());
 	for (auto& item : items) {
 		removeItem(item);
 	}
+}
+
+std::string Order::getDlvryAddress() const
+{
+	return customer->getLocation().getAddress();
+}
+
+std::string Order::getCustomerName() const
+{
+	return customer->getName();
 }
 
 Order::Order()
@@ -128,12 +139,22 @@ void Order::display(bool showPreparationStatus)
 void Order::summary(char userType)
 {
 	
-	userType == 'c' ? std::cout << std::setw(15) << shop->getName()
-		<< std::setw(15) << getTotalPrice(): std::cout<<"";
-	userType != 'c' ? std::cout << std::setw(20) << customer->getName() : std::cout << "";
-	std::cout << std::setw(20) << (paymentStatus == true ? "Paid" : "Pending")
-		<< std::setw(15) << getStatus();
-	userType != 'c' ? std::cout << std::setw(15) << deliveryTime <<getTotalPrice(): std::cout << "";
+	if (userType != 's') std::cout << std::setw(20) << shop->getName();
+	if (userType == 'c')
+		std::cout << std::setw(15) << getTotalPrice();
+	if (userType == 'v')
+		std::cout << std::setw(20) << shop->getLocation().getAddress();
+	userType == 's' ? std::cout << std::setw(20) << customer->getName() : std::cout << "";
+	if (userType == 'v')
+		std::cout << std::setw(20) << customer->getLocation().getAddress();
+	if (userType!= 'v') 
+		std::cout << std::setw(20) << (paymentStatus == true ? "Paid" : "Pending")
+		<< std::setw(20) << getStatus();
+	if (userType != 'c') {
+		std::cout << std::setw(15) << deliveryTime;
+		if (userType != 'v')
+			std::cout << getTotalPrice();
+	}
 	std::cout << '\n';
 }
 
@@ -186,6 +207,8 @@ std::ostream& operator<<(std::ostream& output, const Order::Status& status)
 		break;
 	case Order::Preparing: s = "Preparing";
 		break;
+	case Order::VolunteerFound:  s = "Volunteer Found";
+		break;
 	case Order::Delivering: s = "Delivering";
 		break;
 	case Order::Complete: s = "Complete";
@@ -193,6 +216,11 @@ std::ostream& operator<<(std::ostream& output, const Order::Status& status)
 	}
 	output << s;
 	return output;
+}
+
+bool operator<(const std::shared_ptr<Order> lhs, const std::shared_ptr<Order> rhs)
+{
+	return lhs->deliveryTime < rhs->deliveryTime;
 }
 
 void Order::setPreparationStatus(int num)
@@ -206,4 +234,14 @@ bool Order::isReady()
 {
 	return std::find(preparationStatus.begin(),
 		preparationStatus.end(), false) == preparationStatus.end();
+}
+
+void Order::setReward(double reward) 
+{
+	this->reward = reward;
+}
+
+double Order::getReward()
+{
+	return this->reward;
 }

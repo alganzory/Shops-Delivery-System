@@ -202,10 +202,9 @@ void ShopOwnerFlow::mainMenu()
 void ShopOwnerFlow::allOrders(bool pendingOnly)
 {
 	
-	const std::string status[] = { "Pending","Preparing","Delivering","Complete" };
 	while (true)
 	{
-		if (currentSO->orders.size() == 0)
+		if (currentSO->orders.empty())
 		{
 			Helper::dLine();
 			std::cout << "No Order Yet." << std::endl;
@@ -214,7 +213,7 @@ void ShopOwnerFlow::allOrders(bool pendingOnly)
 		}
 		Helper::dLine(110);
 		std::cout << std::setw(4) << "No." << std::setw(20) << "Customer Name"
-			<< std::setw(20) << "Payment status" << std::setw(15) << "Status"
+			<< std::setw(20) << "Payment status" << std::setw(20) << "Status"
 			<<std::setw(15)<< "Delivery Time" <<  "Total Price (RM)" << std::endl;
 		Helper::line(110);
 		std::vector <std::shared_ptr<Order> > sortedOrder;
@@ -225,10 +224,10 @@ void ShopOwnerFlow::allOrders(bool pendingOnly)
 		{
 			if (pendingOnly) {
 
-				if ((currentSO->orders[i]->getStatus() <= Order::Preparing))
+				if ((currentSO->orders[i]->getStatus() != Order::Complete))
 					sortedOrder.push_back(currentSO->orders[i]);
 				else
-					continue;
+					continue;	
 			}
 
 			std::cout << std::setw(4) << i + 1;
@@ -276,7 +275,50 @@ void ShopOwnerFlow::allOrders(bool pendingOnly)
 
 }
 
-void ShopOwnerFlow::viewOrder(std::shared_ptr<Order> order)
+void ShopOwnerFlow::assignVolunteer(const std::shared_ptr<Order>& order)
+{
+	while (true) {
+		std::cout << "Assign a Volunteer for this Order";
+		Helper::line(80);
+		std::cout << "Order time: " << order->getDeliveryTime()
+			<< "Customer location: " << order->getDlvryAddress()
+			<< '\n';
+		Helper::dLine(80);
+		auto avlblVol = findAvailableVolunteers(order->getDeliveryTime());
+
+		if (avlblVol.empty())
+		{
+			std::cout << "No available volunteers at this time, you will be directed...";
+			mainMenu();
+			break;
+		}
+
+		std::cout << std::setw(22) << "Name"
+			<< std::setw(25) << "Location"
+			<< "Available Times"
+			<< '\n';
+		Helper::line(80);
+
+		for (int i = 0; i < avlblVol.size(); i++)
+		{
+			std::cout << i + 1 << "-";
+			avlblVol[i]->display();
+		}
+
+		Helper::line(80);
+		std::cout << "Choose a volunteer to assign to this order or press B to go back: ";
+		int choice = Helper::readChoice(1, avlblVol.size(), "Bb");
+
+		if (choice == 'B' || choice == 'b') break;
+		order->setStatus(Order::VolunteerFound);
+		order->setDelivery(avlblVol[choice - 1]);
+		avlblVol[choice - 1]->addOrder(order);
+		std::cout << "Volunteer assigned and notified, you will be sent back...\n";
+		break;
+	}
+}
+
+void ShopOwnerFlow::viewOrder(const std::shared_ptr<Order>& order)
 {
 	while (true) {
 		Helper::dLine(70);
@@ -296,13 +338,16 @@ void ShopOwnerFlow::viewOrder(std::shared_ptr<Order> order)
 		order->display();
 		Helper::line(70);
 
+		bool preparationDone = false;
 		//-> if the order is pending:
-		if (order->getDelivery() == nullptr)
+		if (order->isReady() && order->getDelivery() == nullptr) {
 			std::cout << "Assign a volunteer (A), ";
-
+			preparationDone = true;
+		}
+		
 		if (order->getStatus() <= Order::Preparing)
 			std::cout << "Cancel the order (C), "
-			<< ", preparation list (S), ";
+			<< "preparation list (S), ";
 
 		std::cout << "Go back (B) ?\n";
 		Helper::line(60);
@@ -310,8 +355,10 @@ void ShopOwnerFlow::viewOrder(std::shared_ptr<Order> order)
 
 		int action{};
 		if (order->getStatus() <= Order::Preparing)
-			action = (order->getDelivery() == nullptr) ?
-			Helper::readChoice(0, 0, "aABbCcSs") : Helper::readChoice(0, 0, "BbCcSs");
+			action = (preparationDone) ?
+			Helper::readChoice(0, 0, "aABbCcSs") :
+			Helper::readChoice(0, 0, "BbCcSs");
+		
 		else action = Helper::readChoice(0, 0, "Bb");
 
 		if (action == 'B' || action == 'b') {
@@ -319,7 +366,8 @@ void ShopOwnerFlow::viewOrder(std::shared_ptr<Order> order)
 		}
 
 		else if (action == 'A' || action == 'a') {
-			//- assign volunteer: releaseOrder();
+			assignVolunteer(order);
+			continue;
 		}
 		else if (action == 'C' || action == 'c') {
 			order->cancelOrder();
@@ -358,5 +406,12 @@ void ShopOwnerFlow::todoList(std::shared_ptr<Order>order)
 			order->setStatus(Order::Preparing);
 		}
 	}
+}
+
+std::vector<std::shared_ptr<Volunteer>> ShopOwnerFlow::findAvailableVolunteers(double time)
+{
+	std::vector<std::shared_ptr<Volunteer>> availableVolunteers;
+	availableVolunteers.reserve(currentSO->registeredVolunteers.size());
+	return V_List::ALL_VOLUNTEERS;
 }
 

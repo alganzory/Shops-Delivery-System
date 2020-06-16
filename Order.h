@@ -17,10 +17,13 @@ public:
 	{
 		Pending,  // the initial state of the order, the shop owner did not deal with it yet
 		Preparing, // once the shop owner starts preparing the order (the todo check list)
+		VolunteerFound, // once a volunteer is Assigned
 		Delivering, // once a volunteer chooses to deliver
 		Complete // once the volunteer is done delivering the order
 	};
 	void cancelOrder();
+	std::string getDlvryAddress() const;
+	std::string getCustomerName() const;
 private:
 	std::vector <std::pair<std::shared_ptr<Item>, int> > items;
 	std::shared_ptr<Customer> customer;
@@ -33,6 +36,7 @@ private:
 
 	Status orderStatus; // this is the status of each order 
 	std::vector<bool> preparationStatus;
+	double reward;
 public:
 	Order();
 	Order(std::shared_ptr<Customer> customer, std::shared_ptr<Shop> shop);
@@ -62,7 +66,9 @@ public:
 	friend std::ostream& operator << (std::ostream& output, const Order::Status& status);
 	bool isReady();
 	void setPreparationStatus(int num);
-
+	friend bool operator < (const std::shared_ptr <Order> lhs, const std::shared_ptr <Order> rhs);
+	void setReward(double);
+	double getReward();
 };
 
 #endif
