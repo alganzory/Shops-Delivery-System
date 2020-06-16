@@ -14,7 +14,14 @@ std::shared_ptr<Order> VolunteerFlow::currentOrder = nullptr;
 void VolunteerFlow::ongoingOrder()
 {
 	while (true) {
+		std::cout << "Ongoing Order:\n";
 		Helper::dLine(110);
+		if (currentOrder == nullptr)
+		{
+			std::cout << "No ongoing orders, you will be directed back to the main menu\n";
+			mainMenu();
+			break;
+		}
 		std::cout << std::setw(18) << "Shop"
 			<< std::setw(15) << "Shop Address"
 			<< std::setw(20) << "Order's Destination"
@@ -22,14 +29,22 @@ void VolunteerFlow::ongoingOrder()
 			<< '\n';
 		Helper::line(110);
 		currentOrder->summary('v');
+		Helper::line(110);
+		std::cout << "Order Total Price: " << currentOrder->getTotalPrice() << "\n";
+		std::cout << "Payment Status: " << currentOrder->getPaymentStatus() << "\n";
+		std::cout << "Customer's name: " << currentOrder->getCustomerName() << "\n";
+		Helper::line(110);
 		std::cout << "Do you want to hand over the order (H) "
 			<< "or go back (B) ?\n";
 		int option = Helper::readChoice(0, 0, "HhBb");
 		if (option == 'B' || option == 'b') {
 			break;
 		}
-		else if (option == 'H' || option == 'h') {
+		if (option == 'H' || option == 'h') {
 			currentOrder->setStatus(Order::Complete);
+			currentOrder = nullptr;
+			std::cout << "Thanks for serving the community...\n";
+			break;
 		}
 	}
 }
@@ -180,7 +195,8 @@ void VolunteerFlow::viewOrder(const std::shared_ptr<Order>& order)
 		{
 			order->setStatus(Order::Delivering);
 			currentOrder = order;
-			std::cout << "Delivering this order \n";
+			ongoingOrder();
+
 		}
 		// this function will display the order summary according to the information useful for
 		// the volunteer, like the address of the shop and the customer
