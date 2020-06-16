@@ -1,5 +1,7 @@
 
 #include"Volunteer.h"
+
+#include <iomanip>
 #include<memory>
 
 #include "VolunteerFlow.h"
@@ -77,6 +79,14 @@ void Volunteer::welcome()
 {
     VolunteerFlow::currentVolunteer = shared_from_this();
     VolunteerFlow::mainMenu();
+}
+
+void Volunteer::display()
+{
+    std::cout << std::setw(20) << name
+        << std::setw(25) << location.getAddress()
+        << availableTimes.first << " - " << availableTimes.second
+        << "\n";
 }
 
 
