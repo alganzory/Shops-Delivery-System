@@ -277,13 +277,45 @@ void ShopOwnerFlow::allOrders(bool pendingOnly)
 
 void ShopOwnerFlow::assignVolunteer(const std::shared_ptr<Order>& order)
 {
-	// finding available volunteers
-	auto availableVol = findAvailableVolunteers(order->getDeliveryTime());
-	// displaying the list of available volunteers
-	// prompting the shop owner to choose one volunteer
-	// the volunteer gets the order in his list of orders
-	// the order gets the volunteer as the delivery
-	// the order state changes to volunteerFound
+	while (true) {
+		std::cout << "Assign a Volunteer for this Order";
+		Helper::line(80);
+		std::cout << "Order time: " << order->getDeliveryTime()
+			<< "Customer location: " << order->getDlvryAddress()
+			<< '\n';
+		Helper::dLine(80);
+		auto avlblVol = findAvailableVolunteers(order->getDeliveryTime());
+
+		if (avlblVol.empty())
+		{
+			std::cout << "No available volunteers at this time, you will be directed...";
+			mainMenu();
+			break;
+		}
+
+		std::cout << std::setw(22) << "Name"
+			<< std::setw(25) << "Location"
+			<< "Available Times"
+			<< '\n';
+		Helper::line(80);
+
+		for (int i = 0; i < avlblVol.size(); i++)
+		{
+			std::cout << i + 1 << "-";
+			avlblVol[i]->display();
+		}
+
+		Helper::line(80);
+		std::cout << "Choose a volunteer to assign to this order or press B to go back: ";
+		int choice = Helper::readChoice(1, avlblVol.size(), "Bb");
+
+		if (choice == 'B' || choice == 'b') break;
+		order->setStatus(Order::VolunteerFound);
+		order->setDelivery(avlblVol[choice - 1]);
+		avlblVol[choice - 1]->addOrder(order);
+		std::cout << "Volunteer assigned and notified, you will be sent back...\n";
+		break;
+	}
 }
 
 void ShopOwnerFlow::viewOrder(const std::shared_ptr<Order>& order)
