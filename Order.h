@@ -36,6 +36,7 @@ private:
 
 	Status orderStatus; // this is the status of each order 
 	std::vector<bool> preparationStatus;
+	double reward;
 public:
 	Order();
 	Order(std::shared_ptr<Customer> customer, std::shared_ptr<Shop> shop);
@@ -66,6 +67,8 @@ public:
 	bool isReady();
 	void setPreparationStatus(int num);
 	friend bool operator < (const std::shared_ptr <Order> lhs, const std::shared_ptr <Order> rhs);
+	void setReward(double);
+	double getReward();
 };
 
 #endif

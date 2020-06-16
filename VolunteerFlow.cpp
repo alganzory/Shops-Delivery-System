@@ -14,6 +14,7 @@ std::shared_ptr<Order> VolunteerFlow::currentOrder = nullptr;
 void VolunteerFlow::ongoingOrder()
 {
 	while (true) {
+		system("CLS");
 		std::cout << "Ongoing Order:\n";
 		Helper::dLine(110);
 		if (currentOrder == nullptr)
@@ -42,6 +43,11 @@ void VolunteerFlow::ongoingOrder()
 		}
 		if (option == 'H' || option == 'h') {
 			currentOrder->setStatus(Order::Complete);
+			double reward = currentOrder->getReward();
+			if (reward > 0) {
+				currentVolunteer->getReward(reward);
+				std::cout << "You have been tipped: " << reward << "\n";
+			}
 			currentOrder = nullptr;
 			std::cout << "Thanks for serving the community...\n";
 			break;

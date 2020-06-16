@@ -12,6 +12,7 @@
 void Order::cancelOrder()
 {
 	customer->removeOrder(shared_from_this());
+	customer->setBalance(customer->getBalance() + reward);
 	shop->removeOrder(shared_from_this());
 	for (auto& item : items) {
 		removeItem(item);
@@ -233,4 +234,14 @@ bool Order::isReady()
 {
 	return std::find(preparationStatus.begin(),
 		preparationStatus.end(), false) == preparationStatus.end();
+}
+
+void Order::setReward(double reward) 
+{
+	this->reward = reward;
+}
+
+double Order::getReward()
+{
+	return this->reward;
 }
