@@ -408,7 +408,7 @@ void ShopOwnerFlow::todoList(std::shared_ptr<Order>order)
 	}
 }
 
-std::vector<std::shared_ptr<Volunteer>> ShopOwnerFlow::findAvailableVolunteers(double time)
+std::vector<std::shared_ptr<Volunteer>> ShopOwnerFlow::findAvailableVolunteers(Time time)
 {
 	std::vector<std::shared_ptr<Volunteer>> availableVolunteers;
 	availableVolunteers.reserve(currentSO->registeredVolunteers.size());

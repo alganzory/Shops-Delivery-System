@@ -15,6 +15,6 @@ public:
 	static void assignVolunteer(const std::shared_ptr<Order>& order);
 	static void viewOrder(const std::shared_ptr<Order>& order);
 	static void todoList(std::shared_ptr<Order>order);
-	static std::vector<std::shared_ptr<Volunteer>> findAvailableVolunteers(double time);
+	static std::vector<std::shared_ptr<Volunteer>> findAvailableVolunteers(Time time);
 };
 

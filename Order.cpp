@@ -100,9 +100,14 @@ bool Order::getDeliveryStatus()
 	return deliveryStatus;
 }
 
-void Order::setDeliveryTime(int deliveryTime)
+void Order::setDeliveryTime(int hour,int minute)
 {
-	this->deliveryTime = deliveryTime;
+	try {
+		this->deliveryTime.setTime(hour, minute);
+	}
+	catch (const char* ){
+		throw;
+	}
 }
 
 bool Order::getPaymentStatus()
@@ -110,7 +115,7 @@ bool Order::getPaymentStatus()
 	return paymentStatus;
 }
 
-int Order::getDeliveryTime()
+Time Order::getDeliveryTime()
 {
 	return deliveryTime;
 }
@@ -151,9 +156,10 @@ void Order::summary(char userType)
 		std::cout << std::setw(20) << (paymentStatus == true ? "Paid" : "Pending")
 		<< std::setw(20) << getStatus();
 	if (userType != 'c') {
-		std::cout << std::setw(15) << deliveryTime;
+		std::cout  << deliveryTime;
 		if (userType != 'v')
-			std::cout << getTotalPrice();
+			std::cout << std::setw(17)<<std::right<<getTotalPrice();
+		std::cout << std::left;
 	}
 	std::cout << '\n';
 }
