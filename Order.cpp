@@ -58,13 +58,32 @@ void Order::addItem(std::shared_ptr<Item> item, int quantity) {
 
 }
 
+void Order::addItem(int itemIdx, int quantity)
+{
+	//// we get the item by its index from the shop list of items
+	auto found = std::find_if(items.begin(), items.end(), [itemIdx, this](const std::pair<std::shared_ptr<Item>, int>& rhs) {
+		return rhs.first->getName() == shop->items[itemIdx]->getName();
+		});
+	if (found != items.end()) {
+		found->second += quantity;
+	}
+	else { //add them into items
+		items.push_back({ shop->items[itemIdx],quantity });
+		preparationStatus.push_back(false);
+		itemsIndices.push_back(itemIdx);
+	}
+}
+
 void Order::removeItem(std::pair<std::shared_ptr<Item>, int>& itemReq)
 {
 
 	const auto itemPosition = find(items.begin(), items.end(), itemReq);
+	int distance = itemPosition - items.begin();
 	items.erase(itemPosition);
+	itemsIndices.erase(itemsIndices.begin() + distance);
 
 }
+
 void Order::setTotalPrice(double totalPrice) {
 	this->totalPrice = totalPrice;
 }
@@ -74,7 +93,6 @@ double Order::getTotalPrice() {
 	for (int i = 0; i < items.size(); i++) {
 		totalPrice += items[i].second * items[i].first->getPrice();
 	}
-
 	return totalPrice;
 }
 
@@ -216,6 +234,25 @@ std::ostream& operator<<(std::ostream& output, const Order::Status& status)
 	}
 	output << s;
 	return output;
+}
+
+std::istream& operator>>(std::istream& input, Order::Status& status)
+{
+	std::string s;
+	input >> s;
+
+	if (s == "Pending")
+		status = Order::Pending;
+	else if (s == "Preparing")
+		status = Order::Preparing;
+	else if (s == "Volunteer Found")
+		status = Order::VolunteerFound;
+	else if (s == "Delivering")
+		status = Order::Delivering;
+	else 
+		status = Order::Complete;
+	
+	return input;
 }
 
 bool operator<(const std::shared_ptr<Order> lhs, const std::shared_ptr<Order> rhs)

@@ -382,7 +382,9 @@ void CustomerFlow::viewShop()
 		else {
 			std::cout << "Quantity: ";
 			itemQuantity = Helper::readChoice(0, shopItems[itemChoice - 1]->getInStock());
-			currentCustomer->addToCart(shopItems[itemChoice - 1], itemQuantity);
+
+			currentCustomer->cart->setShop(currentShop);
+			currentCustomer->cart->addItem(itemChoice - 1, itemQuantity);
 		}
 		
 		

@@ -59,7 +59,7 @@ void User::setLocation(const Location location)
 	this->location = location;
 }
 
-void User::addOrder(std::shared_ptr<Order> newOrder)
+void User::addOrder(const std::shared_ptr<Order>& newOrder)
 {
 	orders.push_back(newOrder);
 }
@@ -84,4 +84,9 @@ User::~User()
 bool operator==(const User& lhs, const User& rhs)
 {
 	return lhs.username == rhs.username;
+}
+
+bool operator==(const std::shared_ptr<User>& lhs, const std::string &username)
+{
+	return lhs->username == username;
 }

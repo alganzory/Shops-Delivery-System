@@ -26,6 +26,7 @@ public:
 	std::string getCustomerName() const;
 private:
 	std::vector <std::pair<std::shared_ptr<Item>, int> > items;
+	std::vector <int> itemsIndices;
 	std::shared_ptr<Customer> customer;
 	std::shared_ptr<Shop> shop;
 	double totalPrice;
@@ -41,6 +42,7 @@ public:
 	Order();
 	Order(std::shared_ptr<Customer> customer, std::shared_ptr<Shop> shop);
 	void addItem(std::shared_ptr<Item> item, int quantity);
+	void addItem(int itemIdx, int quantity);
 	void removeItem(std::pair<std::shared_ptr<Item>, int>& itemReq);
 	void setTotalPrice(double totalPrice);
 	double getTotalPrice();
@@ -64,11 +66,13 @@ public:
 	void setStatus(Status newStatus);
 
 	friend std::ostream& operator << (std::ostream& output, const Order::Status& status);
+	friend std::istream& operator>>(std::istream& input, Status& status);
 	bool isReady();
 	void setPreparationStatus(int num);
 	friend bool operator < (const std::shared_ptr <Order> lhs, const std::shared_ptr <Order> rhs);
 	void setReward(double);
 	double getReward();
+	friend class O_List;
 };
 
 #endif

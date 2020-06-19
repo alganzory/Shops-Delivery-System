@@ -36,7 +36,8 @@ public:
 	void setLocation(const Location location);
 	virtual void setInfo(std::string name, int age, double balance, Location location) = 0;
 	friend bool operator==(const User& lhs, const User& rhs);
-	void addOrder(std::shared_ptr<Order> newOrder);
+	friend bool operator==(const std::shared_ptr<User> & lhs, const std::string& username);
+	void addOrder(const std::shared_ptr<Order>& newOrder);
 
 	void removeOrder(const std::shared_ptr <Order>& order);
 
