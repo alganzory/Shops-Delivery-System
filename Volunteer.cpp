@@ -14,7 +14,7 @@ void Volunteer::setTransport(std::string& transport) {
 }
 
 void Volunteer::setAvailableTimes(std::pair <int, int>availableTimes) {
-    this->availableTimes = availableTimes;
+    this->availableTimes = std::pair < Time,Time>(Time(availableTimes.first, 0), Time(availableTimes.second, 0));
 }
 
 std::string Volunteer::getTransport() const {
@@ -44,7 +44,7 @@ void Volunteer::setInfo(std::string name, int age, double balance, Location loca
 
 }
 
-bool Volunteer::isAvailable(int time) {
+bool Volunteer::isAvailable(Time time) {
     bool available = true;
     if (time > availableTimes.first && time < availableTimes.second) {
         return available;
@@ -85,7 +85,8 @@ void Volunteer::display()
 {
     std::cout << std::setw(20) << name
         << std::setw(25) << location.getAddress()
-        << availableTimes.first << " - " << availableTimes.second
+        << availableTimes.first << " - " 
+        << availableTimes.second
         << "\n";
 }
 

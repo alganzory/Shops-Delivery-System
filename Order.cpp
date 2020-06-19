@@ -4,7 +4,7 @@
 #include <iomanip>
 
 #include "Helper.h"
-#include "volunteer.h"
+#include "Volunteer.h"
 #include "Customer.h"
 #include "Shop.h"
 
@@ -118,9 +118,14 @@ bool Order::getDeliveryStatus()
 	return deliveryStatus;
 }
 
-void Order::setDeliveryTime(int deliveryTime)
+void Order::setDeliveryTime(int hour,int minute)
 {
-	this->deliveryTime = deliveryTime;
+	try {
+		this->deliveryTime.setTime(hour, minute);
+	}
+	catch (const char* ){
+		throw;
+	}
 }
 
 bool Order::getPaymentStatus()
@@ -128,7 +133,7 @@ bool Order::getPaymentStatus()
 	return paymentStatus;
 }
 
-int Order::getDeliveryTime()
+Time Order::getDeliveryTime()
 {
 	return deliveryTime;
 }
@@ -186,6 +191,10 @@ void Order::summary(char userType)
 		else if (customer->getHealthStatus() == Customer::Infected) {
 			std::cout << "Infected";
 		}
+		std::cout  << deliveryTime;
+		if (userType != 'v')
+			std::cout << std::setw(17)<<std::right<<getTotalPrice();
+		std::cout << std::left;
 	}
 	std::cout << '\n';
 }

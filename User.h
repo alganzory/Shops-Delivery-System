@@ -6,6 +6,7 @@
 
 #include "Location.h"
 #include "Order.h"
+#include "Time.h"
 
 class User
 {

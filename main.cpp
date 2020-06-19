@@ -1,14 +1,12 @@
 
 #include "UserFlow.h"
 #include "SH_List.h"
-#include <ctime>
-#include <chrono>
-
 #include "O_List.h"
+#include "Time.h"
 
 int main()
 {
-	std::cout << std::left;
+	Time::calcLocalTime();
 	SO_List::filePath = "shlist.txt";
 	SO_List::readFromFile();
 	

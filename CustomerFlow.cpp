@@ -42,25 +42,23 @@ void CustomerFlow::checkout()
 		currentCustomer->cart->display();
 		Helper::line(70);
 		// ask for delivery time
-		std::cout << "Enter delivery time in (HH:MM) format or Press B to go back to cart: ";
-		std::string input;
-		getline(std::cin, input);
-		std::stringstream inputStream(input);
-		int hour{};
-		char character;
-		int minutes{};
-		bool isTime = true;
-		inputStream >> hour;
-		if (inputStream.fail())
-		{
-			isTime = false;
+
+		while (true) {
+			std::cout << "Enter delivery time in (HH MM) format or Press B to go back to cart: ";
+			int hour = 0;
+			int min = 0;
+			std::cin >> hour >> min;
+			std::cin.ignore();
+		
+			try {
+				currentCustomer->cart->setDeliveryTime(hour, min);
+				break;
+			}
+			catch (const char* errorMsg) {
+				std::cout << errorMsg << std::endl;
+
+			}
 		}
-
-		inputStream >> character;
-		if (isTime) inputStream >> minutes;
-
-		if (!isTime) break;
-		currentCustomer->cart->setDeliveryTime(hour);
 		if (currentCustomer->getHealthStatus() >= Customer::ShowSymptoms) {
 			std::cout << "Do you want a contactless delivery? Yes(Y) or No(N) \n";
 			int delivery = Helper::readChoice(0, 0, "YyNn");

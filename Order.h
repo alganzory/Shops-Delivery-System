@@ -3,6 +3,7 @@
 #include <vector>
 #include <memory>
 #include "Item.h"
+#include "Time.h"
 
 class Shop;
 class Customer;
@@ -34,7 +35,7 @@ private:
 	bool paymentStatus;
 	std::shared_ptr<Volunteer> delivery;
 	bool deliveryStatus;
-	int deliveryTime;
+	Time deliveryTime;
 
 	Status orderStatus; // this is the status of each order 
 	std::vector<bool> preparationStatus;
@@ -53,9 +54,9 @@ public:
 	void setDeliveryStatus(bool deliveryStatus);
 	std::shared_ptr<Volunteer> getDelivery();
 	bool getDeliveryStatus();
-	void setDeliveryTime(int deliveryTime);
+	void setDeliveryTime(int hour,int minute);
 	bool  getPaymentStatus();
-	int getDeliveryTime();
+	Time getDeliveryTime();
 	void display(bool showPreparationStatus = false);
 	void summary(char userType = 'c');
 	int getOrderSize();
