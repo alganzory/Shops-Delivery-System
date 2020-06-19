@@ -8,8 +8,14 @@
 #include "User.h"
 
 std::shared_ptr <ShopOwner> ShopOwnerFlow::currentSO;
-bool sortByDeliveryTime(const std::shared_ptr<Order> &lhs, const std::shared_ptr<Order> rhs) { return lhs->getDeliveryTime() < rhs->getDeliveryTime(); }
 
+/*bool sortByHealthStatus(const std::shared_ptr<Order>& lhs, const std::shared_ptr<Order>& rhs) {
+	return (lhs->customer->getHealthStatus() < rhs->customer->getHealthStatus());
+}*/
+
+bool sortByDeliveryTime(const std::shared_ptr<Order> &lhs, const std::shared_ptr<Order> rhs) { 
+	return lhs->getDeliveryTime() < rhs->getDeliveryTime(); 
+}
 
 void ShopOwnerFlow::editItem(const std::shared_ptr<Item> item)
 {
@@ -214,10 +220,10 @@ void ShopOwnerFlow::allOrders(bool pendingOnly)
 		Helper::dLine(110);
 		std::cout << std::setw(4) << "No." << std::setw(20) << "Customer Name"
 			<< std::setw(20) << "Payment status" << std::setw(20) << "Status"
-			<<std::setw(15)<< "Delivery Time" <<  "Total Price (RM)" << std::endl;
+			<<std::setw(15)<< "Delivery Time" <<  "Total Price (RM)" 
+			<< std::setw(20) << "Customer's Health Status" << std::endl;
 		Helper::line(110);
 		std::vector <std::shared_ptr<Order> > sortedOrder;
-
 
 		std::sort(currentSO->orders.begin(), currentSO->orders.end(), sortByDeliveryTime);
 		for (int i = 0; i < currentSO->orders.size(); i++)

@@ -34,7 +34,7 @@ void C_List::readCustomers()
 	int age=0;
 	double balance=0.00;
 	std::string address;
-	std::string healthStatus;
+	std::string health;
 	std::string blank;
 
 	do
@@ -51,13 +51,23 @@ void C_List::readCustomers()
 		dataFile >> balance;
 		dataFile.ignore();
 		std::getline(dataFile, address);
-		std::getline(dataFile, healthStatus);
+		std::getline(dataFile, health);
 		std::shared_ptr<Customer> customer(std::make_shared <Customer>(username, password));
 		customer->setName(name);
 		customer->setAge(age);
 		customer->setBalance(balance);
 		customer->setLocation(Location (address));
-		customer->setHealthStatus(healthStatus);
+		//check equals to what
+		if (health == "H"||health=="h") {
+			customer->setHealthStatus(Customer::Healthy);
+		}
+		else if (health == "S"||health=="s") {
+			customer->setHealthStatus(Customer::ShowSymptoms);
+		}
+		else if (health == "I" || health == "i") {
+			customer->setHealthStatus(Customer::Infected);
+		}
+		
 		addCustomer(customer);
 		std::getline(dataFile, blank);
 	} while (username != "\0");
@@ -81,3 +91,17 @@ void C_List::writeCustomer()
 	}
 	dataFile.close();
 }
+
+/*std::istream& operator >>(std::istream& input, const Customer::HealthStatus& health) {
+	//const char* i = "0";
+	switch (health)
+	{
+	case Customer::Healthy: input >> health;
+		break;
+	case Customer::ShowSymptoms: input >> health;
+		break;
+	case Customer::Infected:  input >> health;
+		break;
+	}
+	return input;
+}*/

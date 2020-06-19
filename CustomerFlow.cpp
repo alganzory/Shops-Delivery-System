@@ -6,7 +6,6 @@
 #include "Helper.h"
 #include "SH_List.h"
 
-
 std::shared_ptr<Customer> CustomerFlow::currentCustomer;
 std::shared_ptr<Shop> CustomerFlow::currentShop;
 
@@ -62,6 +61,19 @@ void CustomerFlow::checkout()
 
 		if (!isTime) break;
 		currentCustomer->cart->setDeliveryTime(hour);
+		if (currentCustomer->getHealthStatus() >= Customer::ShowSymptoms) {
+			std::cout << "Do you want a contactless delivery? Yes(Y) or No(N) \n";
+			int delivery = Helper::readChoice(0, 0, "YyNn");
+			if (delivery == 'Y' || delivery == 'y') {
+				std::cout << "You will have a contactless delivery. \n";
+				currentCustomer->cart->setContactlessDlvr(true);
+				
+			} 
+			else {
+				std::cout << "You will not have a contactless delivery.\n";
+				currentCustomer->cart->setContactlessDlvr(false);
+			}
+		}
 		Helper::line(80);
 		// place or cancel
 		std::cout << "All set, press P to proceed with the checkout or Press B to go back to cart\n";
@@ -70,7 +82,7 @@ void CustomerFlow::checkout()
 		int choice = Helper::readChoice(0, 0, "PBbp");
 		if (choice == 'B' || choice == 'b') break;
 		if (currentCustomer->getBalance() < currentCustomer->cart->getTotalPrice())
-		{
+		{ 
 			std::cout << "Insufficient balance, taking you back to cart...";
 			break;
 		}

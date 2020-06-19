@@ -24,6 +24,7 @@ public:
 	void cancelOrder();
 	std::string getDlvryAddress() const;
 	std::string getCustomerName() const;
+
 private:
 	std::vector <std::pair<std::shared_ptr<Item>, int> > items;
 	std::shared_ptr<Customer> customer;
@@ -37,6 +38,7 @@ private:
 	Status orderStatus; // this is the status of each order 
 	std::vector<bool> preparationStatus;
 	double reward;
+	bool contactless;
 public:
 	Order();
 	Order(std::shared_ptr<Customer> customer, std::shared_ptr<Shop> shop);
@@ -69,6 +71,10 @@ public:
 	friend bool operator < (const std::shared_ptr <Order> lhs, const std::shared_ptr <Order> rhs);
 	void setReward(double);
 	double getReward();
+	friend class VolunteerFlow;
+	friend class ShopOwnerFlow;
+	void setContactlessDlvr(bool contactless);
+	bool getContactlessDlvr();
 };
 
 #endif
