@@ -170,8 +170,22 @@ void Order::summary(char userType)
 		<< std::setw(20) << getStatus();
 	if (userType != 'c') {
 		std::cout << std::setw(15) << deliveryTime;
-		if (userType != 'v')
+		if (userType != 'v') {
+			std::cout << std::setw(20);
 			std::cout << getTotalPrice();
+		}
+	}
+	if (userType != 'c') {
+		//std::cout << std::setw(20);
+		if (customer->getHealthStatus() == Customer::Healthy) {
+			std::cout << "Healthy";
+		}
+		else if (customer->getHealthStatus() == Customer::ShowSymptoms) {
+			std::cout << "Has symptoms";
+		}
+		else if (customer->getHealthStatus() == Customer::Infected) {
+			std::cout << "Infected";
+		}
 	}
 	std::cout << '\n';
 }
@@ -281,4 +295,12 @@ void Order::setReward(double reward)
 double Order::getReward()
 {
 	return this->reward;
+}
+
+void Order::setContactlessDlvr(bool contactless) {
+	this->contactless = contactless;
+}
+
+bool Order::getContactlessDlvr() {
+	return contactless;
 }

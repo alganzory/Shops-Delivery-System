@@ -21,4 +21,5 @@ class C_List
 		static void removeCustomer(std::shared_ptr<Customer> customer);
 		static void readCustomers();
 		static void writeCustomer();
+		friend std::istream& operator >>(std::istream& input, const Customer::HealthStatus& health);
 };

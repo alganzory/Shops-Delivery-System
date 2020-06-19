@@ -4,28 +4,37 @@
 
 #include "CustomerFlow.h"
 #include "Shop.h"
+#include "Helper.h"
 
-Customer::Customer(std::string username, std::string password):User(username,password)
+Customer::Customer(std::string username, std::string password) :User(username, password)
 {
 	cart = std::make_shared<Order>();
 }
 void Customer::setHealthStatus(HealthStatus healthStatus)
 {
-	this->healthStatus=healthStatus;
+	this->healthStatus = healthStatus;
 }
-Customer::HealthStatus Customer::getHealthStatus()
+Customer::HealthStatus Customer::getHealthStatus() const
 {
 	return healthStatus;
 }
 void Customer::setInfo(std::string name, int age, double balance, Location location)
 {
-	this->name=name;
-	this->age=age;
-	this->balance=balance;
-	this->location=location;
+	this->name = name;
+	this->age = age;
+	this->balance = balance;
+	this->location = location;
 	std::cout << "Enter your health status (Healthy (H), Showing Symptoms (S) or Infected (I)\n";
-
-	//getline (std::cin, this->healthStatus);
+	int health = Helper::readChoice(0, 0, "HhSsIi");
+	if (health == 'H' || health == 'h') {
+		setHealthStatus(HealthStatus::Healthy);
+	}
+	else if (health == 'S' || health == 's') {
+		setHealthStatus(HealthStatus::ShowSymptoms);
+	}
+	else if (health == 'I' || health == 'i') {
+		setHealthStatus(HealthStatus::Infected);
+	}
 }
 void Customer::placeOrder()
 {
@@ -34,7 +43,7 @@ void Customer::placeOrder()
 	balance -= cart->getTotalPrice();
 	cart = std::make_shared<Order>();
 }
-void Customer::rewardVolunteer (std::shared_ptr <Volunteer> volunteer ,double reward)
+void Customer::rewardVolunteer(std::shared_ptr <Volunteer> volunteer, double reward)
 {
 	//exception check to see if there is enough balance
 	volunteer->getReward(reward);

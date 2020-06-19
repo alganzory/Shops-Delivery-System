@@ -16,12 +16,12 @@ private:
 	HealthStatus healthStatus;
 	std::vector <std::shared_ptr<Shop> > availableShops;
 	std::shared_ptr <Order> cart;
+	//bool contactless;
 public:
-	
 	Customer(std::string username, std::string password);
 	void setHealthStatus(HealthStatus health);
-	HealthStatus getHealthStatus();
-	//std::string getHealthStatus() const;
+	HealthStatus getHealthStatus() const;
+
 	void setInfo(std::string name, int age, double balance, Location location);
 	void placeOrder();
 	void rewardVolunteer(std::shared_ptr<Volunteer> volunteer, double reward);
@@ -32,6 +32,4 @@ public:
 	friend class CustomerFlow;
 	friend std::ostream& operator << (std::ostream& output, const Customer::HealthStatus& healthStatus);
 
-		
 };
-

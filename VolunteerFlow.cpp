@@ -5,7 +5,6 @@
 
 
 #include "Helper.h"
-
 std::shared_ptr<Volunteer> VolunteerFlow::currentVolunteer;
 std::shared_ptr<Order> VolunteerFlow::currentOrder = nullptr;
 
@@ -27,6 +26,7 @@ void VolunteerFlow::ongoingOrder()
 			<< std::setw(15) << "Shop Address"
 			<< std::setw(20) << "Order's Destination"
 			<< std::setw(20) << "Delivery Time"
+			<<std::setw(20)<<"Customer's Health Status"
 			<< '\n';
 		Helper::line(110);
 		currentOrder->summary('v');
@@ -35,6 +35,18 @@ void VolunteerFlow::ongoingOrder()
 		std::cout << "Payment Status: " << currentOrder->getPaymentStatus() << "\n";
 		std::cout << "Customer's name: " << currentOrder->getCustomerName() << "\n";
 		Helper::line(110);
+		if (currentOrder->customer->getHealthStatus() == Customer::ShowSymptoms) {
+			std::cout << "This customer shows symptoms of infection.";
+		}
+		else if (currentOrder->customer->getHealthStatus() == Customer::Infected) {
+			std::cout << "This customer is infected."; 
+		}
+		if (currentOrder->getContactlessDlvr()==true) {
+			std::cout << "This customer wants a contactless delivery.\n";
+		}
+		else {
+			std::cout << "This customer does not need a contactless delivery.\n";
+		}
 		std::cout << "Do you want to hand over the order (H) "
 			<< "or go back (B) ?\n";
 		int option = Helper::readChoice(0, 0, "HhBb");
@@ -65,7 +77,7 @@ void VolunteerFlow::myOrders(bool pendingOnly)
 	while (true)
 	{
 		std::sort(currentVolunteer->orders.begin(), currentVolunteer->orders.end());
-
+		
 		std::vector<std::shared_ptr<Order>> orders;
 		orders.reserve(currentVolunteer->orders.size());
 		
@@ -96,14 +108,15 @@ void VolunteerFlow::myOrders(bool pendingOnly)
 		std::cout << std::setw(4) << "No." << std::setw(20) << "Shop Name"
 			<< std::setw(20) << "Shop Address"
 			<< std::setw(20) << "Customer Address" << std::setw(15)
-			<< "Delivery Time" << std::endl;
+			<< "Delivery Time" <<std::setw(20)<<"Customer's Health Status"<< std::endl;
 		
 		Helper::line(110);
-
+		
 		for (int j = 0; j < orders.size(); j++)
 		{
 			std::cout << std::setw(4) << j + 1;
 			orders[j]->summary('v');
+
 		}
 		
 		Helper::line(110);
@@ -183,7 +196,7 @@ void VolunteerFlow::viewOrder(const std::shared_ptr<Order>& order)
 		std::cout << std::setw(20) << "Shop Name"
 			<< std::setw(20) << "Shop Address"
 			<< std::setw(20) << "Customer Address" << std::setw(15)
-			<< "Delivery Time" << std::endl;
+			<< "Delivery Time" << std::setw(20) << "Customer's Health Status" << std::endl;
 		Helper::line(110);
 		order->summary('v');
 		Helper::line(110);
