@@ -28,7 +28,7 @@ public:
     void welcome() override;
     void display();
 
-
+    friend class O_List;
     //operators overloading
     //friend
     friend class VolunteerFlow;

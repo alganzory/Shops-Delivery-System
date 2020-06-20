@@ -21,7 +21,7 @@ void Time::setTime(int hr, int m)
 {
 	if (hr < 0 || hr>24 || m < 0 || m>60)
 	{
-		throw "Invalid time.";
+		throw "Invalid time input, make sure it's in 24-hour format...";
 	}
 	hour = hr;
 	minute = m;
@@ -39,7 +39,7 @@ int Time::getMinute()
 
 std::pair<int, int> Time::getTime()
 {
-	return std::pair<int, int>(hour, minute);
+	return { hour, minute };
 }
 
 // if order time has passed the real time or not 
@@ -53,7 +53,12 @@ std::pair<int, int> Time::getTimeDiff()
 	int hourDiff = abs(minDiff / 60);
 	minDiff %= 60;
 	//if minDiff is -ve means the time is overdue.
-	return std::pair<int, int>(hourDiff, minDiff);
+	return { hourDiff, minDiff };
+}
+
+bool Time::operator==(const Time& rhs)
+{
+	return (hour == rhs.hour && minute == rhs.minute);
 }
 
 bool operator > (const Time& lhs,const Time& rhs){

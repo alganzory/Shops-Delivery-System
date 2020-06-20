@@ -6,6 +6,7 @@
 
 int main()
 {
+	std::cout <<std::left;
 	Time::calcLocalTime();
 	SO_List::filePath = "shlist.txt";
 	SO_List::readFromFile();

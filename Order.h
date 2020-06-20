@@ -61,8 +61,8 @@ public:
 	void summary(char userType = 'c');
 	int getOrderSize();
 	std::pair<std::shared_ptr<Item>, int>& getItem(int);
-	void setShop(const std::shared_ptr<Shop>& shop);
-	void setCustomer(const std::shared_ptr<Customer>& shared);
+	void setShop(std::shared_ptr<Shop> shop);
+	void setCustomer(std::shared_ptr<Customer> shared);
 	void buyItems();
 
 	Status getStatus();
@@ -72,7 +72,7 @@ public:
 	friend std::istream& operator>>(std::istream& input, Status& status);
 	bool isReady();
 	void setPreparationStatus(int num);
-	friend bool operator < (const std::shared_ptr <Order> lhs, const std::shared_ptr <Order> rhs);
+	friend bool operator < (const std::shared_ptr <Order>& lhs, const std::shared_ptr <Order>& rhs);
 	void setReward(double);
 	double getReward();
 	friend class O_List;

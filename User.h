@@ -38,9 +38,9 @@ public:
 	virtual void setInfo(std::string name, int age, double balance, Location location) = 0;
 	friend bool operator==(const User& lhs, const User& rhs);
 	friend bool operator==(const std::shared_ptr<User> & lhs, const std::string& username);
-	void addOrder(const std::shared_ptr<Order>& newOrder);
+	void addOrder(std::shared_ptr<Order> newOrder);
 
-	void removeOrder(const std::shared_ptr <Order>& order);
+	void removeOrder(std::shared_ptr <Order> order);
 
 	bool isAuth(std::string username, std::string password) const;
 	

@@ -92,7 +92,7 @@ void Shop::display()
 
 }
 
-void Shop::recieveOrder(const std::shared_ptr<Order>& cart)
+void Shop::recieveOrder(std::shared_ptr<Order> cart)
 {
 	shopOwner->addOrder(cart);
 }

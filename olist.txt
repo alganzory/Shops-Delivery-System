@@ -1,0 +1,21 @@
+shop1
+CustomerID1
+null
+10 15
+Complete
+1
+0
+10
+1 2
+2 1
+
+shop1
+CustomerID3
+Volunteer1
+8 10
+Delivering
+1
+0
+10
+0 2
+2 1

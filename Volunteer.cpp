@@ -84,7 +84,7 @@ void Volunteer::welcome()
 void Volunteer::display()
 {
     std::cout << std::setw(20) << name
-        << std::setw(25) << location.getAddress()
+        << std::setw(26) << location.getAddress()
         << availableTimes.first << " - " 
         << availableTimes.second
         << "\n";

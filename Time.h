@@ -27,5 +27,6 @@ class Time
 		}
 		friend bool operator > (const Time& lhs, const Time& rhs);
 		friend  bool operator < (const Time& lhs, const Time& rhs);
+		bool operator == (const Time& rhs);
 		friend std::ostream& operator << (std::ostream& output, Time time);
 };

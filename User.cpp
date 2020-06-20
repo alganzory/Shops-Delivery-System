@@ -59,12 +59,12 @@ void User::setLocation(const Location location)
 	this->location = location;
 }
 
-void User::addOrder(const std::shared_ptr<Order>& newOrder)
+void User::addOrder(std::shared_ptr<Order> newOrder)
 {
 	orders.push_back(newOrder);
 }
 
-void User::removeOrder(const std::shared_ptr<Order>& order)
+void User::removeOrder(std::shared_ptr <Order> order)
 {
 	orders.erase(find(orders.begin(), orders.end(), order));
 

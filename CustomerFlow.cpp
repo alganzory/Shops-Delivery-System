@@ -44,32 +44,31 @@ void CustomerFlow::checkout()
 		// ask for delivery time
 
 		while (true) {
-			std::cout << "Enter delivery time in (HH MM) format or Press B to go back to cart: ";
-			int hour = 0;
-			int min = 0;
-			std::cin >> hour >> min;
-			std::cin.ignore();
-		
+			std::cout << "Enter delivery time in (HH:MM) format or Press B to go back to cart: ";
+			std::string input;
+			getline(std::cin, input);
+			std::stringstream inputStream(input);
+			int hour{};
+			char character;
+			int minutes{};
+			bool isTime = true;
+			inputStream >> hour;
+			if (inputStream.fail())
+			{
+				isTime = false;
+			}
+
+			inputStream >> character;
+			if (isTime) inputStream >> minutes;
+
+			if (!isTime) break;
 			try {
-				currentCustomer->cart->setDeliveryTime(hour, min);
+				currentCustomer->cart->setDeliveryTime(hour, minutes);
 				break;
 			}
 			catch (const char* errorMsg) {
 				std::cout << errorMsg << std::endl;
 
-			}
-		}
-		if (currentCustomer->getHealthStatus() >= Customer::ShowSymptoms) {
-			std::cout << "Do you want a contactless delivery? Yes(Y) or No(N) \n";
-			int delivery = Helper::readChoice(0, 0, "YyNn");
-			if (delivery == 'Y' || delivery == 'y') {
-				std::cout << "You will have a contactless delivery. \n";
-				currentCustomer->cart->setContactlessDlvr(true);
-				
-			} 
-			else {
-				std::cout << "You will not have a contactless delivery.\n";
-				currentCustomer->cart->setContactlessDlvr(false);
 			}
 		}
 		Helper::line(80);
@@ -95,12 +94,30 @@ void CustomerFlow::checkout()
 			currentCustomer->cart->setReward(reward);
 			currentCustomer->balance -= reward;
 		}
+		Helper::line(80);
+		if (currentCustomer->getHealthStatus() >= Customer::ShowSymptoms) {
+			std::cout << "For your safety and the volunteer's, you will be offered contactless delivery\n"
+				<< "We wish you a speedy recovery!\n";
+			currentCustomer->cart->setContactlessDlvr(true);
+		}
+		else {
+			Helper::line(80);
+			std::cout << "Do you want a contactless delivery? Yes(Y) or No(N): ";
+			int delivery = Helper::readChoice(0, 0, "YyNn");
+			if (delivery == 'Y' || delivery == 'y') {
+				std::cout << "You will be offered contactless delivery. Stay safe! \n";
+				currentCustomer->cart->setContactlessDlvr(true);
+			}
+			else {
+				std::cout << "For your safety and the volunteer's make sure you wear a mask. Stay safe!\n";
+				currentCustomer->cart->setContactlessDlvr(false);
+			}
+		}
+		Helper::line(80);
 		currentCustomer->cart->setShop(currentShop);
-		// add to list of orders for the respective shop
 		currentShop->recieveOrder(currentCustomer->cart);
 		currentCustomer->cart->setCustomer(currentCustomer);
 		currentCustomer->cart->setPaymentStatus(true);
-		// add to list of orders
 		currentCustomer->placeOrder();
 		std::cout << "Your order has been placed successfully, you will be directed to main menu...\n";
 		mainMenu();

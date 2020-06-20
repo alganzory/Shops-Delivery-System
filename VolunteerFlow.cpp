@@ -32,23 +32,23 @@ void VolunteerFlow::ongoingOrder()
 		currentOrder->summary('v');
 		Helper::line(110);
 		std::cout << "Order Total Price: " << currentOrder->getTotalPrice() << "\n";
-		std::cout << "Payment Status: " << currentOrder->getPaymentStatus() << "\n";
+		std::cout << "Payment Status: ";
+		(currentOrder->getPaymentStatus() == true) ? std::cout << "Paid\n" : std::cout<< "Pending\n";
 		std::cout << "Customer's name: " << currentOrder->getCustomerName() << "\n";
+		std::cout << "Customer's health status: " << currentOrder->customer->getHealthStatus() << "\n";
 		Helper::line(110);
-		if (currentOrder->customer->getHealthStatus() == Customer::ShowSymptoms) {
-			std::cout << "This customer shows symptoms of infection.";
-		}
-		else if (currentOrder->customer->getHealthStatus() == Customer::Infected) {
-			std::cout << "This customer is infected."; 
-		}
+		
 		if (currentOrder->getContactlessDlvr()==true) {
-			std::cout << "This customer wants a contactless delivery.\n";
+			std::cout << "This customer needs a contactless delivery\n"
+				<< "For your safety and theirs, please hand over the order contactlessly\n";
 		}
 		else {
-			std::cout << "This customer does not need a contactless delivery.\n";
+			std::cout << "This customer does not need a contactless delivery.\n"
+				<< "For your safety and theirs, make sure you wear a mask\n";
 		}
+		Helper::line(110);
 		std::cout << "Do you want to hand over the order (H) "
-			<< "or go back (B) ?\n";
+			<< "or go back (B)?: ";
 		int option = Helper::readChoice(0, 0, "HhBb");
 		if (option == 'B' || option == 'b') {
 			break;

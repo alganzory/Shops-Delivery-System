@@ -11,12 +11,18 @@
 
 void Order::cancelOrder()
 {
+	while (!items.empty())
+	{
+		items.back().first->addQuantity(items.back().second);
+		items.pop_back();
+		itemsIndices.pop_back();
+	}
 	customer->removeOrder(shared_from_this());
 	customer->setBalance(customer->getBalance() + reward);
 	shop->removeOrder(shared_from_this());
-	for (auto& item : items) {
-		removeItem(item);
-	}
+	
+	
+	
 }
 
 std::string Order::getDlvryAddress() const
@@ -32,6 +38,7 @@ std::string Order::getCustomerName() const
 Order::Order()
 {
 	orderStatus = Order::Pending;
+	reward = 0;
 }
 
 Order::Order(std::shared_ptr<Customer> customer, std::shared_ptr<Shop> shop) {
@@ -41,6 +48,7 @@ Order::Order(std::shared_ptr<Customer> customer, std::shared_ptr<Shop> shop) {
 	this->paymentStatus = false;
 	this->delivery = nullptr;
 	orderStatus = Order::Pending;
+	reward = 0;
 }
 
 void Order::addItem(std::shared_ptr<Item> item, int quantity) {
@@ -172,16 +180,19 @@ void Order::summary(char userType)
 		std::cout << std::setw(20) << customer->getLocation().getAddress();
 	if (userType!= 'v') 
 		std::cout << std::setw(20) << (paymentStatus == true ? "Paid" : "Pending")
-		<< std::setw(20) << getStatus();
+		<< std::setw(17) << getStatus();
 	if (userType != 'c') {
-		std::cout << std::setw(15) << deliveryTime;
+		std::cout << deliveryTime;
 		if (userType != 'v') {
-			std::cout << std::setw(20);
+			std::cout << std::setw(15);
+			std::cout << std::right;
 			std::cout << getTotalPrice();
+			std::cout << std::left;
 		}
 	}
 	if (userType != 'c') {
-		//std::cout << std::setw(20);
+		std::cout << std::setw(18) << " ";
+		std::cout << std::setw(25);
 		if (customer->getHealthStatus() == Customer::Healthy) {
 			std::cout << "Healthy";
 		}
@@ -191,10 +202,7 @@ void Order::summary(char userType)
 		else if (customer->getHealthStatus() == Customer::Infected) {
 			std::cout << "Infected";
 		}
-		std::cout  << deliveryTime;
-		if (userType != 'v')
-			std::cout << std::setw(17)<<std::right<<getTotalPrice();
-		std::cout << std::left;
+
 	}
 	std::cout << '\n';
 }
@@ -210,14 +218,14 @@ std::pair<std::shared_ptr<Item>, int>& Order::getItem(int position)
 	return items.at(position);
 }
 
-void Order::setShop(const std::shared_ptr<Shop>& shop)
+void Order::setShop(std::shared_ptr<Shop> shop)
 {
 	this->shop = shop;
 }
 
-void Order::setCustomer(const std::shared_ptr<Customer>& customer)
+void Order::setCustomer(std::shared_ptr<Customer> shared)
 {
-	this->customer = customer;
+	this->customer = shared;
 }
 
 void Order::buyItems()
@@ -278,9 +286,13 @@ std::istream& operator>>(std::istream& input, Order::Status& status)
 	return input;
 }
 
-bool operator<(const std::shared_ptr<Order> lhs, const std::shared_ptr<Order> rhs)
+bool operator<(const std::shared_ptr<Order>& lhs, const std::shared_ptr<Order>& rhs)
 {
-	return lhs->deliveryTime < rhs->deliveryTime;
+	if (lhs->deliveryTime == rhs->deliveryTime)
+		return lhs->customer->getHealthStatus() < rhs->customer->getHealthStatus();
+	else {
+		return lhs->deliveryTime < rhs->deliveryTime;
+	}	
 }
 
 void Order::setPreparationStatus(int num)
