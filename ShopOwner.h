@@ -28,6 +28,8 @@ public:
 	std::string getShopName() const;
 	int getShopSize() const;
 	void setInfoFile(const std::string& cs, int age, double balance, const std::string& location, const std::string& shopname, const std::string& shoplocation);
+	void setShopName(const std::string& cs);
+	void setShopAdress(const std::string& cs);
 	friend class ShopOwnerFlow;
 	friend class O_List;
 

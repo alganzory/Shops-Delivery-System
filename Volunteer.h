@@ -18,6 +18,7 @@ public:
     Volunteer(std::string username, std::string password);
     void setTransport(std::string& transport);
     void setAvailableTimes(std::pair<int, int> availableTimes);
+    std::pair <Time, Time> getAvailableTimes() const;
     std::string getTransport() const;
     void setInfo(std::string name, int age, double balance, Location location);
     bool isAvailable(Time time);

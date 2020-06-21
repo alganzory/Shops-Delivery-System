@@ -12,6 +12,7 @@ public:
 	static void signUp();
 	static std::shared_ptr<User> verifyUsername(std::string username);
 	static void logout();
+	static void myProfile();
 	static std::shared_ptr<User> currentUser;
 };
 

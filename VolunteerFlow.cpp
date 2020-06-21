@@ -175,7 +175,7 @@ void VolunteerFlow::mainMenu()
 			break;
 		case 4: /*registerShop();*/
 			break;
-		case 5: /*UserFlow::myProfile();*/
+		case 5: UserFlow::myProfile();
 			break;
 		default:
 			currentVolunteer= nullptr;

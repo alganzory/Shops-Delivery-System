@@ -17,6 +17,11 @@ void Volunteer::setAvailableTimes(std::pair <int, int>availableTimes) {
     this->availableTimes = std::pair < Time,Time>(Time(availableTimes.first, 0), Time(availableTimes.second, 0));
 }
 
+std::pair<Time, Time> Volunteer::getAvailableTimes() const
+{
+    return availableTimes;
+}
+
 std::string Volunteer::getTransport() const {
     return transportation;
 }

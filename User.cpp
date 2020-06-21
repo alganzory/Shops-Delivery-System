@@ -81,6 +81,11 @@ User::~User()
 
 }
 
+void User::setPassword(const std::string& cs)
+{
+	password = cs;
+}
+
 bool operator==(const User& lhs, const User& rhs)
 {
 	return lhs.username == rhs.username;

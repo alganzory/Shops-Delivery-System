@@ -46,6 +46,8 @@ public:
 	
 	virtual ~User();
 	virtual void welcome() = 0;
+	void setPassword(const std::string& cs);
+	friend class UserFlow;
 };
 
 

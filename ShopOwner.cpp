@@ -104,3 +104,13 @@ void ShopOwner::setInfoFile(const std::string& cs, int age, double balance, cons
 	Location shopLocation(shoplocation);
 	this->shop = Shop(this, shopname, shoplocation);
 }
+
+void ShopOwner::setShopName(const std::string& cs)
+{
+	shop.setName(cs);
+}
+
+void ShopOwner::setShopAdress(const std::string& cs)
+{
+	shop.setLocation(Location(cs));
+}

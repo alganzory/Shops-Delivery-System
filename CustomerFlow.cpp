@@ -344,7 +344,7 @@ void CustomerFlow::mainMenu()
 			break;
 		case 3: myCart();
 			break;
-		case 4:/* UserFlow::myProfile();*/
+		case 4: UserFlow::myProfile();
 			break;
 		default:
 			currentCustomer = nullptr;

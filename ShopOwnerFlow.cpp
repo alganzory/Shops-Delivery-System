@@ -195,7 +195,7 @@ void ShopOwnerFlow::mainMenu()
 			break;
 		case 3: allOrders();
 			break;
-		case 4: /*UserFlow::myProfile();*/
+		case 4: UserFlow::myProfile();
 			break;
 		default:
 			currentSO= nullptr;
@@ -226,6 +226,7 @@ void ShopOwnerFlow::allOrders(bool pendingOnly)
 		std::vector <int > pendingOrders;
 
 		std::sort(currentSO->orders.begin(), currentSO->orders.end());
+		int count = 0;
 		for (int i = 0; i < currentSO->orders.size(); i++)
 		{
 			if (pendingOnly) {
@@ -236,7 +237,7 @@ void ShopOwnerFlow::allOrders(bool pendingOnly)
 					continue;	
 			}
 
-			std::cout << std::setw(4) << i + 1;
+			std::cout << std::setw(4) << ++count;
 			currentSO->orders[i]->summary('s');
 		}
 
