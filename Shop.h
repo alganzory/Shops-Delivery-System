@@ -36,9 +36,11 @@ public:
 	void sellItem(std::shared_ptr<Item> item, int quantity);
 	int getItemsCount() const;
 
-	void display();
+	void display(char useType ='c');
 	void recieveOrder(std::shared_ptr<Order> cart);
 	void removeOrder(const std::shared_ptr<Order>& order);
+	void removeVolunteer(const std::shared_ptr<Volunteer>& volunteer);
+	void addVolunteer(const std::shared_ptr<Volunteer>& shared);
 	friend class Order;
 };
 

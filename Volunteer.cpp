@@ -4,9 +4,16 @@
 #include <iomanip>
 #include<memory>
 
+
+#include "SH_List.h"
 #include "VolunteerFlow.h"
 
+Volunteer::Volunteer()
+{
+}
+
 Volunteer::Volunteer(std::string username, std::string password) :User(username, password) {
+    registeredShops.resize(SH_List::getCount());
 }
 
 void Volunteer::setTransport(std::string& transport) {
@@ -56,8 +63,8 @@ bool Volunteer::isAvailable(Time time) {
     }
 }
 
-void Volunteer::registerToShop(std::shared_ptr<Shop> newShop) {
-    registeredShops.push_back(newShop);
+void Volunteer::registerToShop(int shopIdx) {
+    registeredShops[shopIdx] = true;
 }
 void Volunteer::respondToOrder(std::shared_ptr<Order> order, bool acceptance)
 {

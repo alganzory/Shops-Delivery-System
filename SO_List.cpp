@@ -55,7 +55,8 @@ void SO_List::readFromFile()
 
 		while (getline(dataFile, item) && !item.empty()) {
 			std::istringstream s(item);
-			s >> itemName >> price >> itemQuantity;
+			std::getline(s, itemName, ',');
+			s  >> price >> itemQuantity;
 			SHOPOWNERS.back()->addToStock(std::make_shared<Item>(itemName, price, itemQuantity), itemQuantity, true);
 		}		
 		

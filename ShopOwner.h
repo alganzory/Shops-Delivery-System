@@ -32,6 +32,7 @@ public:
 	void setShopAdress(const std::string& cs);
 	friend class ShopOwnerFlow;
 	friend class O_List;
+	friend class Shop;
 
 };
 

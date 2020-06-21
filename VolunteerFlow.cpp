@@ -5,6 +5,7 @@
 
 
 #include "Helper.h"
+#include "SH_List.h"
 std::shared_ptr<Volunteer> VolunteerFlow::currentVolunteer;
 std::shared_ptr<Order> VolunteerFlow::currentOrder = nullptr;
 
@@ -146,6 +147,51 @@ void VolunteerFlow::myOrders(bool pendingOnly)
 	}
 }
 
+void VolunteerFlow::registerShop()
+{
+	while (true)
+	{
+		std::cout << "Available Shops for you:\n";
+		Helper::dLine(110);
+		int numShops = SH_List::SHOPS.size();
+		// loop through shops and display
+		for (int i = 1; i <= numShops; i++) {
+			std::cout << i << ". ";
+			SH_List::SHOPS[i - 1]->display('v');
+			if (currentVolunteer->registeredShops[i - 1])
+				std::cout << "Registered";
+			else std::cout << "Not Registered";
+			std::cout << "\n";
+		
+		}
+
+		Helper::line(100);
+		std::cout << "Choose a shop to register/unregister for or press B to go back: ";
+		int choice = Helper::readChoice(1, numShops, "bB");
+		if (choice == 'b' || choice == 'B') break;
+		if (currentVolunteer->registeredShops[choice - 1] == true)
+		{
+			std::cout << "You are registered for this shop, are you sure you want to unregister? (Y/N)?: ";
+			int ans = Helper::readChoice(0, 0, "YyNn");
+			if (ans == 'n' || ans == 'N') continue;
+			else
+			{
+				currentVolunteer->registeredShops[choice - 1] = false;
+				SH_List::SHOPS[choice - 1]->removeVolunteer(currentVolunteer);
+				continue;
+			}
+		}
+		else
+		{
+			currentVolunteer->registerToShop(choice - 1);
+			SH_List::SHOPS[choice - 1]->addVolunteer(currentVolunteer);
+			std::cout << "You have successfully register for this shop\n";
+			continue;
+	
+		}
+	}
+}
+
 void VolunteerFlow::mainMenu()
 {
 	while (true) {
@@ -173,7 +219,7 @@ void VolunteerFlow::mainMenu()
 			break;
 		case 3: myOrders(false);
 			break;
-		case 4: /*registerShop();*/
+		case 4: registerShop();
 			break;
 		case 5: UserFlow::myProfile();
 			break;

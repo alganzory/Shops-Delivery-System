@@ -367,9 +367,12 @@ void CustomerFlow::displayShops()
 {
 	int numShops = currentCustomer->availableShops.size();
 	// loop through shops and display
+	std::cout << std::setw(20) << "Shop Name" << "Shop Address\n";
+	Helper::line(80);
 	for (int i = 1; i <= numShops; i++) {
 		std::cout << i << ". ";
-		currentCustomer->availableShops[i - 1]->display();
+		currentCustomer->availableShops[i - 1]->display('c');
+		std::cout << "\n";
 	}
 	// better define display function in shop class
 }

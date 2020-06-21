@@ -417,7 +417,7 @@ std::vector<std::shared_ptr<Volunteer>> ShopOwnerFlow::findAvailableVolunteers(T
 {
 	std::vector<std::shared_ptr<Volunteer>> availableVolunteers;
 	availableVolunteers.reserve(currentSO->registeredVolunteers.size());
-	for (auto& volunteer: V_List::ALL_VOLUNTEERS)
+	for (auto& volunteer: currentSO->registeredVolunteers)
 	{
 		if (volunteer->isAvailable(time))
 			availableVolunteers.emplace_back(volunteer);

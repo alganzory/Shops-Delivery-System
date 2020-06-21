@@ -12,6 +12,7 @@ public:
 public:
 	static void ongoingOrder();
 	static void myOrders(bool pendingOnly = false);
+	static void registerShop();
 	static void mainMenu();
 	static void viewOrder(const std::shared_ptr<Order>& order);
 	//friend class Customer;

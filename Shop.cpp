@@ -1,5 +1,8 @@
 #include "Shop.h"
 
+#include <iomanip>
+
+
 #include "ShopOwner.h"
 
 Shop::Shop()
@@ -85,10 +88,12 @@ int Shop::getItemsCount() const
 	return items.size();
 }
 
-void Shop::display() 
+void Shop::display(char userType) 
 {
 
-	std::cout << getName() << '\t' << getLocation().getAddress() << "\n";
+	std::cout << std::setw(20) << getName();
+	if (userType == 'v') std::cout << std::setw(25);
+	std::cout << getLocation().getAddress();
 
 }
 
@@ -100,4 +105,26 @@ void Shop::recieveOrder(std::shared_ptr<Order> cart)
 void Shop::removeOrder(const std::shared_ptr<Order>& order)
 {
 	shopOwner->removeOrder(order);
+}
+
+void Shop::removeVolunteer(const std::shared_ptr<Volunteer>& volunteer)
+{
+	try
+	{
+		auto volFound = std::find(shopOwner->registeredVolunteers.begin(),
+			shopOwner->registeredVolunteers.end(), volunteer);
+		if (volFound == shopOwner->registeredVolunteers.end())
+			throw "Not Found";
+		shopOwner->registeredVolunteers.erase(volFound);
+	}
+	catch (const char* e)
+	{
+		std::cout << e << std::endl;
+		return;
+	}	
+}
+
+void Shop::addVolunteer(const std::shared_ptr<Volunteer>& volunteer)
+{
+	shopOwner->registeredVolunteers.emplace_back(volunteer);
 }

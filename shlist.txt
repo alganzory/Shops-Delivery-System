@@ -7,9 +7,9 @@ taman uni
 shop1
 taman uni, jalan
 items
-banana 10 20
-apple 20 10
-orange 30 5
+banana, 10 20
+apple, 20 10
+orange, 30 5
 
 shop2
 s
@@ -20,10 +20,10 @@ azizyah
 shop2
 azizyah, rashed
 items
-tide 67 110
-persil 240 880
-orange 50 138
-noodles 49 1200
+tide, 67 110
+persil, 240 880
+orange, 50 138
+noodles, 49 1200
 
 shop3
 s
@@ -34,5 +34,47 @@ olaya
 shop3
 Olaya, dar
 items
-gold 1000 230
-silver 2092 530
+gold, 1000 230
+silver, 2092 530
+
+shop4
+s
+shopowner4
+20
+500
+Gelang Patah
+shop4
+Gelang Patah, Jalan
+items
+Nasi lemak, 5 100
+Mangoes, 13 120
+Onions, 21 110
+Tomatoes, 15 140
+Carrots, 12 80
+
+shop5
+s
+shopowner5
+22
+160011
+Gereja, Pendidk
+shop5
+Gereja, Jalan
+items
+toothpicks, 7 1000
+books, 20 8800
+papers, 22 138
+noodles, 49 1200
+fish, 20 88
+
+shop6
+s
+shopowner6
+40
+50000
+Kebun Teh
+shop6
+Kebun Lama
+items
+pop corn, 120 230
+silver, 2092 530
