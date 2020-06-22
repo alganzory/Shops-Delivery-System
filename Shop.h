@@ -11,7 +11,7 @@ class ShopOwner;
 class Shop
 {
 private:
-	ShopOwner* shopOwner{};
+	std::weak_ptr <ShopOwner> shopOwner;
 	std::string name;
 	std::vector<std::shared_ptr<Item> > items;
 	Location location;
@@ -21,10 +21,10 @@ public:
 
 	Shop();
 
-	Shop(ShopOwner* shopOwner, std::string name, Location location);
+	Shop(std::weak_ptr <ShopOwner> shopOwner, std::string name, Location location);
 
-	ShopOwner* getShopOwner() const;
-	void setShopOwner(ShopOwner* shopOwner);
+	std::weak_ptr <ShopOwner> getShopOwner() const;
+	void setShopOwner(std::weak_ptr <ShopOwner> shopOwner);
 	std::string getName() const;
 	void setName(std::string name);
 	const std::vector<std::shared_ptr<Item>>& getItems();

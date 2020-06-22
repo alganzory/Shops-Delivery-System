@@ -10,19 +10,19 @@ Shop::Shop()
 
 }
 
-Shop::Shop(ShopOwner* shopOwner, std::string name, Location location) :
+Shop::Shop(std::weak_ptr <ShopOwner> shopOwner, std::string name, Location location) :
 	shopOwner(shopOwner),
 	name(name),
 	location(location)
 {
 }
 
-ShopOwner* Shop::getShopOwner() const
+std::weak_ptr <ShopOwner> Shop::getShopOwner() const
 {
 	return shopOwner;
 }
 
-void Shop::setShopOwner(ShopOwner* shopOwner)
+void Shop::setShopOwner(std::weak_ptr <ShopOwner> shopOwner)
 {
 	this->shopOwner = shopOwner;
 }
@@ -99,23 +99,23 @@ void Shop::display(char userType)
 
 void Shop::recieveOrder(std::shared_ptr<Order> cart)
 {
-	shopOwner->addOrder(cart);
+	shopOwner.lock()->addOrder(cart);
 }
 
 void Shop::removeOrder(const std::shared_ptr<Order>& order)
 {
-	shopOwner->removeOrder(order);
+	shopOwner.lock()->removeOrder(order);
 }
 
 void Shop::removeVolunteer(const std::shared_ptr<Volunteer>& volunteer)
 {
 	try
 	{
-		auto volFound = std::find(shopOwner->registeredVolunteers.begin(),
-			shopOwner->registeredVolunteers.end(), volunteer);
-		if (volFound == shopOwner->registeredVolunteers.end())
+		auto volFound = std::find(shopOwner.lock()->registeredVolunteers.begin(),
+			shopOwner.lock()->registeredVolunteers.end(), volunteer);
+		if (volFound == shopOwner.lock()->registeredVolunteers.end())
 			throw "Not Found";
-		shopOwner->registeredVolunteers.erase(volFound);
+		shopOwner.lock()->registeredVolunteers.erase(volFound);
 	}
 	catch (const char* e)
 	{
@@ -126,5 +126,5 @@ void Shop::removeVolunteer(const std::shared_ptr<Volunteer>& volunteer)
 
 void Shop::addVolunteer(const std::shared_ptr<Volunteer>& volunteer)
 {
-	shopOwner->registeredVolunteers.emplace_back(volunteer);
+	shopOwner.lock()->registeredVolunteers.emplace_back(volunteer);
 }

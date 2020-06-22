@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 #include <vector>
-
+#include <algorithm>
 #include "Location.h"
 #include "Order.h"
 #include "Time.h"

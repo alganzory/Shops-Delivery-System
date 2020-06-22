@@ -8,14 +8,14 @@ class ShopOwner :
 	public std::enable_shared_from_this<ShopOwner>
 {
 private:
-	Shop shop;
+	std::shared_ptr <Shop> shop;
 	std::vector <std::shared_ptr<Volunteer> > registeredVolunteers;
 public:
 
 	ShopOwner(std::string username, std::string password);
 	void setInfo(std::string name, int age, double balance, Location location) override;
 
-	Shop getShop() const;
+//	Shop getShop() const;
 	std::shared_ptr <Shop> getShopPtr();
 	void createShop(std::string shopName, Location shopLocation);
 
@@ -33,6 +33,5 @@ public:
 	friend class ShopOwnerFlow;
 	friend class O_List;
 	friend class Shop;
-
 };
 

@@ -117,7 +117,7 @@ void ShopOwnerFlow::myShop()
 		std::cout << currentSO->getShopName() << '\n'; //update
 		Helper::dLine();
 		int numItems = currentSO->getShopSize();
-		std::vector <std::shared_ptr <Item> > currItems = currentSO->getShop().getItems();
+		std::vector <std::shared_ptr <Item> > currItems = currentSO->getShopPtr()->getItems();
 		std::cout << "Number of Items: " << numItems << '\n';  //update
 		Helper::line();
 		if (numItems) {

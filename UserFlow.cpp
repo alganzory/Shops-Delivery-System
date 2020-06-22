@@ -26,7 +26,7 @@ void UserFlow::welcomeScreen()
 			break;
 		case 2:	signUp();
 			break;
-		case 3:exit(0);
+		case 3:return;
 			break;
 		default:std::cout << "Please choose the correct number." << std::endl;
 		}
@@ -106,7 +106,7 @@ void UserFlow::myProfile()
 			isSO = true;
 			std::cout << "(S) Shop Name: " << ShopOwnerFlow::currentSO->getShopName() << "\n";
 			Helper::line(110);
-			std::cout << "(P) Shop Location: " << ShopOwnerFlow::currentSO->getShop().getLocation().getAddress() << "\n";
+			std::cout << "(P) Shop Location: " << ShopOwnerFlow::currentSO->getShopPtr()->getLocation().getAddress() << "\n";
 			Helper::line(110);
 		}
 		std::cout << "Your choice: ";
