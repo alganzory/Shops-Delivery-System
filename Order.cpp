@@ -47,6 +47,7 @@ Order::Order()
 {
 	orderStatus = Order::Pending;
 	reward = 0;
+	overdue = FALSE;
 }
 
 Order::Order(std::shared_ptr<Customer> customer, std::shared_ptr<Shop> shop) {
@@ -57,6 +58,7 @@ Order::Order(std::shared_ptr<Customer> customer, std::shared_ptr<Shop> shop) {
 	this->delivery = nullptr;
 	orderStatus = Order::Pending;
 	reward = 0;
+	overdue = FALSE;
 }
 
 void Order::addItem(std::shared_ptr<Item> item, int quantity) {
@@ -186,21 +188,31 @@ void Order::summary(char userType)
 	userType == 's' ? std::cout << std::setw(20) << customer->getName() : std::cout << "";
 	if (userType == 'v')
 		std::cout << std::setw(20) << customer->getLocation().getAddress();
-	if (userType!= 'v') 
-		std::cout << std::setw(20) 
-		<< (orderStatus!=Status::Cancelled?(paymentStatus == true ? "Paid" : "Pending"): (paymentStatus == true ? "Refunded" : "Not paid"))
-		<< std::setw(17) << getStatus();
+	if (userType != 'v') {
+		std::cout << std::setw(20)
+			<< (orderStatus != Status::Cancelled ? (paymentStatus == true ? "Paid" : "Pending") : (paymentStatus == true ? "Refunded" : "Not paid"));
+			
+		if ((getStatus() == Order::Preparing && isOverdue()) || getStatus() == Order::Cancelled && overdue)
+		{
+			std::cout <<std::setw(10) << getStatus() << std::setw(15) << "(overdue)";
+		}
+		else
+			std::cout << std::setw(25) << getStatus();
+	}
 	if (userType != 'c') {
-		std::cout << deliveryTime;
+		std::cout << deliveryTime
+			<< std::setw(5)<<std::right;
+		
 		if (userType != 'v') {
-			std::cout << std::setw(15);
-			std::cout << std::right;
+			std::cout << std::setw(13);
 			std::cout << getTotalPrice();
 			std::cout << std::left;
 		}
 	}
 	if (userType != 'c') {
+		std::cout << std::left;
 		std::cout << std::setw(18) << " ";
+		
 		std::cout << std::setw(25);
 		if (customer->getHealthStatus() == Customer::Healthy) {
 			std::cout << "Healthy";
@@ -371,4 +383,13 @@ void Order::reorder(const std::shared_ptr <Order> order)
 		preparationStatus.push_back(false);
 		itemsIndices.push_back(order->itemsIndices[i]);
 	}
+}
+
+bool Order::isOverdue()
+{
+	if (getDeliveryTime().getTimeDiff().second < 0)
+	{
+		overdue = TRUE;	
+	}
+	return overdue;
 }

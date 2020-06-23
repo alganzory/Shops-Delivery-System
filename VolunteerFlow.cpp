@@ -26,7 +26,7 @@ void VolunteerFlow::ongoingOrder()
 		std::cout << std::setw(18) << "Shop"
 			<< std::setw(15) << "Shop Address"
 			<< std::setw(20) << "Order's Destination"
-			<< std::setw(20) << "Delivery Time"
+			<< std::setw(15) << "Delivery Time"
 			<<std::setw(20)<<"Customer's Health Status"
 			<< '\n';
 		Helper::line(110);

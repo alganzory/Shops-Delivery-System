@@ -219,8 +219,8 @@ void ShopOwnerFlow::allOrders(bool pendingOnly)
 		}
 		Helper::dLine(123);
 		std::cout << std::setw(4) << "No." << std::setw(20) << "Customer Name"
-			<< std::setw(20) << "Payment status" << std::setw(17) << "Status"
-			<<std::setw(18)<< "Delivery Time" << std::setw(20) <<  "Total Price (RM)" 
+			<< std::setw(20) << "Payment status" << std::setw(20) << "Status"
+			<<std::setw(15)<< "Delivery Time" << std::setw(20) <<  "Total Price (RM)" 
 			<< std::setw(20) << "Customer's Health Status" << std::endl;
 		Helper::line(123);
 		std::vector <int > pendingOrders;
@@ -229,6 +229,12 @@ void ShopOwnerFlow::allOrders(bool pendingOnly)
 		int count = 0;
 		for (int i = 0; i < currentSO->orders.size(); i++)
 		{
+			if ( currentSO->orders[i]->getStatus() == Order::Pending)
+			{
+				if(currentSO->orders[i]->isOverdue())
+					currentSO->orders[i]->cancelOrder();
+
+			}
 			if (pendingOnly) {
 
 				if ((currentSO->orders[i]->getStatus() < Order::Complete))
@@ -332,8 +338,8 @@ void ShopOwnerFlow::viewOrder(std::shared_ptr<Order>& order)
 		std::cout << "Order Details: \n";
 		Helper::dLine(120);
 		std::cout << std::setw(20) << "Customer Name"
-			<< std::setw(20) << "Payment status" << std::setw(17) << "Status"
-			<< std::setw(18) << "Delivery Time" << std::setw(20) << "Total Price (RM)"
+			<< std::setw(20) << "Payment status" << std::setw(20) << "Status"
+			<< std::setw(15) << "Delivery Time" << std::setw(20) << "Total Price (RM)"
 			<< std::setw(20) << "Customer's Health Status" << std::endl;
 		Helper::line(120);
 		order->summary('s');

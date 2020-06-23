@@ -42,6 +42,7 @@ private:
 	std::vector<bool> preparationStatus;
 	double reward;
 	bool contactless;
+	bool overdue;
 
 public:
 	Order();
@@ -85,6 +86,7 @@ public:
 	void operator = ( Order& order);
 	void reorder(const std::shared_ptr <Order>);
 	std::shared_ptr<Shop> getShop();
+	bool isOverdue();
 };
 
 #endif

@@ -78,12 +78,22 @@ void CustomerFlow::checkout()
 			if (!isTime) break;
 			try {
 				currentCustomer->cart->setDeliveryTime(hour, minutes);
+				if (currentCustomer->cart->getDeliveryTime().getTimeDiff().second < 0)
+				{
+					throw "The time has passed. Please enter the time 30 mins after now.";
+				}
+				else if (currentCustomer->cart->getDeliveryTime().getTimeDiff().first == 0 && currentCustomer->cart->getDeliveryTime().getTimeDiff().second < 30)
+				{
+					throw "The time should be at least 30 mins after now.";
+				}
 				break;
 			}
 			catch (const char* errorMsg) {
 				std::cout << errorMsg << std::endl;
-
+				continue;
 			}
+			
+			
 		}
 		Helper::line(80);
 		// place or cancel
@@ -209,6 +219,15 @@ void CustomerFlow::myOrders(bool pendingOnly)
 		int anyPending = 0;
 		std::vector <std::shared_ptr<Order> > pendingOrders;
 
+		for (const auto& order : currentCustomer->orders)
+		{
+			if ( order->getStatus() == Order::Pending)
+			{
+				if(order->isOverdue())
+					order->cancelOrder();
+			}
+		}
+
 		if (currentCustomer->orders.empty())
 		{
 			std::cout << "No orders yet, you will be directed to main menu...\n";
@@ -220,6 +239,7 @@ void CustomerFlow::myOrders(bool pendingOnly)
 			pendingOrders.reserve(currentCustomer->orders.size());
 			for (const auto& order : currentCustomer->orders)
 			{
+				
 				if (order->getStatus() != Order::Complete) {
 					if (order->getStatus() == Order::Cancelled)
 					{

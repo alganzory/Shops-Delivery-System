@@ -19,10 +19,19 @@ Time::Time(int hr, int m)
 
 void Time::setTime(int hr, int m)
 {
+	calcLocalTime();
 	if (hr < 0 || hr>24 || m < 0 || m>60)
 	{
 		throw "Invalid time input, make sure it's in 24-hour format...";
 	}
+	/*if (hr == localHour && m-localHour < 30)
+	{
+		throw "The time should be at least 30 mins after now.";
+	}
+	if (hr<localHour)
+	{
+		throw "The time has passed. Please enter the time 30 mins after now.";
+	}*/
 	hour = hr;
 	minute = m;
 }
@@ -48,7 +57,7 @@ std::pair<int, int> Time::getTime()
 
 std::pair<int, int> Time::getTimeDiff()
 {
-	GetLocalTime(&lt);
+	calcLocalTime();
 	int minDiff = (hour - localHour) * 60 + minute - localMinute;
 	int hourDiff = abs(minDiff / 60);
 	minDiff %= 60;
