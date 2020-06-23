@@ -20,7 +20,8 @@ public:
 		Preparing, // once the shop owner starts preparing the order (the todo check list)
 		VolunteerFound, // once a volunteer is Assigned
 		Delivering, // once a volunteer chooses to deliver
-		Complete // once the volunteer is done delivering the order
+		Complete, // once the volunteer is done delivering the order
+		Cancelled // once the shop owner cancel the order
 	};
 	void cancelOrder();
 	std::string getDlvryAddress() const;
@@ -41,6 +42,7 @@ private:
 	std::vector<bool> preparationStatus;
 	double reward;
 	bool contactless;
+
 public:
 	Order();
 	Order(std::shared_ptr<Customer> customer, std::shared_ptr<Shop> shop);
@@ -80,7 +82,9 @@ public:
 	friend class ShopOwnerFlow;
 	void setContactlessDlvr(bool contactless);
 	bool getContactlessDlvr();
-
+	void operator = ( Order& order);
+	void reorder(const std::shared_ptr <Order>);
+	std::shared_ptr<Shop> getShop();
 };
 
 #endif

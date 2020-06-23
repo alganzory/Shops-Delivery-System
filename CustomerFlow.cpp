@@ -27,7 +27,21 @@ void CustomerFlow::makeAnOrder()
 		if (chosenShop == 'B' || chosenShop == 'b') {
 			break;
 		}
-		currentShop = currentCustomer->availableShops[chosenShop - 1];
+		if (currentShop != currentCustomer->availableShops[chosenShop - 1])
+		{
+			if (currentShop != nullptr)
+			{
+				std::cout << "This will clear your current cart. Proceed? (Y/N)" << std::endl;
+				int choice = Helper::readChoice(0, 0, "YyNn");
+				if (choice == 'N' || choice == 'n')
+				{
+					continue;
+				}
+			}	
+			currentCustomer->cart= std::make_shared<Order>();
+			currentShop = currentCustomer->availableShops[chosenShop - 1];
+		}
+		
 		CustomerFlow::viewShop();
 	}
 }
@@ -206,7 +220,15 @@ void CustomerFlow::myOrders(bool pendingOnly)
 			pendingOrders.reserve(currentCustomer->orders.size());
 			for (const auto& order : currentCustomer->orders)
 			{
-				if (order->getStatus() <= Order::Delivering) {
+				if (order->getStatus() != Order::Complete) {
+					if (order->getStatus() == Order::Cancelled)
+					{
+						if (order->getDeliveryTime().getTimeDiff().second<0)
+						{
+							continue;
+						}
+
+					}
 					anyPending++;
 					pendingOrders.emplace_back(order);
 				}
@@ -301,7 +323,17 @@ void CustomerFlow::viewOrder(const std::shared_ptr<Order>& order)
 		if (choice == 'b' || choice == 'B') break;
 		if (choice == 'O' || choice == 'o')
 		{
-			currentCustomer->cart = order;
+			if (currentShop != nullptr)
+			{
+				std::cout << "This will clear your current cart. Proceed? (Y/N)" << std::endl;
+				int choice = Helper::readChoice(0, 0, "YyNn");
+				if (choice == 'N' || choice == 'n')
+				{
+					continue;
+				}
+			}
+			currentShop = order->getShop();
+			currentCustomer->cart->reorder(order);
 			std::cout << "Order added to cart, you will be directed to your cart...\n";
 			myCart();
 			break;

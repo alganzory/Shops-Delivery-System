@@ -231,7 +231,7 @@ void ShopOwnerFlow::allOrders(bool pendingOnly)
 		{
 			if (pendingOnly) {
 
-				if ((currentSO->orders[i]->getStatus() != Order::Complete))
+				if ((currentSO->orders[i]->getStatus() < Order::Complete))
 					pendingOrders.push_back(i);
 				else
 					continue;	

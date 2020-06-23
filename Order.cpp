@@ -11,17 +11,25 @@
 
 void Order::cancelOrder()
 {
-	while (!items.empty())
+	/*while (!items.empty())
 	{
 		items.back().first->addQuantity(items.back().second);
 		items.pop_back();
 		itemsIndices.pop_back();
+	}*/
+	for (int i = 0; i < items.size(); i++)
+	{
+		items[i].first->addQuantity(items[i].second);
 	}
-	customer->removeOrder(shared_from_this());
-	customer->setBalance(customer->getBalance() + reward);
-	shop->removeOrder(shared_from_this());
+	//customer->removeOrder(shared_from_this());
+	if (getPaymentStatus())
+	{
+		customer->setBalance(customer->getBalance() + reward);
+	}
 	
-	
+	//shop->removeOrder(shared_from_this());
+	setStatus( Order::Cancelled);
+
 	
 }
 
@@ -179,7 +187,8 @@ void Order::summary(char userType)
 	if (userType == 'v')
 		std::cout << std::setw(20) << customer->getLocation().getAddress();
 	if (userType!= 'v') 
-		std::cout << std::setw(20) << (paymentStatus == true ? "Paid" : "Pending")
+		std::cout << std::setw(20) 
+		<< (orderStatus!=Status::Cancelled?(paymentStatus == true ? "Paid" : "Pending"): (paymentStatus == true ? "Refunded" : "Not paid"))
 		<< std::setw(17) << getStatus();
 	if (userType != 'c') {
 		std::cout << deliveryTime;
@@ -262,6 +271,8 @@ std::ostream& operator<<(std::ostream& output, const Order::Status& status)
 		break;
 	case Order::Complete: s = "Complete";
 		break;
+	case Order::Cancelled: s = "Cancelled";
+		break;
 	}
 	output << s;
 	return output;
@@ -280,8 +291,10 @@ std::istream& operator>>(std::istream& input, Order::Status& status)
 		status = Order::VolunteerFound;
 	else if (s == "Delivering")
 		status = Order::Delivering;
-	else 
+	else if (s == "Complete")
 		status = Order::Complete;
+	else
+		status = Order::Cancelled;
 	
 	return input;
 }
@@ -324,4 +337,38 @@ void Order::setContactlessDlvr(bool contactless) {
 
 bool Order::getContactlessDlvr() {
 	return contactless;
+}
+
+void Order::operator = ( Order& order) {
+	this->customer = order.customer;
+	shop->setShopOwner(order.shop->getShopOwner());
+	
+	
+	for (int i = 0; i < order.getOrderSize(); i++)
+	{
+		items.push_back({ shop->items[order.itemsIndices[i]],order.items[i].second });
+		preparationStatus.push_back(false);
+		itemsIndices.push_back(order.itemsIndices[i]);
+	}
+}
+
+std::shared_ptr<Shop> Order::getShop()
+{
+	return shop;
+}
+
+void Order::reorder(const std::shared_ptr <Order> order)
+{
+	this->customer = order->customer;
+	this->shop=order->getShop();
+
+	items.clear();
+	itemsIndices.clear();
+	preparationStatus.clear();
+	for (int i = 0; i < order->getOrderSize(); i++)
+	{
+		items.push_back({ shop->items[order->itemsIndices[i]],order->items[i].second });
+		preparationStatus.push_back(false);
+		itemsIndices.push_back(order->itemsIndices[i]);
+	}
 }
