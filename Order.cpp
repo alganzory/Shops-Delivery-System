@@ -73,9 +73,13 @@ void Order::addItem(int itemIdx, int quantity)
 		return rhs.first->getName() == shop->items[itemIdx]->getName();
 		});
 	if (found != items.end()) {
+		if (found->second + quantity > found->first->getInStock())
+			throw (found->first->getInStock() - found->second); // the max he can ask for
 		found->second += quantity;
 	}
 	else { //add them into items
+		if (quantity > shop->items[itemIdx]->getInStock())
+			throw (shop->items[itemIdx]->getInStock()); // throw the max they can enter
 		items.push_back({ shop->items[itemIdx],quantity });
 		preparationStatus.push_back(false);
 		itemsIndices.push_back(itemIdx);

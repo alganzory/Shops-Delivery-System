@@ -377,10 +377,13 @@ void CustomerFlow::displayShops()
 	// better define display function in shop class
 }
 
+
 void CustomerFlow::viewShop()
 {
+	currentCustomer->cart->setShop(currentShop);
 	while (true)
 	{
+		
 		std::cout << "List of items in ";
 		// display the shop
 		std::cout << currentShop->getName() << " :\n";
@@ -399,25 +402,31 @@ void CustomerFlow::viewShop()
 		std::cout << "Choose an item number followed by quantity to add it to cart,\n"
 			<< " press C to go to cart or press B to go back:\n";
 		Helper::line(60);
-		std::cout << "Your choice: ";
-		int itemChoice, itemQuantity;
+		std::cout << "Item: ";
 
-		itemChoice = Helper::readChoice(1, numItems, "CcBb");
+		int itemChoice = Helper::readChoice(1, numItems, "CcBb");
 		if (itemChoice == 'C' || itemChoice == 'c') {
 			myCart();
 		}
-		else if (itemChoice == 'B' || itemChoice == 'b') {
+		if (itemChoice == 'B' || itemChoice == 'b') {
 			break;
 		}
-		else {
+		while (true) {
 			std::cout << "Quantity: ";
-			itemQuantity = Helper::readChoice(0, shopItems[itemChoice - 1]->getInStock());
+			int itemQuantity = Helper::readChoice(0, INT_MAX, "bB");
+			if (itemQuantity == 'B' || itemQuantity == 'b') break;
 
-			currentCustomer->cart->setShop(currentShop);
-			currentCustomer->cart->addItem(itemChoice - 1, itemQuantity);
+			try {
+				currentCustomer->cart->addItem(itemChoice - 1, itemQuantity);
+				break;
+			}
+			catch (int maxQuantity)
+			{
+				std::cout << "You can only add up to " << maxQuantity << " of this item\nplease try again or press B to cancel...\n";
+			}
+
 		}
-		
-		
-		// call respective functions
+
+
 	}
 }

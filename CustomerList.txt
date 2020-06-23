@@ -2,7 +2,7 @@ CustomerID1
 password1
 Name One
 20
-50.00
+999999
 Jalan Pertama
 S
 
