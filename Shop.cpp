@@ -92,9 +92,9 @@ void Shop::display(char userType)
 {
 
 	std::cout << std::setw(20) << getName();
-	if (userType == 'v') std::cout << std::setw(25);
+	std::cout << std::setw(25);
 	std::cout << getLocation().getAddress();
-
+	std::cout << availableTimes.first << "-" << availableTimes.second;
 }
 
 void Shop::recieveOrder(std::shared_ptr<Order> cart)
@@ -127,4 +127,22 @@ void Shop::removeVolunteer(const std::shared_ptr<Volunteer>& volunteer)
 void Shop::addVolunteer(const std::shared_ptr<Volunteer>& volunteer)
 {
 	shopOwner.lock()->registeredVolunteers.emplace_back(volunteer);
+}
+
+void Shop::setAvailableTimes(std::pair<int, int> availableTimes)
+{
+	this->availableTimes = std::pair < Time, Time>(Time(availableTimes.first, 0), Time(availableTimes.second, 0));
+}
+
+std::pair <Time, Time> Shop::getAvailableTimes() const
+{
+	return availableTimes;
+}
+
+bool Shop::isAvailable(Time time)
+{
+	bool available = true;
+	if (time > availableTimes.first && time < availableTimes.second) {
+		return available;
+	}
 }

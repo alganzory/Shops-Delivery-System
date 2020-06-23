@@ -17,7 +17,7 @@ public:
 
 //	Shop getShop() const;
 	std::shared_ptr <Shop> getShopPtr();
-	void createShop(std::string shopName, Location shopLocation);
+	void createShop(std::string shopName, Location shopLocation,int startTime, int endTime);
 
 	void respondToOrder(std::shared_ptr < Order> order);
 	void assignVolunteer(std::shared_ptr < Order> order);
@@ -27,7 +27,7 @@ public:
 	void welcome();
 	std::string getShopName() const;
 	int getShopSize() const;
-	void setInfoFile(const std::string& cs, int age, double balance, const std::string& location, const std::string& shopname, const std::string& shoplocation);
+	void setInfoFile(const std::string& cs, int age, double balance, const std::string& location, const std::string& shopname, const std::string& shoplocation,int availableTime1, int availableTime2);
 	void setShopName(const std::string& cs);
 	void setShopAdress(const std::string& cs);
 	friend class ShopOwnerFlow;

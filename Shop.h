@@ -15,6 +15,7 @@ private:
 	std::string name;
 	std::vector<std::shared_ptr<Item> > items;
 	Location location;
+	std::pair<Time, Time> availableTimes;
 
 public:
 
@@ -42,5 +43,9 @@ public:
 	void removeVolunteer(const std::shared_ptr<Volunteer>& volunteer);
 	void addVolunteer(const std::shared_ptr<Volunteer>& shared);
 	friend class Order;
+
+	void setAvailableTimes(std::pair<int, int> availableTimes);
+	std::pair <Time, Time> getAvailableTimes() const;
+	bool isAvailable(Time time);
 };
 

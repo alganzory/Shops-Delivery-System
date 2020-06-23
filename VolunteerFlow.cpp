@@ -158,9 +158,10 @@ void VolunteerFlow::registerShop()
 		for (int i = 1; i <= numShops; i++) {
 			std::cout << i << ". ";
 			SH_List::SHOPS[i - 1]->display('v');
+
 			if (currentVolunteer->registeredShops[i - 1])
-				std::cout << "Registered";
-			else std::cout << "Not Registered";
+				std::cout <<std::right<< std::setw(10)<< "Registered"<<std::left;
+			else std::cout << std::right << std::setw(13) << "Not Registered" << std::left;
 			std::cout << "\n";
 		
 		}

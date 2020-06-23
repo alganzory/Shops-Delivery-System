@@ -15,7 +15,7 @@ void CustomerFlow::makeAnOrder()
 	findAvailableShops();
 	while (true)
 	{
-		std::cout << "List of available shops for you\n";
+		std::cout << "List of available shops for you at this time\n";
 		Helper::dLine(60);
 
 		CustomerFlow::displayShops();
@@ -58,6 +58,7 @@ void CustomerFlow::checkout()
 		// ask for delivery time
 
 		while (true) {
+			std::cout << "Thee operation hour of the shop:" << currentShop->getAvailableTimes().first << " - " << currentShop->getAvailableTimes().second << std::endl;
 			std::cout << "Enter delivery time in (HH:MM) format or Press B to go back to cart: ";
 			std::string input;
 			getline(std::cin, input);
@@ -85,6 +86,10 @@ void CustomerFlow::checkout()
 				else if (currentCustomer->cart->getDeliveryTime().getTimeDiff().first == 0 && currentCustomer->cart->getDeliveryTime().getTimeDiff().second < 30)
 				{
 					throw "The time should be at least 30 mins after now.";
+				}
+				else if (!currentShop->isAvailable(currentCustomer->cart->getDeliveryTime()))
+				{
+					throw "The shop is not operating on this time.";
 				}
 				break;
 			}
@@ -410,16 +415,20 @@ void CustomerFlow::mainMenu()
 
 void CustomerFlow::findAvailableShops()
 {
-	// insert location sorting mechanism here
-	// for now I will have this list equal to the list of all shops
-	currentCustomer->availableShops = SH_List::SHOPS;
+	currentCustomer->availableShops.clear(); 
+	for (const auto& shop : SH_List::SHOPS)
+	{
+		Time::calcLocalTime();
+		if (shop->isAvailable(Time(Time::localHour, Time::localMinute)))
+			currentCustomer->availableShops.emplace_back(shop);
+	}
 }
 
 void CustomerFlow::displayShops()
 {
 	int numShops = currentCustomer->availableShops.size();
 	// loop through shops and display
-	std::cout << std::setw(20) << "Shop Name" << "Shop Address\n";
+	std::cout << std::setw(20) << "Shop Name" <<std::setw(25)<< "Shop Address"<<"Operation hours\n";
 	Helper::line(80);
 	for (int i = 1; i <= numShops; i++) {
 		std::cout << i << ". ";

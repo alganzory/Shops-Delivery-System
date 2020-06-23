@@ -33,6 +33,7 @@ void SO_List::readFromFile()
 	std::string item;
 	int age, itemQuantity;
 	double balance, price;
+	int availableTime1, availableTime2;
 	
 	while (dataFile)
 	{
@@ -45,13 +46,16 @@ void SO_List::readFromFile()
 		std::getline(dataFile, location);
 		std::getline(dataFile, shopname);
 		std::getline(dataFile, shoplocation);
+		dataFile >> availableTime1;
+		dataFile >> availableTime2;
+		dataFile.ignore();
 		std::getline(dataFile, empty);
 		
 	
 		SHOPOWNERS.emplace_back
 		(std::make_shared<ShopOwner>(username, password)
 		);
-		SHOPOWNERS.back()->setInfoFile(name, age, balance, location, shopname, shoplocation);
+		SHOPOWNERS.back()->setInfoFile(name, age, balance, location, shopname, shoplocation,availableTime1,availableTime2);
 
 		while (getline(dataFile, item) && !item.empty()) {
 			std::istringstream s(item);

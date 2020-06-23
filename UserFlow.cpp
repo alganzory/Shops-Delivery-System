@@ -108,6 +108,8 @@ void UserFlow::myProfile()
 			Helper::line(110);
 			std::cout << "(P) Shop Location: " << ShopOwnerFlow::currentSO->getShopPtr()->getLocation().getAddress() << "\n";
 			Helper::line(110);
+			std::cout << "(V) Operation Hour " << ShopOwnerFlow::currentSO->getShopPtr()->getAvailableTimes().first
+				<< " - " << ShopOwnerFlow::currentSO->getShopPtr()->getAvailableTimes().second << "\n";
 		}
 		std::cout << "Your choice: ";
 		int choice{};
@@ -116,7 +118,7 @@ void UserFlow::myProfile()
 		else if (isVol)
 			choice = Helper::readChoice(0, 0, "NndDAaLluUtbBTVv");
 		else
-			choice = Helper::readChoice(0, 0, "NndDAaLluUbBSsPp");
+			choice = Helper::readChoice(0, 0, "NndDAaLluUbBSsPpVv");
 
 
 		//======
@@ -217,8 +219,10 @@ void UserFlow::myProfile()
 			std::cout << "End hour: ";
 			int endHour = Helper::readChoice(startHour, 24, "cC");
 			if (endHour == 'C' || endHour == 'c') continue;
-
-			VolunteerFlow::currentVolunteer->setAvailableTimes({ startHour,endHour });
+			if(isVol)
+				VolunteerFlow::currentVolunteer->setAvailableTimes({ startHour,endHour });
+			else
+				ShopOwnerFlow::currentSO->getShopPtr()->setAvailableTimes({ startHour,endHour });
 			Helper::line(110);
 			std::cout << "Your available hours have been updated\n";
 			continue;

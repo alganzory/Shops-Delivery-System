@@ -3,6 +3,7 @@
 
 #include <iomanip>
 #include<memory>
+#include "Helper.h"
 
 
 #include "SH_List.h"
@@ -21,7 +22,7 @@ void Volunteer::setTransport(std::string& transport) {
 }
 
 void Volunteer::setAvailableTimes(std::pair <int, int>availableTimes) {
-    this->availableTimes = std::pair < Time,Time>(Time(availableTimes.first, 0), Time(availableTimes.second, 0));
+    this->availableTimes = {  Time(availableTimes.first, 0), Time(availableTimes.second, 0) };
 }
 
 std::pair<Time, Time> Volunteer::getAvailableTimes() const
@@ -45,12 +46,9 @@ void Volunteer::setInfo(std::string name, int age, double balance, Location loca
 
     std::cout << "When are you available?\n"
         << "Start hour: ";
-    int startHour;
-    std::cin >> startHour;
+    int startHour = Helper::readChoice(0, 23);
     std::cout << "End hour: ";
-    int endHour;
-    std::cin >> endHour;
-    std::cin.ignore();
+    int endHour = Helper::readChoice(startHour, 24);
 
     setAvailableTimes({ startHour,endHour });
 
