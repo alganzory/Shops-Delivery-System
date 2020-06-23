@@ -93,6 +93,7 @@ void Order::removeItem(std::pair<std::shared_ptr<Item>, int>& itemReq)
 	int distance = itemPosition - items.begin();
 	items.erase(itemPosition);
 	itemsIndices.erase(itemsIndices.begin() + distance);
+	preparationStatus.erase(preparationStatus.begin() + distance);
 
 }
 
