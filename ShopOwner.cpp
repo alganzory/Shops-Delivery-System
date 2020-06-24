@@ -119,6 +119,3 @@ void ShopOwner::setShopAdress(const std::string& cs)
 	shop->setLocation(Location(cs));
 }
 
-void ShopOwner::addBalance(double amount) {
-	balance += amount;
-}

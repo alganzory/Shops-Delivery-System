@@ -375,8 +375,7 @@ void ShopOwnerFlow::viewOrder(std::shared_ptr<Order>& order)
 			continue;
 		}
 		else if (action == 'C' || action == 'c') {
-			order->customer->setBalance(order->customer->getBalance() + order->getTotalPrice());
-			currentSO->setBalance(currentSO->getBalance() - order->getTotalPrice());
+			
 			order->cancelOrder();
 			return;
 		}

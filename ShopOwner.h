@@ -33,7 +33,7 @@ public:
 	friend class ShopOwnerFlow;
 	friend class O_List;
 	friend class Shop;
-	void addBalance(double amount);
+	//void addBalance(double amount);
 	friend class SO_List;
 };
 

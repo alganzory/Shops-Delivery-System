@@ -58,7 +58,7 @@ void VolunteerFlow::ongoingOrder()
 			currentOrder->setStatus(Order::Complete);
 			double reward = currentOrder->getReward();
 			if (reward > 0) {
-				currentVolunteer->getReward(reward);
+				currentVolunteer->getReward(reward); 
 				std::cout << "You have been tipped: " << reward << "\n";
 			}
 			currentOrder = nullptr;

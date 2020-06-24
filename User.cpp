@@ -76,6 +76,16 @@ bool User::isAuth(std::string username, std::string password) const
 }
 
 
+void User::addBalance(double amount)
+{
+	balance += amount;
+}
+
+void User::subtractBalance(double amount)
+{
+	balance -= amount;
+}
+
 User::~User()
 {
 

@@ -311,9 +311,6 @@ void CustomerFlow::viewOrder(const std::shared_ptr<Order>& order)
 			break;
 		}
 		if (choice == 'C' || choice == 'c') {
-			currentCustomer->setBalance(currentCustomer->getBalance() + order->getTotalPrice());
-			std::weak_ptr<ShopOwner> currentSO = currentShop->getShopOwner();
-			currentSO.lock()->setBalance(currentSO.lock()->getBalance() - order->getTotalPrice());
 			order->cancelOrder();
 			std::cout << "Order has been canceled, you will be directed to main menu...\n";
 			mainMenu();

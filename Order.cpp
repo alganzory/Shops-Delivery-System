@@ -7,10 +7,16 @@
 #include "Volunteer.h"
 #include "Customer.h"
 #include "Shop.h"
+#include"ShopOwner.h"
 
 
 void Order::cancelOrder()
 {
+
+	customer->addBalance (getTotalPrice());
+	shop->getShopOwner().lock()->subtractBalance(totalPrice); 
+	customer->addBalance (reward);
+	
 	while (!items.empty())
 	{
 		items.back().first->addQuantity(items.back().second);
@@ -18,10 +24,8 @@ void Order::cancelOrder()
 		itemsIndices.pop_back();
 	}
 
-	customer->removeOrder(shared_from_this());
-	customer->setBalance(customer->getBalance() + reward);
-	shop->removeOrder(shared_from_this());
-	
+
+	 
 	
 }
 
