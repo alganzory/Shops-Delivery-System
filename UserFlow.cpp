@@ -325,6 +325,7 @@ void UserFlow::signUp() {
 
 		std::cout << "Just a few more questions...\n";
 		currentUser->setInfo(name, age, balance, location);
+		
 		Helper::line();
 		std::cout << "Account registered successfully, you will be directed to main Menu\n";
 		welcomeScreen();

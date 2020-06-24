@@ -88,6 +88,7 @@ void V_List::WriteVolunteers() {
 		vFile << ALL_VOLUNTEERS[i]->getAvailableTimes().first.getHour()
 			<< " " << ALL_VOLUNTEERS[i]->getAvailableTimes().second.getHour() << std::endl;
 		bool hasRegistered = false;
+		ALL_VOLUNTEERS[i]->registeredShops.resize(SH_List::SHOPS.size(),false);
 		for (int j = 0; j < SH_List::SHOPS.size(); j++){
 		
 			if (ALL_VOLUNTEERS[i]->registeredShops[j]) {

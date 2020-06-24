@@ -1,6 +1,7 @@
 #include "ShopOwner.h"
 
 #include "ShopOwnerFlow.h"
+#include "SH_List.h"
 
 
 ShopOwner::ShopOwner(std::string username, std::string password):
@@ -27,6 +28,8 @@ void ShopOwner::setInfo(std::string name, int age, double balance, Location loca
 	shop->setShopOwner(shared_from_this());
 	Location shopLocation(shopAddress);
 	createShop(shopName, shopLocation);
+	SH_List::addShop(shop);
+
 }
 
 //Shop ShopOwner::getShop() const
