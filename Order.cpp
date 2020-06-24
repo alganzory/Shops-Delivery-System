@@ -192,7 +192,7 @@ void Order::summary(char userType)
 		std::cout << std::setw(20)
 			<< (orderStatus != Status::Cancelled ? (paymentStatus == true ? "Paid" : "Pending") : (paymentStatus == true ? "Refunded" : "Not paid"));
 			
-		if ((getStatus() == Order::Preparing && isOverdue()) || getStatus() == Order::Cancelled && overdue)
+		if ((getStatus() == Order::Cancelled && overdue)||(getStatus() == Order::Preparing && isOverdue()))
 		{
 			std::cout <<std::setw(10) << getStatus() << std::setw(15) << "(overdue)";
 		}

@@ -15,23 +15,25 @@ void CustomerFlow::makeAnOrder()
 	findAvailableShops();
 	while (true)
 	{
-		std::cout << "List of available shops for you at this time\n";
-		Helper::dLine(60);
-
+		system("CLS");
+		std::cout << "\nList of available shops for you at this time\n";
+		Helper::dLine(70);
 		CustomerFlow::displayShops();
+		Helper::line(70);
+
 		int shopChoices = currentCustomer->availableShops.size();
-		Helper::line(60);
 		std::cout << "Please select a shop "
 			<< "or Press B to go back: ";
 		int chosenShop = Helper::readChoice(1, shopChoices, "Bb");
 		if (chosenShop == 'B' || chosenShop == 'b') {
+			system("CLS");
 			break;
 		}
 		if (currentShop != currentCustomer->availableShops[chosenShop - 1])
 		{
 			if (currentShop != nullptr)
 			{
-				std::cout << "This will clear your current cart. Proceed? (Y/N)" << std::endl;
+				std::cout << "This will clear your current cart. Proceed? Y(yes)/N(no)" << std::endl;
 				int choice = Helper::readChoice(0, 0, "YyNn");
 				if (choice == 'N' || choice == 'n')
 				{
@@ -50,16 +52,17 @@ void CustomerFlow::checkout()
 {
 	while (true)
 	{
+		system("CLS");
 		// Display the order and the total price
-		std::cout << "Review Order\n";
+		std::cout << "\nReview Order\n";
 		Helper::dLine(70);
 		currentCustomer->cart->display();
 		Helper::line(70);
 		// ask for delivery time
 
 		while (true) {
-			std::cout << "Thee operation hour of the shop:" << currentShop->getAvailableTimes().first << " - " << currentShop->getAvailableTimes().second << std::endl;
-			std::cout << "Enter delivery time in (HH:MM) format or Press B to go back to cart: ";
+			std::cout << "The operation hour of the shop: " << currentShop->getAvailableTimes().first << " - " << currentShop->getAvailableTimes().second << std::endl;
+			std::cout << "Enter delivery time in (HH:MM) 24 format or Press B to go back to cart: \n";
 			std::string input;
 			getline(std::cin, input);
 			std::stringstream inputStream(input);
@@ -76,7 +79,7 @@ void CustomerFlow::checkout()
 			inputStream >> character;
 			if (isTime) inputStream >> minutes;
 
-			if (!isTime) break;
+			if (!isTime) return;
 			try {
 				currentCustomer->cart->setDeliveryTime(hour, minutes);
 				if (currentCustomer->cart->getDeliveryTime().getTimeDiff().second < 0)
@@ -112,7 +115,8 @@ void CustomerFlow::checkout()
 			std::cout << "Insufficient balance, taking you back to cart...";
 			break;
 		}
-		std::cout<<"Do you wish to tip the volunteer? Y (Yes) or N (No)"<<std::endl;
+		Helper::line(80);
+		std::cout<<"Do you wish to tip the volunteer? Y (Yes) or N (No): ";
 		int ans= Helper::readChoice(0,0,"YyNn");
 		double reward=0;
 		if (ans=='Y'||ans=='y')
@@ -148,7 +152,9 @@ void CustomerFlow::checkout()
 		currentCustomer->cart->setCustomer(currentCustomer);
 		currentCustomer->cart->setPaymentStatus(true);
 		currentCustomer->placeOrder();
-		std::cout << "Your order has been placed successfully, you will be directed to main menu...\n";
+		system("CLS");
+		std::cout << "Your order has been placed successfully,\nyou will be directed to main menu...\n";
+		Helper::line(40);
 		mainMenu();
 	}
 	
@@ -158,25 +164,29 @@ void CustomerFlow::checkout()
 void CustomerFlow::myCart()
 {
 	while (true) {
-		std::cout << "My cart:\n";
-		Helper::dLine(70);
-		int choice{};
+		system("CLS");
 
 		if (currentCustomer->cart->getOrderSize()==0)
 		{
-			std::cout << "No Items Yet." << '\n';
+			std::cout << "Your cart has no items yet." << '\n';
 			std::cout << "You will be directed back...\n";
+			Helper::dLine(70);
 			break;
 		}
+		std::cout << "\nMy cart:\n";
+		Helper::dLine(70);
+		int choice{};
+
 		currentCustomer->cart->display();
-		Helper::line(60);
+		Helper::line(70);
 		std::cout << "Choose an Item number to remove it from the cart\n"
 			<< "or press B to go back or C to checkout\n";
-		Helper::line(60);
+		Helper::line(70);
 		std::cout << "Your Choice: ";
 		choice = Helper::readChoice(1, currentCustomer->cart->getOrderSize(), "BbCc");
 		if (choice == 'B' || choice == 'b')
 		{
+			system("CLS");
 			break;
 		}
 		else if (choice == 'C' || choice == 'c')
@@ -186,6 +196,7 @@ void CustomerFlow::myCart()
 		else
 		{
 			std::pair<std::shared_ptr<Item>, int>& item = currentCustomer->cart->getItem(choice - 1);
+			std::cout << std::endl;
 			std::cout << "You choose to remove:\n\n"
 				<< item.first->getName() << "\tRM"
 				<< item.first->getPrice() << "\tQuantity: " << item.second << '\n';
@@ -200,6 +211,7 @@ void CustomerFlow::myCart()
 			else if (choice == 'b' || choice == 'B')
 			{
 				continue;
+				system("CLS");
 			}
 			else
 			{
@@ -214,15 +226,15 @@ void CustomerFlow::myCart()
 
 }
 
-void CustomerFlow::myOrders(bool pendingOnly)
+void CustomerFlow::myOrders(bool ongoingOnly)
 {
 	while (true)
 	{
-
-		std::cout << (pendingOnly ? "Pending Order" : "All Orders") << '\n';
+		system("CLS");
+		std::cout << (ongoingOnly ? "\nOngoing Orders" : "\nAll Orders") << '\n';
 		Helper::dLine(110);
-		int anyPending = 0;
-		std::vector <std::shared_ptr<Order> > pendingOrders;
+		int ongoingCount = 0;
+		std::vector <std::shared_ptr<Order> > ongoingOrders;
 
 		for (const auto& order : currentCustomer->orders)
 		{
@@ -235,36 +247,33 @@ void CustomerFlow::myOrders(bool pendingOnly)
 
 		if (currentCustomer->orders.empty())
 		{
+			system("CLS");
 			std::cout << "No orders yet, you will be directed to main menu...\n";
+			Helper::line();
 			mainMenu();
 		}
 
-		else if (pendingOnly)
+		else if (ongoingOnly)
 		{
-			pendingOrders.reserve(currentCustomer->orders.size());
+			ongoingOrders.reserve(currentCustomer->orders.size());
 			for (const auto& order : currentCustomer->orders)
 			{
 				
-				if (order->getStatus() != Order::Complete) {
-					if (order->getStatus() == Order::Cancelled)
-					{
-						if (order->getDeliveryTime().getTimeDiff().second<0)
-						{
-							continue;
-						}
-
-					}
-					anyPending++;
-					pendingOrders.emplace_back(order);
+				if (order->getStatus() < Order::Complete) {
+					ongoingCount++;
+					ongoingOrders.emplace_back(order);
 				}
 			}
-			if (!anyPending) {
-				std::cout << "No pending orders, you will be directed to main menu...\n";
+			if (!ongoingCount) {
+				system("CLS");
+				std::cout << "No ongoing orders, you will be directed to main menu...\n";
+				Helper::line();
 				mainMenu();
 			}
 		}
 
-		std::cout << std::setw(18) << "Shop"
+		std::cout << std::setw(4) << "No."
+			<< std::setw(20) << "Shop"
 			<< std::setw(15) << "Total Price"
 			<< std::setw(20) << "Payment Status"
 			<< std::setw(20) << "Order Status"
@@ -272,18 +281,18 @@ void CustomerFlow::myOrders(bool pendingOnly)
 		Helper::line(110);
 
 		int counter{};
-		if (!pendingOnly) {
+		if (!ongoingOnly) {
 			for (const auto& order : currentCustomer->orders)
 			{
-				std::cout << ++counter << "- ";
+				std::cout<<std::setw(4) << ++counter ;
 				order->summary('c');
 			}
 		}
 
-		else if (pendingOnly) {
-			for (const auto& order : pendingOrders)
+		else if (ongoingOnly) {
+			for (const auto& order : ongoingOrders)
 			{
-				std::cout << ++counter << "- ";
+				std::cout << std::setw(4) << ++counter;
 				order->summary('c');
 			}
 		}
@@ -291,22 +300,26 @@ void CustomerFlow::myOrders(bool pendingOnly)
 		// can select an order to view or simply go back
 		Helper::line(110);
 		std::cout << "Select an order to view in detail, "
-			<< (!pendingOnly ? "Press P to view Pending orders " : " ")
+			<< (!ongoingOnly ? "Press O to view Ongoing orders " : " ")
 			<< "or press B to back\n";
 
 		Helper::line(110);
 		std::cout << "Your choice: ";
-		int choice = (!pendingOnly ? Helper::readChoice(1, currentCustomer->orders.size(), "bPBp")
-			: Helper::readChoice(1, anyPending, "bB"));
+		int choice = (!ongoingOnly ? Helper::readChoice(1, currentCustomer->orders.size(), "bOBo")
+			: Helper::readChoice(1, ongoingCount, "bB"));
 
-		if (choice == 'B' || choice == 'b') break;
-		if (!pendingOnly && (choice == 'P' || choice == 'p')) myOrders(true);
+		if (choice == 'B' || choice == 'b')
+		{
+			system("CLS");
+			break;
+		}
+		if (!ongoingOnly && (choice == 'O' || choice == 'o')) myOrders(true);
 		else 
 			try {
-			if (!pendingOnly)
+			if (!ongoingOnly)
 				viewOrder(currentCustomer->orders.at(choice - 1));
-			else if (pendingOnly)
-				viewOrder(pendingOrders.at(choice - 1));
+			else if (ongoingOnly)
+				viewOrder(ongoingOrders.at(choice - 1));
 		}
 		catch (const std::out_of_range& error)
 		{
@@ -365,7 +378,9 @@ void CustomerFlow::viewOrder(const std::shared_ptr<Order>& order)
 		}
 		if (choice == 'C' || choice == 'c') {
 			order->cancelOrder();
+			system("CLS");
 			std::cout << "Order has been canceled, you will be directed to main menu...\n";
+			Helper::line();
 			mainMenu();
 			break;
 		}
@@ -376,19 +391,35 @@ void CustomerFlow::viewOrder(const std::shared_ptr<Order>& order)
 
 void CustomerFlow::mainMenu()
 {
-
 	while (true) {
-		std::cout << "Welcome " << currentCustomer->getName() << '\n';
+		
+		std::cout << "\nWelcome " << currentCustomer->getName() << '\n';
+		Helper::line(currentCustomer->getName().length() + 8);
 		std::cout << "Your balance: " << currentCustomer->getBalance() << "\n";
-		Helper::dLine();
+		Helper::dLine(40);
 		std::cout << "Choose an option from the following:\n";
 
+		sort(currentCustomer->orders.begin(), currentCustomer->orders.end());
+
+		int anyPending = 0;
+		for (const auto& order : currentCustomer->orders)
+		{
+			if (order->getStatus() < Order::Complete) {
+				anyPending++;
+			}
+		}
+
+		int cartItem = currentCustomer->cart->getOrderSize();
+
+			std::string pendingOrders = " (" + std::to_string(anyPending) + ")";
+			std::string cart = " (" + std::to_string(cartItem) + ")";
+
 		std::vector <std::string > menuOptions = {
-			"Make an order", "My orders", "My cart", "My profile", "Log out"
+			"Make an order", "My orders"+pendingOrders, "My cart"+cart, "My profile", "Log out"
 		};
 
 		Helper::displayMenu(menuOptions);
-		Helper::line();
+		Helper::line(40);
 		std::cout << "Your choice: ";
 		int choice = Helper::readChoice(1, 5);
 
@@ -402,6 +433,7 @@ void CustomerFlow::mainMenu()
 		case 3: myCart();
 			break;
 		case 4: UserFlow::myProfile();
+			system("CLS");
 			break;
 		default:
 			currentCustomer = nullptr;
@@ -428,10 +460,10 @@ void CustomerFlow::displayShops()
 {
 	int numShops = currentCustomer->availableShops.size();
 	// loop through shops and display
-	std::cout << std::setw(20) << "Shop Name" <<std::setw(25)<< "Shop Address"<<"Operation hours\n";
-	Helper::line(80);
+	std::cout <<std::setw(4)<<"No."<< std::setw(20) << "Shop Name" <<std::setw(25)<< "Shop Address"<<"Operation hours\n";
+	Helper::line(70);
 	for (int i = 1; i <= numShops; i++) {
-		std::cout << i << ". ";
+		std::cout << std::setw(4) << i ;
 		currentCustomer->availableShops[i - 1]->display('c');
 		std::cout << "\n";
 	}
@@ -440,26 +472,28 @@ void CustomerFlow::displayShops()
 
 void CustomerFlow::viewShop()
 {
+	system("CLS");
 	while (true)
 	{
-		std::cout << "List of items in ";
+		std::cout << "\nList of items in ";
 		// display the shop
 		std::cout << currentShop->getName() << " :\n";
-		Helper::dLine(60);
+		Helper::dLine(65);
 		// list shop items
 		int numItems = currentShop->getItemsCount();
 		std::vector<std::shared_ptr<Item>> shopItems = currentShop->getItems();
-		std::cout << std::left << std::setw(30) << "Name"
+		std::cout << std::left<<std::setw(4)<<"No." << std::setw(30) << "Name"
 			<< std::setw(20) << "Price" << "In Stock" << "\n";
+		Helper::line(65);
 		for (int i = 1; i <= numItems; i++) {
-			std::cout << i << "- ";
+			std::cout <<std::setw(4)<< i ;
 			shopItems[i - 1]->display();
 		}
 
-		Helper::line(60);
+		Helper::line(65);
 		std::cout << "Choose an item number followed by quantity to add it to cart,\n"
 			<< " press C to go to cart or press B to go back:\n";
-		Helper::line(60);
+		Helper::line(65);
 		std::cout << "Your choice: ";
 		int itemChoice, itemQuantity;
 
@@ -476,6 +510,9 @@ void CustomerFlow::viewShop()
 
 			currentCustomer->cart->setShop(currentShop);
 			currentCustomer->cart->addItem(itemChoice - 1, itemQuantity);
+			system("CLS");
+			std::cout << itemQuantity << " " << shopItems[itemChoice - 1]->getName() << " is added into the cart.\n";
+			Helper::line(65);
 		}
 		
 		
