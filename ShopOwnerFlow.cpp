@@ -179,7 +179,8 @@ void ShopOwnerFlow::mainMenu()
 {
 	system("CLS");
 	while (true) {
-		std::cout << "\nWelcome " << currentSO->getName() << '\n';
+		std::string welcoming = "\nWelcome " + currentSO->getName() + '\n';
+		Helper::stringDisplay(welcoming);
 		Helper::line(currentSO->getName().length() + 8);
 		std::cout << "Your balance: " << currentSO->getBalance() << "\n";
 		Helper::dLine();

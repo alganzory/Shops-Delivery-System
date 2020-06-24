@@ -14,8 +14,10 @@ void UserFlow::welcomeScreen()
 	system("CLS");
 	while (choice != 99)
 	{
+
+		std::string opener = "\nCOVID-19 SHOPS DELIVERY SYSTEM\n";
+		Helper::stringDisplay(opener);
 		
-		std::cout << "\nCOVID-19 SHOPS DELIVERY SYSTEM" << std::endl;
 		Helper::dLine();
 		Helper::displayMenu({ "Log in", "Sign up", "Exit" });
 		Helper::line();

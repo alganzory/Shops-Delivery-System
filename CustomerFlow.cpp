@@ -393,7 +393,8 @@ void CustomerFlow::mainMenu()
 {
 	while (true) {
 		
-		std::cout << "\nWelcome " << currentCustomer->getName() << '\n';
+		std::string welcoming = "\nWelcome " + currentCustomer->getName() +'\n';
+		Helper::stringDisplay(welcoming);
 		Helper::line(currentCustomer->getName().length() + 8);
 		std::cout << "Your balance: " << currentCustomer->getBalance() << "\n";
 		Helper::dLine(40);

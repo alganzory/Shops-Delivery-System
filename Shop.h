@@ -29,6 +29,7 @@ public:
 	std::string getName() const;
 	void setName(std::string name);
 	const std::vector<std::shared_ptr<Item>>& getItems();
+	//useless
 	void setItems(std::vector<std::shared_ptr<Item>> items);
 	Location getLocation() const;
 	void setLocation(Location location);
@@ -39,7 +40,9 @@ public:
 
 	void display(char useType ='c');
 	void recieveOrder(std::shared_ptr<Order> cart);
+	//useless
 	void removeOrder(const std::shared_ptr<Order>& order);
+	//useless
 	void removeVolunteer(const std::shared_ptr<Volunteer>& volunteer);
 	void addVolunteer(const std::shared_ptr<Volunteer>& shared);
 	friend class Order;

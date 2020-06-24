@@ -216,7 +216,8 @@ void VolunteerFlow::mainMenu()
 {
 	system("CLS");
 	while (true) {
-		std::cout << "\nWelcome " << currentVolunteer->getName() << '\n';
+		std::string welcoming = "\nWelcome " + currentVolunteer->getName() +'\n';
+		Helper::stringDisplay(welcoming);
 		std::cout << "Your balance: " << currentVolunteer->getBalance() << "\n";
 		Helper::dLine();
 		std::cout << "Choose an option from the following:\n";

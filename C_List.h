@@ -18,8 +18,9 @@ class C_List
 	public:
 		static int getCustomerCount();
 		static void addCustomer(std::shared_ptr<Customer> customer);
-		static void removeCustomer(std::shared_ptr<Customer> customer);
+		//useless
+		static void removeCustomer(std::shared_ptr<Customer> customer);//useless
 		static void readCustomers();
 		static void writeCustomer();
-		friend std::istream& operator >>(std::istream& input, const Customer::HealthStatus& health);
+	//	friend std::istream& operator >>(std::istream& input, const Customer::HealthStatus& health);
 };

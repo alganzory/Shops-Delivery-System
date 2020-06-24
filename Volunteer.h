@@ -12,7 +12,7 @@ private:
     std::pair<Time, Time> availableTimes;
     std::vector<bool> registeredShops; // this array is like a map between shop index and registration status
     std::vector<std::shared_ptr<Order>> acceptedOrders;
-    std::vector<double> rewards;
+    std::vector<double> rewards; //useless
 
 public:
     Volunteer();
@@ -24,15 +24,13 @@ public:
     void setInfo(std::string name, int age, double balance, Location location);
     bool isAvailable(Time time);
     void registerToShop(int shopIdx);
-    void respondToOrder(std::shared_ptr<Order> acceptedOrders, bool accept);
-    void deliverOrder(std::shared_ptr<Order> acceptedOrders);
+    void respondToOrder(std::shared_ptr<Order> acceptedOrders, bool accept); //useless
+    void deliverOrder(std::shared_ptr<Order> acceptedOrders); //useless
     void getReward(double reward);
     void welcome() override;
     void display();
 
     friend class O_List;
-    //operators overloading
-    //friend
     friend class VolunteerFlow;
 };
 
