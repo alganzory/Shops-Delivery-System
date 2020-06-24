@@ -409,6 +409,7 @@ void ShopOwnerFlow::viewOrder(std::shared_ptr<Order>& order)
 			continue;
 		}
 		else if (action == 'C' || action == 'c') {
+			
 			order->cancelOrder();
 			return;
 		}

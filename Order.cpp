@@ -7,30 +7,25 @@
 #include "Volunteer.h"
 #include "Customer.h"
 #include "Shop.h"
+#include"ShopOwner.h"
 
 
 void Order::cancelOrder()
 {
-	/*while (!items.empty())
-	{
-		items.back().first->addQuantity(items.back().second);
-		items.pop_back();
-		itemsIndices.pop_back();
-	}*/
+
+
+	customer->addBalance (getTotalPrice());
+	shop->getShopOwner().lock()->subtractBalance(totalPrice); 
+	customer->addBalance (reward);
+	
 	for (int i = 0; i < items.size(); i++)
 	{
 		items[i].first->addQuantity(items[i].second);
 	}
-	//customer->removeOrder(shared_from_this());
-	if (getPaymentStatus())
-	{
-		customer->setBalance(customer->getBalance() + reward);
-	}
 	
-	//shop->removeOrder(shared_from_this());
 	setStatus( Order::Cancelled);
 
-	
+
 }
 
 std::string Order::getDlvryAddress() const
@@ -48,6 +43,8 @@ Order::Order()
 	orderStatus = Order::Pending;
 	reward = 0;
 	overdue = FALSE;
+	this->deliveryStatus = false;
+	this->paymentStatus = true;
 }
 
 Order::Order(std::shared_ptr<Customer> customer, std::shared_ptr<Shop> shop) {
@@ -104,7 +101,6 @@ void Order::removeItem(std::pair<std::shared_ptr<Item>, int>& itemReq)
 	items.erase(itemPosition);
 	itemsIndices.erase(itemsIndices.begin() + distance);
 	preparationStatus.erase(preparationStatus.begin() + distance);
-
 }
 
 void Order::setTotalPrice(double totalPrice) {
@@ -296,7 +292,7 @@ std::ostream& operator<<(std::ostream& output, const Order::Status& status)
 std::istream& operator>>(std::istream& input, Order::Status& status)
 {
 	std::string s;
-	input >> s;
+	std::getline(input, s);
 
 	if (s == "Pending")
 		status = Order::Pending;
@@ -392,7 +388,15 @@ bool Order::isOverdue()
 {
 	if (getDeliveryTime().getTimeDiff().second < 0)
 	{
-		overdue = TRUE;	
+		overdue = TRUE;
 	}
 	return overdue;
+}
+
+void Order::reduceItem(int quantity, std::pair<std::shared_ptr<Item>, int>& itemReq) {
+	itemReq.second -= quantity;
+	if (itemReq.second == 0) {
+		std::cout << "You have 0 items. Order will be automatically removed.\n";
+		removeItem(itemReq);
+	}
 }

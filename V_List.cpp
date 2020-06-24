@@ -1,5 +1,6 @@
 #include"V_List.h"
-
+#include "SH_List.h"
+#include <sstream>
 std::vector<std::shared_ptr<Volunteer>> V_List::ALL_VOLUNTEERS;
 std::fstream V_List::vFile;
 std::string V_List::filePath = "VolunteerList.txt";
@@ -30,20 +31,16 @@ void V_List::ReadVolunteers() {
 	int age = 0;
 	int availableTime1{};
 	int availableTime2{};
+	int shopIdx{};
 	double balance = 0.00;
 	std::string address;
 	std::string transport;
 	std::string blank;
-	
+	std::string shopInfo;
 
-	do
+	while (std::getline (vFile, username))
 	{
-		username = "\0";
-		std::getline(vFile, username);
-		if (username == "\0")
-		{
-			break;
-		}
+		
 		std::getline(vFile, password);
 		std::getline(vFile, name);
 		vFile >> age;
@@ -55,6 +52,13 @@ void V_List::ReadVolunteers() {
 		vFile >> availableTime2;
 		vFile.ignore();
 		std::shared_ptr<Volunteer> volunteer = std::make_shared <Volunteer>(username, password);
+		std::getline(vFile, shopInfo);
+		std::istringstream s(shopInfo);
+		while (s>>shopIdx)
+		{
+			volunteer->registerToShop (shopIdx);
+			SH_List::SHOPS[shopIdx]->addVolunteer(volunteer);
+		}
 		volunteer->setName(name);
 		volunteer->setAge(age);
 		volunteer->setBalance(balance);
@@ -63,17 +67,39 @@ void V_List::ReadVolunteers() {
 		volunteer->setAvailableTimes({ availableTime1,availableTime2 });
 		AddVolunteer(volunteer);
 		std::getline(vFile, blank);
-	} while (username != "\0");
+	} 
 
 	vFile.close();
 }
 
 void V_List::WriteVolunteers() {
 	//std::fstream Vfile;
-	vFile.open("VolunteerList.txt");
+	vFile.open("VolunteerList.txt",std::ios::out);
 	//to write volunteers into file
 	for (int i = 0; i < getVolunteersCount(); i++) {
-		vFile << ALL_VOLUNTEERS[i];
+		vFile << ALL_VOLUNTEERS[i]->getUsername() << std::endl;
+		vFile << ALL_VOLUNTEERS[i]->password << std::endl;
+		vFile << ALL_VOLUNTEERS[i]->getName() << std::endl;
+		vFile << ALL_VOLUNTEERS[i]->getAge() << std::endl;
+		vFile << ALL_VOLUNTEERS[i]->getBalance() << std::endl;
+		Location address = ALL_VOLUNTEERS[i]->getLocation();
+		vFile << address.getAddress() << std::endl;
+		vFile << ALL_VOLUNTEERS[i]->getTransport() << std::endl;
+		vFile << ALL_VOLUNTEERS[i]->getAvailableTimes().first.getHour()
+			<< " " << ALL_VOLUNTEERS[i]->getAvailableTimes().second.getHour() << std::endl;
+		bool hasRegistered = false;
+		ALL_VOLUNTEERS[i]->registeredShops.resize(SH_List::SHOPS.size(),false);
+		for (int j = 0; j < SH_List::SHOPS.size(); j++){
+		
+			if (ALL_VOLUNTEERS[i]->registeredShops[j]) {
+				vFile << j << " ";
+				hasRegistered = true;
+			}
+			
+		}
+		if (hasRegistered) vFile << std::endl;
+		if (i!= getVolunteersCount()-1) vFile << std::endl;
+		if (i == getVolunteersCount() - 1 && !hasRegistered) vFile << std::endl;
 	}
 	vFile.close();
 }

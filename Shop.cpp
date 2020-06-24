@@ -146,3 +146,4 @@ bool Shop::isAvailable(Time time)
 		return available;
 	}
 }
+

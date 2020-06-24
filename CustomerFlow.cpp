@@ -151,6 +151,8 @@ void CustomerFlow::checkout()
 		currentShop->recieveOrder(currentCustomer->cart);
 		currentCustomer->cart->setCustomer(currentCustomer);
 		currentCustomer->cart->setPaymentStatus(true);
+		std::weak_ptr <ShopOwner> shopOwner = currentShop->getShopOwner();
+		shopOwner.lock()->addBalance(currentCustomer->cart->getTotalPrice());
 		currentCustomer->placeOrder();
 		system("CLS");
 		std::cout << "Your order has been placed successfully,\nyou will be directed to main menu...\n";
@@ -215,9 +217,11 @@ void CustomerFlow::myCart()
 			}
 			else
 			{
-				int quantity = item.second - choice;
-				currentCustomer->cart->removeItem(item);
+				/*int quantity = item.second - choice;
 				currentCustomer->cart->addItem(item.first, quantity);
+				currentCustomer->cart->removeItem(item);*/
+				currentCustomer->cart->reduceItem(choice, item);
+
 			}
 
 		}	
@@ -474,18 +478,11 @@ void CustomerFlow::displayShops()
 
 void CustomerFlow::viewShop()
 {
-<<<<<<< HEAD
-	currentCustomer->cart->setShop(currentShop);
-	while (true)
-	{
-		
-		std::cout << "List of items in ";
-=======
+
 	system("CLS");
 	while (true)
 	{
 		std::cout << "\nList of items in ";
->>>>>>> fixing-yilin
 		// display the shop
 		std::cout << currentShop->getName() << " :\n";
 		Helper::dLine(65);
@@ -499,18 +496,13 @@ void CustomerFlow::viewShop()
 			std::cout <<std::setw(4)<< i ;
 			shopItems[i - 1]->display();
 		}
-
 		Helper::line(65);
+
 		std::cout << "Choose an item number followed by quantity to add it to cart,\n"
 			<< " press C to go to cart or press B to go back:\n";
-<<<<<<< HEAD
-		Helper::line(60);
-		std::cout << "Item: ";
-=======
+
 		Helper::line(65);
 		std::cout << "Your choice: ";
-		int itemChoice, itemQuantity;
->>>>>>> fixing-yilin
 
 		int itemChoice = Helper::readChoice(1, numItems, "CcBb");
 		if (itemChoice == 'C' || itemChoice == 'c') {
@@ -533,14 +525,11 @@ void CustomerFlow::viewShop()
 				std::cout << "You can only add up to " << maxQuantity << " of this item\nplease try again or press B to cancel...\n";
 			}
 
-<<<<<<< HEAD
-=======
 			currentCustomer->cart->setShop(currentShop);
 			currentCustomer->cart->addItem(itemChoice - 1, itemQuantity);
 			system("CLS");
 			std::cout << itemQuantity << " " << shopItems[itemChoice - 1]->getName() << " is added into the cart.\n";
 			Helper::line(65);
->>>>>>> fixing-yilin
 		}
 
 

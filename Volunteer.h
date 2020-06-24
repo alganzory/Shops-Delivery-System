@@ -32,6 +32,7 @@ public:
 
     friend class O_List;
     friend class VolunteerFlow;
+    friend class V_List;
 };
 
 #endif

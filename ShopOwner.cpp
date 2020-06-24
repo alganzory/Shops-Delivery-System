@@ -1,6 +1,7 @@
 #include "ShopOwner.h"
 #include "Helper.h"
 #include "ShopOwnerFlow.h"
+#include "SH_List.h"
 
 
 ShopOwner::ShopOwner(std::string username, std::string password):
@@ -26,7 +27,6 @@ void ShopOwner::setInfo(std::string name, int age, double balance, Location loca
 	shop = std::make_shared <Shop>();
 	shop->setShopOwner(shared_from_this());
 	Location shopLocation(shopAddress);
-
 	std::cout << "When are you available?\n"
 		<< "Start hour: ";
 	int startHour = Helper::readChoice(0, 23);
@@ -34,6 +34,7 @@ void ShopOwner::setInfo(std::string name, int age, double balance, Location loca
 	int endHour = Helper::readChoice(startHour,24);
 
 	createShop(shopName, shopLocation,startHour,endHour);
+	SH_List::addShop(shop);
 
 }
 
@@ -124,3 +125,4 @@ void ShopOwner::setShopAdress(const std::string& cs)
 {
 	shop->setLocation(Location(cs));
 }
+

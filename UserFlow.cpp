@@ -30,7 +30,7 @@ void UserFlow::welcomeScreen()
 			break;
 		case 2:	signUp();
 			break;
-		case 3:return;
+		case 3:throw "EXIT";
 			break;
 		default:std::cout << "Please choose the correct number." << std::endl;
 		}
@@ -336,6 +336,7 @@ void UserFlow::signUp() {
 
 		std::cout << "\nJust a few more questions...\n";
 		currentUser->setInfo(name, age, balance, location);
+		
 		Helper::line();
 		system("CLS");
 		std::cout << "Account registered successfully, \nyou will be directed to main Menu\n";

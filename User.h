@@ -45,6 +45,8 @@ public:
 
 	bool isAuth(std::string username, std::string password) const;
 	
+	void addBalance(double amount);
+	void subtractBalance (double amount);
 	virtual ~User();
 	virtual void welcome() = 0;
 	void setPassword(const std::string& cs);

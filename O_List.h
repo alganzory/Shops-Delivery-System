@@ -9,6 +9,6 @@ public:
 	static std::fstream dataFile;
 	
 	static void readFromFile();
-	
+	static void writeToFile();
 };
 

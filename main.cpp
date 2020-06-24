@@ -19,6 +19,16 @@ int main()
 	V_List::ReadVolunteers();
 	O_List::filePath = "olist.txt";
 	O_List::readFromFile();
+	try {
+		UserFlow::welcomeScreen();
+	}
+	catch (const char* e)
+	{
+		std::cout << "***Thanks for using our program***\n";
+	}
 
-	UserFlow::welcomeScreen();
+	C_List::writeCustomer();
+	V_List::WriteVolunteers();
+	SO_List::writeToFile();
+	O_List::writeToFile();
 }

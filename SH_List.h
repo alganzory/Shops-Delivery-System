@@ -16,5 +16,7 @@ public:
 public:
 	static int getCount();
 	static void setList();
+	static void addShop(std::shared_ptr<Shop> newShop);
+	friend class V_List;
 };
 

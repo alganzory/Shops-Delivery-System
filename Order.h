@@ -90,6 +90,8 @@ public:
 	void reorder(const std::shared_ptr <Order>);
 	std::shared_ptr<Shop> getShop();
 	bool isOverdue();
+	void reduceItem(int quantity,std::pair<std::shared_ptr<Item>, int>& itemReq);
+
 };
 
 #endif
