@@ -2,6 +2,7 @@
 #include <windows.h>
 #include <stdio.h>
 #include <iostream>
+#include <string>
 
 class Time
 {
@@ -18,6 +19,7 @@ class Time
 		void setTime(int, int);
 		int getHour();
 		int getMinute();
+		//useless
 		std::pair<int, int> getTime();
 		std::pair<int, int> getTimeDiff();
 		static void calcLocalTime() {

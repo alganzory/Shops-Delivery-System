@@ -12,6 +12,7 @@ class V_List {
 		static std::string filePath;
 		static int getVolunteersCount();
 		static void AddVolunteer(std::shared_ptr<Volunteer> Volunteer);
+		//useless
 		static void RemoveVolunteer(std::shared_ptr<Volunteer> Volunteer);
 		static void ReadVolunteers();
 		static void WriteVolunteers();

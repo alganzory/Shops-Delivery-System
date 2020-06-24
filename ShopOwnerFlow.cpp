@@ -21,6 +21,7 @@ void ShopOwnerFlow::editItem(const std::shared_ptr<Item> item)
 {
 	while (true)
 	{
+		system("CLS");
 		std::cout << '\n'; //clrscr
 		std::cout << "Edit item" << std::endl;
 		Helper::line(60);
@@ -33,7 +34,7 @@ void ShopOwnerFlow::editItem(const std::shared_ptr<Item> item)
 		int choice = Helper::readChoice(0, 0, "nbNBPQpq");
 		if (choice == 'N' || choice == 'n') {
 			Helper::line(60);
-			std::cout << "Enter the new name: \n";
+			std::cout << "Enter the new name: ";
 			std::string newName;
 			getline(std::cin, newName);
 			item->setName(newName);
@@ -41,7 +42,7 @@ void ShopOwnerFlow::editItem(const std::shared_ptr<Item> item)
 		}
 		if (choice == 'q' || choice == 'Q') {
 			Helper::line(60);
-			std::cout << "Enter the new quantity: \n";
+			std::cout << "Enter the new quantity: ";
 			int newQuantity{};
 			std::cin >> newQuantity;
 			std::cin.ignore();
@@ -49,7 +50,7 @@ void ShopOwnerFlow::editItem(const std::shared_ptr<Item> item)
 		}
 		else if (choice == 'p' || choice == 'P') {
 			Helper::line(60);
-			std::cout << "Enter the new price: \n";
+			std::cout << "Enter the new price: ";
 			double newPrice{};
 			std::cin >> newPrice;
 			std::cin.ignore();
@@ -62,7 +63,8 @@ void ShopOwnerFlow::editItem(const std::shared_ptr<Item> item)
 void ShopOwnerFlow::addNewItem()
 {
 	while (true) {
-		std::cout << "Add Item\n";
+		system("CLS");
+		std::cout << "\nAdd Item\n";
 		Helper::dLine();
 
 		std::cout << "Enter the name of the new item: ";
@@ -114,16 +116,17 @@ void ShopOwnerFlow::myShop()
 {
 	while (true)
 	{
-		std::cout << currentSO->getShopName() << '\n'; //update
+		system("CLS");
+		std::cout<<'\n' << currentSO->getShopName() << '\n'; //update
 		Helper::dLine();
 		int numItems = currentSO->getShopSize();
 		std::vector <std::shared_ptr <Item> > currItems = currentSO->getShopPtr()->getItems();
 		std::cout << "Number of Items: " << numItems << '\n';  //update
-		Helper::line();
+		Helper::line(45);
 		if (numItems) {
 			std::cout << "Here is the list of items your shop:\n";
 			Helper::line(60);
-			std::cout << std::left << std::setw(33) << "Item name" << std::setw(20)
+			std::cout << std::left<<std::setw(4)<<"No." << std::setw(30) << "Item name" << std::setw(20)
 				<< "Price" << "Quantity" << '\n';
 			Helper::line(60);
 			int counter = 0;
@@ -131,7 +134,7 @@ void ShopOwnerFlow::myShop()
 
 			for (auto& item : currItems)
 			{
-				std::cout << ++counter << "- ";
+				std::cout<<std::setw(4) << ++counter ;
 				(*item).display();
 			}
 
@@ -156,7 +159,10 @@ void ShopOwnerFlow::myShop()
 
 
 		if (choice == 'n' or choice == 'N') ShopOwnerFlow::addNewItem();
-		if (choice == 'b' or choice == 'B') break;
+		if (choice == 'b' or choice == 'B') {
+			system("CLS");
+			break;
+		}
 
 		try {
 			ShopOwnerFlow::editItem(currItems.at(choice - 1));
@@ -171,18 +177,29 @@ void ShopOwnerFlow::myShop()
 
 void ShopOwnerFlow::mainMenu()
 {
+	system("CLS");
 	while (true) {
-		std::cout << "Welcome " << currentSO->getName() << '\n';
+		std::string welcoming = "\nWelcome " + currentSO->getName() + '\n';
+		Helper::stringDisplay(welcoming);
+		Helper::line(currentSO->getName().length() + 8);
 		std::cout << "Your balance: " << currentSO->getBalance() << "\n";
 		Helper::dLine();
 		std::cout << "Choose an option from the following:\n";
 
+		int anyPending = 0;
+		for (const auto& order : currentSO->orders)
+		{
+			if (order->getStatus() < Order::Complete) {
+				anyPending++;
+			}
+		}
+
 		std::vector <std::string > menuOptions = {
-			"My Shop", "Pending orders", "All Orders", "My profile", "Log out"
+			"My Shop", "Pending orders (" + std::to_string(anyPending)+")", "All Orders ("+ std::to_string(currentSO->orders.size())+")", "My profile", "Log out"
 		};
 
 		Helper::displayMenu(menuOptions);
-		Helper::line();
+		Helper::line(45);
 		std::cout << "Your choice: ";
 		int choice = Helper::readChoice(1, 5);
 
@@ -196,6 +213,7 @@ void ShopOwnerFlow::mainMenu()
 		case 3: allOrders();
 			break;
 		case 4: UserFlow::myProfile();
+			system("CLS");
 			break;
 		default:
 			currentSO= nullptr;
@@ -210,17 +228,18 @@ void ShopOwnerFlow::allOrders(bool pendingOnly)
 	
 	while (true)
 	{
+		system("CLS");
 		if (currentSO->orders.empty())
 		{
-			Helper::dLine();
+			system("CLS");
 			std::cout << "No Order Yet." << std::endl;
-			Helper::line();
+			Helper::line(45);
 			break;
 		}
 		Helper::dLine(123);
 		std::cout << std::setw(4) << "No." << std::setw(20) << "Customer Name"
-			<< std::setw(20) << "Payment status" << std::setw(17) << "Status"
-			<<std::setw(18)<< "Delivery Time" << std::setw(20) <<  "Total Price (RM)" 
+			<< std::setw(17) << "Payment status" << std::setw(23) << "Status"
+			<<std::setw(15)<< "Delivery Time" << std::setw(20) <<  "Total Price (RM)" 
 			<< std::setw(20) << "Customer's Health Status" << std::endl;
 		Helper::line(123);
 		std::vector <int > pendingOrders;
@@ -229,9 +248,15 @@ void ShopOwnerFlow::allOrders(bool pendingOnly)
 		int count = 0;
 		for (int i = 0; i < currentSO->orders.size(); i++)
 		{
+			if ( currentSO->orders[i]->getStatus() == Order::Pending)
+			{
+				if(currentSO->orders[i]->isOverdue())
+					currentSO->orders[i]->cancelOrder();
+
+			}
 			if (pendingOnly) {
 
-				if ((currentSO->orders[i]->getStatus() != Order::Complete))
+				if ((currentSO->orders[i]->getStatus() < Order::Complete))
 					pendingOrders.push_back(i);
 				else
 					continue;	
@@ -239,6 +264,13 @@ void ShopOwnerFlow::allOrders(bool pendingOnly)
 
 			std::cout << std::setw(4) << ++count;
 			currentSO->orders[i]->summary('s');
+		}
+		if (pendingOnly && pendingOrders.empty())
+		{
+			system("CLS");
+			std::cout << "No pending order yet." << std::endl;
+			Helper::line(45);
+			break;
 		}
 
 		Helper::line(123);
@@ -264,6 +296,7 @@ void ShopOwnerFlow::allOrders(bool pendingOnly)
 
 		if (choice == 'B' || choice == 'b')
 		{
+			system("CLS");
 			break;
 		}
 		else if (choice == 'P' || choice == 'p')
@@ -286,6 +319,7 @@ void ShopOwnerFlow::allOrders(bool pendingOnly)
 void ShopOwnerFlow::assignVolunteer(const std::shared_ptr<Order>& order)
 {
 	while (true) {
+		system("CLS");
 		std::cout << "Assign a Volunteer for this Order\n";
 		Helper::dLine(80);
 		std::cout << "Order time: " << order->getDeliveryTime()
@@ -300,7 +334,7 @@ void ShopOwnerFlow::assignVolunteer(const std::shared_ptr<Order>& order)
 			break;
 		}
 
-		std::cout << std::setw(22) << "Name"
+		std::cout <<std::setw(4)<<"No."<< std::setw(18) << "Name"
 			<< std::setw(26) << "Location"
 			<< "Available Times"
 			<< '\n';
@@ -328,17 +362,17 @@ void ShopOwnerFlow::assignVolunteer(const std::shared_ptr<Order>& order)
 void ShopOwnerFlow::viewOrder(std::shared_ptr<Order>& order)
 {
 	while (true) {
-		Helper::dLine(70);
-		std::cout << "Order Details: \n";
+		system("CLS");
+		std::cout << "\nOrder Details: \n";
 		Helper::dLine(120);
 		std::cout << std::setw(20) << "Customer Name"
-			<< std::setw(20) << "Payment status" << std::setw(17) << "Status"
-			<< std::setw(18) << "Delivery Time" << std::setw(20) << "Total Price (RM)"
+			<< std::setw(17) << "Payment status" << std::setw(23) << "Status"
+			<< std::setw(15) << "Delivery Time" << std::setw(20) << "Total Price (RM)"
 			<< std::setw(20) << "Customer's Health Status" << std::endl;
 		Helper::line(120);
 		order->summary('s');
 		Helper::dLine(120);
-		std::cout << "Order Content: \n";
+		std::cout << "\nOrder Content: \n";
 		Helper::dLine(70);
 		order->display();
 		Helper::line(70);
@@ -388,6 +422,7 @@ void ShopOwnerFlow::todoList(std::shared_ptr<Order>order)
 {
 	while (true)
 	{
+		system("CLS");
 		Helper::dLine(110);
 		std::cout << "Delivery Time: " << order->getDeliveryTime() << std::endl;
 		Helper::line(110);

@@ -8,6 +8,7 @@
 class SH_List
 {
 
+
 public:
 	static std::vector<std::shared_ptr<Shop> > SHOPS;
 

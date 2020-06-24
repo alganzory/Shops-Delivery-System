@@ -1,5 +1,5 @@
 #include "ShopOwner.h"
-
+#include "Helper.h"
 #include "ShopOwnerFlow.h"
 
 
@@ -26,7 +26,15 @@ void ShopOwner::setInfo(std::string name, int age, double balance, Location loca
 	shop = std::make_shared <Shop>();
 	shop->setShopOwner(shared_from_this());
 	Location shopLocation(shopAddress);
-	createShop(shopName, shopLocation);
+
+	std::cout << "When are you available?\n"
+		<< "Start hour: ";
+	int startHour = Helper::readChoice(0, 23);
+	std::cout << "End hour: ";
+	int endHour = Helper::readChoice(startHour,24);
+
+	createShop(shopName, shopLocation,startHour,endHour);
+
 }
 
 //Shop ShopOwner::getShop() const
@@ -39,11 +47,12 @@ std::shared_ptr<Shop> ShopOwner::getShopPtr()
 	return shop;
 }
 
-void ShopOwner::createShop(std::string shopName, Location shopLocation)
+void ShopOwner::createShop(std::string shopName, Location shopLocation,int startTime, int endTime)
 {
 
 	shop->setName(shopName);
 	shop->setLocation(shopLocation);
+	shop->setAvailableTimes(std::pair<int, int>(startTime, endTime));
 }
 
 void ShopOwner::respondToOrder(std::shared_ptr<Order> order)
@@ -95,7 +104,7 @@ int ShopOwner::getShopSize() const
 }
 
 void ShopOwner::setInfoFile(const std::string& cs, int age, double balance, const std::string& location,
-	const std::string& shopname, const std::string& shoplocation)
+	const std::string& shopname, const std::string& shoplocation, int availableTime1, int availableTime2)
 {
 	this->name = cs;
 	this->age = age;
@@ -103,7 +112,7 @@ void ShopOwner::setInfoFile(const std::string& cs, int age, double balance, cons
 	this->location = Location(location);
 	this->shop = std::make_shared <Shop>();
 	shop->setShopOwner(shared_from_this());
-	createShop(shopname, Location (shoplocation));
+	createShop(shopname, Location (shoplocation), availableTime1, availableTime2);
 }
 
 void ShopOwner::setShopName(const std::string& cs)

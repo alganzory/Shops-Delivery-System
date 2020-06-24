@@ -24,7 +24,7 @@ void Customer::setInfo(std::string name, int age, double balance, Location locat
 	this->age = age;
 	this->balance = balance;
 	this->location = location;
-	std::cout << "Enter your health status (Healthy (H), Showing Symptoms (S) or Infected (I)\n";
+	std::cout << "Enter your health status (Healthy (H), Showing Symptoms (S) or Infected (I)\nYour choice: ";
 	int health = Helper::readChoice(0, 0, "HhSsIi");
 	if (health == 'H' || health == 'h') {
 		setHealthStatus(HealthStatus::Healthy);
@@ -68,6 +68,7 @@ void Customer::removeFromCart(std::pair<std::shared_ptr<Item>, int> itemReq)
 void Customer::welcome()
 {
 	CustomerFlow::currentCustomer = shared_from_this();
+	system("CLS");
 	CustomerFlow::mainMenu();
 }
 

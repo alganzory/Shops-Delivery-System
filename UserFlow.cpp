@@ -11,9 +11,13 @@ std::shared_ptr<User> UserFlow::currentUser;
 void UserFlow::welcomeScreen()
 {
 	int choice = -1;
+	system("CLS");
 	while (choice != 99)
 	{
-		std::cout << "\nCOVID-19 SHOPS DELIVERY SYSTEM" << std::endl;
+
+		std::string opener = "\nCOVID-19 SHOPS DELIVERY SYSTEM\n";
+		Helper::stringDisplay(opener);
+		
 		Helper::dLine();
 		Helper::displayMenu({ "Log in", "Sign up", "Exit" });
 		Helper::line();
@@ -71,7 +75,8 @@ void UserFlow::myProfile()
 	bool isSO = false, isCu = false, isVol = false;
 
 	while (true){
-		std::cout << "My Profile\n";
+		system("CLS");
+		std::cout << "\nMy Profile\n";
 		Helper::dLine(110);
 		std::cout << "Here are your info, press the letter corresponding to the info to change it...\n"
 			<< "or press B to go back\n";
@@ -108,15 +113,17 @@ void UserFlow::myProfile()
 			Helper::line(110);
 			std::cout << "(P) Shop Location: " << ShopOwnerFlow::currentSO->getShopPtr()->getLocation().getAddress() << "\n";
 			Helper::line(110);
+			std::cout << "(V) Operation Hour " << ShopOwnerFlow::currentSO->getShopPtr()->getAvailableTimes().first
+				<< " - " << ShopOwnerFlow::currentSO->getShopPtr()->getAvailableTimes().second << "\n";
 		}
-		std::cout << "Your choice: ";
+		std::cout << "\nYour choice: ";
 		int choice{};
 		if (isCu)
 			choice = Helper::readChoice(0, 0, "NndDAaLluUbBHh");
 		else if (isVol)
 			choice = Helper::readChoice(0, 0, "NndDAaLluUtbBTVv");
 		else
-			choice = Helper::readChoice(0, 0, "NndDAaLluUbBSsPp");
+			choice = Helper::readChoice(0, 0, "NndDAaLluUbBSsPpVv");
 
 
 		//======
@@ -217,8 +224,10 @@ void UserFlow::myProfile()
 			std::cout << "End hour: ";
 			int endHour = Helper::readChoice(startHour, 24, "cC");
 			if (endHour == 'C' || endHour == 'c') continue;
-
-			VolunteerFlow::currentVolunteer->setAvailableTimes({ startHour,endHour });
+			if(isVol)
+				VolunteerFlow::currentVolunteer->setAvailableTimes({ startHour,endHour });
+			else
+				ShopOwnerFlow::currentSO->getShopPtr()->setAvailableTimes({ startHour,endHour });
 			Helper::line(110);
 			std::cout << "Your available hours have been updated\n";
 			continue;
@@ -266,12 +275,13 @@ void UserFlow::signUp() {
 	double balance {};
 	int character;
 	while (true) {
+		system("CLS");
 		
 		std::cout << "\nSign up\n";
 		Helper::dLine();
 		std::cout << "Enter your username: ";
 		std::cin >> userName;
-		std::cout << "Enter a password: ";
+		std::cout << "\nEnter a password: ";
 		std::cin >> password;
 		std::cin.ignore();
 
@@ -279,7 +289,7 @@ void UserFlow::signUp() {
 
 		if (verifyUsername(userName) != nullptr)
 		{
-			std::cout << "This user already exists, press L to login instead or press B to go back\n";
+			std::cout << "\nThis user already exists, press L to login instead or press B to go back\n";
 			char choice;
 			std::cin >> choice;
 			std::cin.ignore();
@@ -289,18 +299,19 @@ void UserFlow::signUp() {
 		}
 
 		Helper::line();
-		std::cout << "I am a? \n";
+		std::cout << "\nI am a? \n";
 		std::cout << "C: Customer \nS: Shop Owner \nV: Volunteer\n";
+		std::cout << "Your choice: ";
 		character = Helper::readChoice(0, 0, "CcsSvV");
 
 		Helper::line();
 		std::cout << "We will need some additional info...\n";
 		std::cout << "Enter your name: ";
 		std::getline(std::cin, name);
-		std::cout << "How old are you? ";
+		std::cout << "\nHow old are you? ";
 		std::cin >> age;
 		std::cin.ignore();
-		std::cout << "Enter your location: ";
+		std::cout << "\nEnter your location: ";
 		std::getline(std::cin, location);
 		if (character == 'C' || character == 'c') {
 			std::shared_ptr <Customer> newCustomer = std::make_shared<Customer>(userName, password);
@@ -323,11 +334,13 @@ void UserFlow::signUp() {
 			continue;
 		}
 
-		std::cout << "Just a few more questions...\n";
+		std::cout << "\nJust a few more questions...\n";
 		currentUser->setInfo(name, age, balance, location);
 		Helper::line();
-		std::cout << "Account registered successfully, you will be directed to main Menu\n";
-		welcomeScreen();
+		system("CLS");
+		std::cout << "Account registered successfully, \nyou will be directed to main Menu\n";
+		Helper::line();
+		break;
 	}
 }
 
@@ -336,8 +349,10 @@ void UserFlow::login() {
 	//if not ask to sign up,if gt then cont verify the p/w
 	//if p/w correct then show menu screen
 	//incorrect ask to enter again
+	system("CLS");
 	while (true)
 	{
+		
 		std::cout << "\nLogin\n";
 		Helper::dLine();
 		std::string userName, password;
@@ -363,9 +378,12 @@ void UserFlow::login() {
 		}
 
 		if (currentUser->isAuth(userName, password))
+		{
 			currentUser->welcome();
+		}
 		else
 		{
+			system("CLS");
 			std::cout << "Incorrect password, please try again...\n";
 		}
 	}

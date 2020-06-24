@@ -20,11 +20,9 @@ public:
 		Preparing, // once the shop owner starts preparing the order (the todo check list)
 		VolunteerFound, // once a volunteer is Assigned
 		Delivering, // once a volunteer chooses to deliver
-		Complete // once the volunteer is done delivering the order
+		Complete, // once the volunteer is done delivering the order
+		Cancelled // once the shop owner cancel the order
 	};
-	void cancelOrder();
-	std::string getDlvryAddress() const;
-	std::string getCustomerName() const;
 
 private:
 	std::vector <std::pair<std::shared_ptr<Item>, int> > items;
@@ -41,21 +39,29 @@ private:
 	std::vector<bool> preparationStatus;
 	double reward;
 	bool contactless;
+	bool overdue;
+
 public:
+	void cancelOrder();
+	std::string getDlvryAddress() const;
+	std::string getCustomerName() const;
+
 	Order();
 	Order(std::shared_ptr<Customer> customer, std::shared_ptr<Shop> shop);
 	void addItem(std::shared_ptr<Item> item, int quantity);
 	void addItem(int itemIdx, int quantity);
 	void removeItem(std::pair<std::shared_ptr<Item>, int>& itemReq);
-	void setTotalPrice(double totalPrice);
+	//useless
+	void setTotalPrice(double totalPrice); //useless
 	double getTotalPrice();
 	void setDelivery(std::shared_ptr<Volunteer>volunteer);
 	void setPaymentStatus(bool paymentStatus);
 	void setDeliveryStatus(bool deliveryStatus);
 	std::shared_ptr<Volunteer> getDelivery();
+	//useless
 	bool getDeliveryStatus();
 	void setDeliveryTime(int hour,int minute);
-	bool  getPaymentStatus();
+	bool getPaymentStatus();
 	Time getDeliveryTime();
 	void display(bool showPreparationStatus = false);
 	void summary(char userType = 'c');
@@ -80,7 +86,10 @@ public:
 	friend class ShopOwnerFlow;
 	void setContactlessDlvr(bool contactless);
 	bool getContactlessDlvr();
-
+	void operator = ( Order& order);
+	void reorder(const std::shared_ptr <Order>);
+	std::shared_ptr<Shop> getShop();
+	bool isOverdue();
 };
 
 #endif

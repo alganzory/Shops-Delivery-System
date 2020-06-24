@@ -26,6 +26,7 @@ public:
 	User(const User& other) = delete;
 
 	std::string getUsername() const;
+	//useless
 	void setUsername(const std::string username);
 	std::string getName() const;
 	void setName(const std::string name);
