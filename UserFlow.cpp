@@ -114,7 +114,7 @@ void UserFlow::myProfile()
 			std::cout << "(V) Operation Hour " << ShopOwnerFlow::currentSO->getShopPtr()->getAvailableTimes().first
 				<< " - " << ShopOwnerFlow::currentSO->getShopPtr()->getAvailableTimes().second << "\n";
 		}
-		std::cout << "Your choice: ";
+		std::cout << "\nYour choice: ";
 		int choice{};
 		if (isCu)
 			choice = Helper::readChoice(0, 0, "NndDAaLluUbBHh");

@@ -275,7 +275,7 @@ void CustomerFlow::myOrders(bool ongoingOnly)
 		std::cout << std::setw(4) << "No."
 			<< std::setw(20) << "Shop"
 			<< std::setw(15) << "Total Price"
-			<< std::setw(20) << "Payment Status"
+			<< std::setw(17) << "Payment Status"
 			<< std::setw(20) << "Order Status"
 			<< '\n';
 		Helper::line(110);

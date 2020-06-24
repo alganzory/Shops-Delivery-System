@@ -95,15 +95,17 @@ bool operator < (const Time& lhs, const Time& rhs)
 
 std::ostream& operator <<(std::ostream& out, Time time)
 {
+	std::string output="";
 	if (time.getHour() < 10)
 	{
-		out << "0";
+		output+= "0";
 	}
-	out << time.getHour() << ":";
+	output+=std::to_string(time.getHour()) + ":";
 	if (time.getMinute() < 10)
 	{
-		out << "0";
+		output+= "0";
 	}
-	out<< time.getMinute();
+	output+=std::to_string(time.getMinute());
+	out << output;
 	return out;
 }

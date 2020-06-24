@@ -159,7 +159,7 @@ Time Order::getDeliveryTime()
 void Order::display(bool showPreparationStatus)
 {
 	int counter = 0;
-	std::cout << std::left << std::setw(20)
+	std::cout << std::left<<std::setw(4)<<"No." << std::setw(18)
 		<< "Item" << std::setw(20) << "Price"
 		<< std::setw(20) << "Quantity"
 		<<std::setw(10)<< "Total";
@@ -168,7 +168,7 @@ void Order::display(bool showPreparationStatus)
 	showPreparationStatus ? Helper::line(110) : Helper::line(70);
 	for (const auto& item : items)
 	{
-		std::cout << ++counter << "- ";
+		std::cout <<std::setw(4)<< ++counter;
 		std::cout << std::setw(18) << item.first->getName()
 			<< std::setw(20) << item.first->getPrice()
 			<< std::setw(20) << item.second << std::setw(10)
@@ -189,29 +189,27 @@ void Order::summary(char userType)
 	if (userType == 'v')
 		std::cout << std::setw(20) << customer->getLocation().getAddress();
 	if (userType != 'v') {
-		std::cout << std::setw(20)
+		std::cout << std::setw(17)
 			<< (orderStatus != Status::Cancelled ? (paymentStatus == true ? "Paid" : "Pending") : (paymentStatus == true ? "Refunded" : "Not paid"));
 			
 		if ((getStatus() == Order::Cancelled && overdue)||(getStatus() == Order::Preparing && isOverdue()))
 		{
-			std::cout <<std::setw(10) << getStatus() << std::setw(15) << "(overdue)";
+			std::cout <<std::setw(10) << getStatus() << std::setw(13) << "(overdue)";
 		}
 		else
-			std::cout << std::setw(25) << getStatus();
+			std::cout << std::setw(23) << getStatus();
 	}
 	if (userType != 'c') {
-		std::cout << deliveryTime
-			<< std::setw(5)<<std::right;
+		std::cout << std::setw(15) << deliveryTime;
+			
 		
 		if (userType != 'v') {
-			std::cout << std::setw(13);
+			std::cout << std::setw(20);
 			std::cout << getTotalPrice();
-			std::cout << std::left;
 		}
 	}
 	if (userType != 'c') {
-		std::cout << std::left;
-		std::cout << std::setw(18) << " ";
+		
 		
 		std::cout << std::setw(25);
 		if (customer->getHealthStatus() == Customer::Healthy) {
