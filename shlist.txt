@@ -1,80 +1,107 @@
-shop1
-s
-shopowner1
-20
-500
-taman uni
-shop1
-taman uni, jalan
+ShopID1
+password1
+Shop Owner One
+29
+1000
+Taman University
+Shop 1
+Jalan University 1, Taman University
 items
-banana, 10 20
-apple, 20 10
-orange, 30 5
+Banana , 7.8 20
+Apple , 4 10
+Orange , 5 30
+Potatoes , 4 80
+Chili , 5 100
 
-shop2
-s
-shopowner2
-22
-1600
-azizyah
-shop2
-azizyah, rashed
+ShopID2
+password2
+Shop Owner Two
+37
+9000
+Taman Mutiara Rini
+Shop 2
+Jalan Mutiara, Taman Mutiara Rini
 items
-tide, 67 110
-persil, 240 880
-orange, 50 138
-noodles, 49 1200
+Water Bottle , 25 110
+Tupperware , 50 100
+Dishwashing Liquid , 5 150
 
-shop3
-s
-shopowner3
+ShopID3
+password3
+Shop Owner Three
 40
-50000
-olaya
-shop3
-Olaya, dar
+5000
+Taman Johor Jaya
+Shop 3
+Jalan Ledang, Taman Johor Jaya
 items
-gold, 1000 230
-silver, 2092 530
 
-shop4
-s
-shopowner4
+ShopID4
+password4
+Shop Owner Four
 20
 500
 Gelang Patah
-shop4
-Gelang Patah, Jalan
+Shop 4
+Jalan Gelang Patah
 items
-Nasi lemak, 5 100
-Mangoes, 13 120
-Onions, 21 110
+Nasi lemak, 5 300
+Mangoes, 13 150
+Onions, 2 300
 Tomatoes, 15 140
 Carrots, 12 80
 
-shop5
-s
-shopowner5
-22
-160011
-Gereja, Pendidk
-shop5
-Gereja, Jalan
+ShopID5
+password5
+Shop Owner Five
+34
+1600
+Gereja, Taman Pendidik
+Shop 5
+Gereja, Taman Pendidik
 items
-toothpicks, 7 1000
-books, 20 8800
-papers, 22 138
-noodles, 49 1200
-fish, 20 88
+Glue, 7 200
+Notebooks, 20 100
+Papers, 10 200
+Pens, 3.6 80
 
-shop6
-s
-shopowner6
+ShopID6
+password6
+Shop Owner Six
 40
 50000
 Kebun Teh
-shop6
+Shop 6
 Kebun Lama
 items
-pop corn, 120 230
-silver, 2092 530
+Popcorn, 20 230
+Pepsi, 3 530
+Revive, 2.5 200
+Sprite, 2 100
+Coca Cola, 6 150
+
+ShopID7
+password7
+Shop Owner Seven
+50
+450000
+Taman Molek
+Shop 7
+Taman Mount Austin
+items
+Chicken Popcorn, 9.5 66
+
+ShopID8
+password8
+Shop Owner Eight
+48
+0
+Permas Jaya
+Shop 8
+Muar
+items
+Lolipop, 2.1 50
+Ice cream, 3.4 99
+Candy, 1 400
+Crisps, 2 200
+Oreo, 4 70

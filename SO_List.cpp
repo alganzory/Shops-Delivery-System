@@ -51,14 +51,20 @@ void SO_List::readFromFile()
 		(std::make_shared<ShopOwner>(username, password)
 		);
 		SHOPOWNERS.back()->setInfoFile(name, age, balance, location, shopname, shoplocation);
-
-		while (getline(dataFile, item) && !item.empty()) {
+		char isBlank;
+		while (getline(dataFile, item)) {
+			if (item.empty())
+			{
+				isBlank = dataFile.peek();
+				if (isBlank != '\n') break;
+				else if (isBlank == '\n') continue;
+			}
 			std::istringstream s(item);
 			std::getline(s, itemName, ',');
 			s  >> price >> itemQuantity;
 			SHOPOWNERS.back()->addToStock(std::make_shared<Item>(itemName, price, itemQuantity), itemQuantity, true);
 		}		
-		
+		std::cout << "anything " << std::endl;
 	}
 	dataFile.close();
 	// enumerate the array elements and store the read into them

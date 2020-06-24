@@ -1,23 +1,31 @@
 CustomerID1
 password1
-Name One
+Customer One
 20
-50.00
+50
 Jalan Pertama
 S
 
 CustomerID2
 password2
-Name Two
+Customer Two
 35
-0.00
+0
 Taman Kedua
-h
+H
 
 CustomerID3
 password3
-Name Three
+Customer Three
 43
-150.00
+6914
 Lorong Ketiga
+I
+
+CustomerID4
+password4
+Customer Four
+3
+80
+Johor Jaya
 I
