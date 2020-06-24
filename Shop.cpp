@@ -128,3 +128,7 @@ void Shop::addVolunteer(const std::shared_ptr<Volunteer>& volunteer)
 {
 	shopOwner.lock()->registeredVolunteers.emplace_back(volunteer);
 }
+
+/*void Shop::addBalance(double amount) {
+	shopOwner.lock()->balance = shopOwner.lock()->getBalance() + amount;
+}*/

@@ -26,7 +26,7 @@ void UserFlow::welcomeScreen()
 			break;
 		case 2:	signUp();
 			break;
-		case 3:return;
+		case 3:throw "EXIT";
 			break;
 		default:std::cout << "Please choose the correct number." << std::endl;
 		}

@@ -17,10 +17,10 @@ void Order::cancelOrder()
 		items.pop_back();
 		itemsIndices.pop_back();
 	}
+
 	customer->removeOrder(shared_from_this());
 	customer->setBalance(customer->getBalance() + reward);
 	shop->removeOrder(shared_from_this());
-	
 	
 	
 }
@@ -39,6 +39,8 @@ Order::Order()
 {
 	orderStatus = Order::Pending;
 	reward = 0;
+	this->deliveryStatus = false;
+	this->paymentStatus = true;
 }
 
 Order::Order(std::shared_ptr<Customer> customer, std::shared_ptr<Shop> shop) {
@@ -88,7 +90,7 @@ void Order::removeItem(std::pair<std::shared_ptr<Item>, int>& itemReq)
 	const auto itemPosition = find(items.begin(), items.end(), itemReq);
 	int distance = itemPosition - items.begin();
 	items.erase(itemPosition);
-	itemsIndices.erase(itemsIndices.begin() + distance);
+	itemsIndices.erase(itemsIndices.begin()+distance);
 
 }
 
@@ -270,7 +272,7 @@ std::ostream& operator<<(std::ostream& output, const Order::Status& status)
 std::istream& operator>>(std::istream& input, Order::Status& status)
 {
 	std::string s;
-	input >> s;
+	std::getline(input, s);
 
 	if (s == "Pending")
 		status = Order::Pending;
@@ -324,4 +326,12 @@ void Order::setContactlessDlvr(bool contactless) {
 
 bool Order::getContactlessDlvr() {
 	return contactless;
+}
+
+void Order::reduceItem(int quantity, std::pair<std::shared_ptr<Item>, int>& itemReq) {
+	itemReq.second -= quantity;
+	if (itemReq.second == 0) {
+		std::cout << "You have 0 items. Order will be automatically removed.\n";
+		removeItem(itemReq);
+	}
 }

@@ -15,5 +15,6 @@ public:
 public:
 	static int getCount();
 	static void setList();
+	friend class V_List;
 };
 

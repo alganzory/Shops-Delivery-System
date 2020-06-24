@@ -34,6 +34,7 @@ public:
     //operators overloading
     //friend
     friend class VolunteerFlow;
+    friend class V_List;
 };
 
 #endif

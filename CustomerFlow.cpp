@@ -118,6 +118,8 @@ void CustomerFlow::checkout()
 		currentShop->recieveOrder(currentCustomer->cart);
 		currentCustomer->cart->setCustomer(currentCustomer);
 		currentCustomer->cart->setPaymentStatus(true);
+		std::weak_ptr <ShopOwner> shopOwner = currentShop->getShopOwner();
+		shopOwner.lock()->addBalance(currentCustomer->cart->getTotalPrice());
 		currentCustomer->placeOrder();
 		std::cout << "Your order has been placed successfully, you will be directed to main menu...\n";
 		mainMenu();
@@ -174,9 +176,11 @@ void CustomerFlow::myCart()
 			}
 			else
 			{
-				int quantity = item.second - choice;
-				currentCustomer->cart->removeItem(item);
+				/*int quantity = item.second - choice;
 				currentCustomer->cart->addItem(item.first, quantity);
+				currentCustomer->cart->removeItem(item);*/
+				currentCustomer->cart->reduceItem(choice, item);
+
 			}
 
 		}	
@@ -307,6 +311,9 @@ void CustomerFlow::viewOrder(const std::shared_ptr<Order>& order)
 			break;
 		}
 		if (choice == 'C' || choice == 'c') {
+			currentCustomer->setBalance(currentCustomer->getBalance() + order->getTotalPrice());
+			std::weak_ptr<ShopOwner> currentSO = currentShop->getShopOwner();
+			currentSO.lock()->setBalance(currentSO.lock()->getBalance() - order->getTotalPrice());
 			order->cancelOrder();
 			std::cout << "Order has been canceled, you will be directed to main menu...\n";
 			mainMenu();
@@ -394,7 +401,6 @@ void CustomerFlow::viewShop()
 			std::cout << i << "- ";
 			shopItems[i - 1]->display();
 		}
-
 		Helper::line(60);
 		std::cout << "Choose an item number followed by quantity to add it to cart,\n"
 			<< " press C to go to cart or press B to go back:\n";

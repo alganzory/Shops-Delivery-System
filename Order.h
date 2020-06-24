@@ -80,6 +80,7 @@ public:
 	friend class ShopOwnerFlow;
 	void setContactlessDlvr(bool contactless);
 	bool getContactlessDlvr();
+	void reduceItem(int quantity,std::pair<std::shared_ptr<Item>, int>& itemReq);
 
 };
 

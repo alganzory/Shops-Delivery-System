@@ -32,5 +32,5 @@ public:
 	friend class CustomerFlow;
 	friend std::ostream& operator << (std::ostream& output, const Customer::HealthStatus& healthStatus);
 	friend class O_List;
-
+	friend class C_List;
 };

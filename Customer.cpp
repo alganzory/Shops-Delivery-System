@@ -42,6 +42,7 @@ void Customer::placeOrder()
 	orders.push_back(cart);
 	balance -= cart->getTotalPrice();
 	cart = std::make_shared<Order>();
+
 }
 void Customer::rewardVolunteer(std::shared_ptr <Volunteer> volunteer, double reward)
 {

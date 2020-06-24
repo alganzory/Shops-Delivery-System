@@ -42,5 +42,7 @@ public:
 	void removeVolunteer(const std::shared_ptr<Volunteer>& volunteer);
 	void addVolunteer(const std::shared_ptr<Volunteer>& shared);
 	friend class Order;
+	//void addBalance(double amount);
+
 };
 
