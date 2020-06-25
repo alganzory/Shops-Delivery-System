@@ -221,8 +221,9 @@ void VolunteerFlow::registerShop()
 
 void VolunteerFlow::mainMenu()
 {
-	system("CLS");
+	
 	while (true) {
+		system("CLS");
 		std::string welcoming = "\nWelcome " + currentVolunteer->getName() +'\n';
 		Helper::line(currentVolunteer->getName().length() + 8);
 		Helper::stringDisplay(welcoming);

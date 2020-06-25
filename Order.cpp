@@ -259,10 +259,37 @@ void Order::summary(char userType)
 	if (userType == 'c')
 		std::cout << std::setw(15) << getTotalPrice();
 	if (userType == 'v')
-		std::cout << std::setw(20) << shop->getLocation().getAddress();
+	{
+		if (shop->getLocation().getAddress().length() <= 18)
+		{
+			std::cout << std::setw(20) << shop->getLocation().getAddress();
+		}
+		else
+		{
+			for (int i = 0; i < 15; i++)
+			{
+				std::cout << shop->getLocation().getAddress().at(i);
+			}
+			std::cout << "...  ";
+		}
+	}
 	userType == 's' ? std::cout << std::setw(20) << customer->getName() : std::cout << "";
 	if (userType == 'v')
-		std::cout << std::setw(20) << customer->getLocation().getAddress();
+	{
+		if (customer->getLocation().getAddress().length() <= 18)
+		{
+			std::cout << std::setw(20) << customer->getLocation().getAddress();
+		}
+		else
+		{
+			for (int i = 0; i < 15; i++)
+			{
+				std::cout << customer->getLocation().getAddress().at(i);
+			}
+			std::cout << "...  ";
+		}
+
+	}
 	if (userType != 'v') {
 		std::cout << std::setw(17)
 			<< (orderStatus != Status::Cancelled ? (paymentStatus == true ? "Paid" : "Pending") : (paymentStatus == true ? "Refunded" : "Not paid"));

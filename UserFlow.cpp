@@ -160,6 +160,12 @@ void UserFlow::myProfile()
 			std::cin >> updatedAge;
 			std::cin.ignore();
 			if (updatedAge == 'c' || updatedAge == 'C') continue;
+			if (updatedAge < 5) {
+				std::cout << "The minimum age to use this program is 5 year old.\nPlease "
+					"enter the right age.\nYou will be directed back now.\n";
+				Helper::delay(3000);
+				continue;
+			}
 			currentUser->setAge(updatedAge);
 			Helper::line(110);
 			std::cout << "Your age has been updated\n";
@@ -313,6 +319,11 @@ void UserFlow::signUp()
 		std::cout << "\nHow old are you? ";
 		std::cin >> age;
 		std::cin.ignore();
+		if (age < 5) {
+			std::cout << "The minimum age to use this program is 5 year old.\nPlease "
+				"enter the right age.\nYou will be directed back to the main menu.\n";
+			break;
+		}
 		std::cout << "\nEnter your location: ";
 		std::getline(std::cin, location);
 		if (character == 'C' || character == 'c')

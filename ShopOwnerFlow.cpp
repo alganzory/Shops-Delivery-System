@@ -323,7 +323,7 @@ void ShopOwnerFlow::allOrders(bool ongoingOnly)
 			break;
 		}
 		
-		if (choice == 'P' || choice == 'p')
+		if (choice == 'o' || choice == 'O')
 		{
 			ongoingOnly = !ongoingOnly;
 			continue;
