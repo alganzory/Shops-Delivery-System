@@ -2,14 +2,15 @@ ShopID1
 password1
 Shop Owner One
 29
-1000
+1251
 Taman University
 Shop 1
 Jalan University 1, Taman University
+10 22
 items
 Banana , 7.8 20
-Apple , 4 10
-Orange , 5 30
+Apple , 4 12
+Orange , 5 35
 Potatoes , 4 80
 Chili , 5 100
 
@@ -21,6 +22,7 @@ Shop Owner Two
 Taman Mutiara Rini
 Shop 2
 Jalan Mutiara, Taman Mutiara Rini
+8 22
 items
 Water Bottle , 25 110
 Tupperware , 50 100
@@ -34,6 +36,7 @@ Shop Owner Three
 Taman Johor Jaya
 Shop 3
 Jalan Ledang, Taman Johor Jaya
+12 20
 items
 
 ShopID4
@@ -44,6 +47,7 @@ Shop Owner Four
 Gelang Patah
 Shop 4
 Jalan Gelang Patah
+14 24
 items
 Nasi lemak, 5 300
 Mangoes, 13 150
@@ -59,6 +63,7 @@ Shop Owner Five
 Gereja, Taman Pendidik
 Shop 5
 Gereja, Taman Pendidik
+14 20
 items
 Glue, 7 200
 Notebooks, 20 100
@@ -73,6 +78,7 @@ Shop Owner Six
 Kebun Teh
 Shop 6
 Kebun Lama
+12 18
 items
 Popcorn, 20 230
 Pepsi, 3 530
@@ -88,6 +94,7 @@ Shop Owner Seven
 Taman Molek
 Shop 7
 Taman Mount Austin
+7 18
 items
 Chicken Popcorn, 9.5 66
 
@@ -98,7 +105,8 @@ Shop Owner Eight
 0
 Permas Jaya
 Shop 8
-Muar
+Muar Street
+10 20
 items
 Lolipop, 2.1 50
 Ice cream, 3.4 99

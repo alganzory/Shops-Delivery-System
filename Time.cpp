@@ -1,10 +1,12 @@
 #include "Time.h"
 #include <iomanip>
+#include <string>
 
 SYSTEMTIME Time::lt;
 int Time::localHour = lt.wHour;
-int Time::localMinute  = lt.wMinute;
+int Time::localMinute = lt.wMinute;
 
+/// constructors
 Time::Time()
 {
 	hour = 0;
@@ -17,10 +19,38 @@ Time::Time(int hr, int m)
 	minute = m;
 }
 
+/// Getters
+int Time::getHour()
+{
+	return hour;
+}
+
+int Time::getMinute()
+{
+	return minute;
+}
+
+std::pair<int, int> Time::getTime()
+{
+	return {hour, minute};
+}
+
+std::pair<int, int> Time::getTimeDiff()
+{
+	calcLocalTime();
+	int minDiff = (hour - localHour) * 60 + minute - localMinute;
+	int hourDiff = abs(minDiff / 60);
+	minDiff %= 60;
+	//if minDiff is -ve means the time is overdue.
+	return {hourDiff, minDiff};
+}
+
+
+/// Setters
 void Time::setTime(int hr, int m)
 {
 	calcLocalTime();
-	if (hr < 0 || hr>24 || m < 0 || m>60)
+	if (hr < 0 || hr > 24 || m < 0 || m > 60)
 	{
 		throw "Invalid time input, make sure it's in 24-hour format...";
 	}
@@ -36,44 +66,25 @@ void Time::setTime(int hr, int m)
 	minute = m;
 }
 
-int Time::getHour()
+void Time::calcLocalTime()
 {
-	return hour;
+	GetLocalTime(&lt);
+	Time::localHour = lt.wHour;
+	Time::localMinute = lt.wMinute;
 }
 
-int Time::getMinute()
-{
-	return minute;
-}
 
-std::pair<int, int> Time::getTime()
-{
-	return { hour, minute };
-}
-
-// if order time has passed the real time or not 
-
-
-
-std::pair<int, int> Time::getTimeDiff()
-{
-	calcLocalTime();
-	int minDiff = (hour - localHour) * 60 + minute - localMinute;
-	int hourDiff = abs(minDiff / 60);
-	minDiff %= 60;
-	//if minDiff is -ve means the time is overdue.
-	return { hourDiff, minDiff };
-}
-
+/// Operators
 bool Time::operator==(const Time& rhs)
 {
 	return (hour == rhs.hour && minute == rhs.minute);
 }
 
-bool operator > (const Time& lhs,const Time& rhs){
+bool operator >(const Time& lhs, const Time& rhs)
+{
 	if (lhs.hour == rhs.hour)
 	{
-		return ( lhs.minute > rhs.minute);
+		return (lhs.minute > rhs.minute);
 	}
 	else
 	{
@@ -81,7 +92,7 @@ bool operator > (const Time& lhs,const Time& rhs){
 	}
 }
 
-bool operator < (const Time& lhs, const Time& rhs)
+bool operator <(const Time& lhs, const Time& rhs)
 {
 	if (lhs.hour == rhs.hour)
 	{
@@ -95,17 +106,17 @@ bool operator < (const Time& lhs, const Time& rhs)
 
 std::ostream& operator <<(std::ostream& out, Time time)
 {
-	std::string output="";
+	std::string output = "";
 	if (time.getHour() < 10)
 	{
-		output+= "0";
+		output += "0";
 	}
-	output+=std::to_string(time.getHour()) + ":";
+	output += std::to_string(time.getHour()) + ":";
 	if (time.getMinute() < 10)
 	{
-		output+= "0";
+		output += "0";
 	}
-	output+=std::to_string(time.getMinute());
+	output += std::to_string(time.getMinute());
 	out << output;
 	return out;
 }

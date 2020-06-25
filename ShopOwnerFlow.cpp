@@ -7,16 +7,10 @@
 #include "UserFlow.h"
 #include "User.h"
 
+/// Members
 std::shared_ptr <ShopOwner> ShopOwnerFlow::currentSO;
 
-/*bool sortByHealthStatus(const std::shared_ptr<Order>& lhs, const std::shared_ptr<Order>& rhs) {
-	return (lhs->customer->getHealthStatus() < rhs->customer->getHealthStatus());
-}*/
-
-bool sortByDeliveryTime(const std::shared_ptr<Order> &lhs, const std::shared_ptr<Order> rhs) { 
-	return lhs->getDeliveryTime() < rhs->getDeliveryTime(); 
-}
-
+/// Methods
 void ShopOwnerFlow::editItem(const std::shared_ptr<Item> item)
 {
 	while (true)
@@ -170,6 +164,7 @@ void ShopOwnerFlow::myShop()
 		catch (const std::out_of_range& error)
 		{
 			std::cout << "Please choose an item from the ones shown\n";
+			Helper::delay(1000);
 			continue;
 		}
 	}
@@ -177,8 +172,9 @@ void ShopOwnerFlow::myShop()
 
 void ShopOwnerFlow::mainMenu()
 {
-	system("CLS");
+	
 	while (true) {
+		system("CLS");
 		std::string welcoming = "\nWelcome " + currentSO->getName() + '\n';
 		Helper::stringDisplay(welcoming);
 		Helper::line(currentSO->getName().length() + 8);
@@ -186,16 +182,16 @@ void ShopOwnerFlow::mainMenu()
 		Helper::dLine();
 		std::cout << "Choose an option from the following:\n";
 
-		int anyPending = 0;
+		int anyOngoing = 0;
 		for (const auto& order : currentSO->orders)
 		{
 			if (order->getStatus() < Order::Complete) {
-				anyPending++;
+				anyOngoing++;
 			}
 		}
 
 		std::vector <std::string > menuOptions = {
-			"My Shop", "Pending orders (" + std::to_string(anyPending)+")", "All Orders ("+ std::to_string(currentSO->orders.size())+")", "My profile", "Log out"
+			"My Shop", "Ongoing orders (" + std::to_string(anyOngoing)+")", "All Orders ("+ std::to_string(currentSO->orders.size())+")", "My profile", "Log out"
 		};
 
 		Helper::displayMenu(menuOptions);
@@ -223,41 +219,73 @@ void ShopOwnerFlow::mainMenu()
 	}
 }
 
-void ShopOwnerFlow::allOrders(bool pendingOnly)
+void ShopOwnerFlow::allOrders(bool ongoingOnly)
 {
 	
 	while (true)
 	{
 		system("CLS");
+
+		// if empty go back
+		
 		if (currentSO->orders.empty())
 		{
 			system("CLS");
 			std::cout << "No Order Yet." << std::endl;
 			Helper::line(45);
+			Helper::delay(2500);
 			break;
 		}
+		// sorting the list of orders
+		std::sort(currentSO->orders.begin(), currentSO->orders.end());
+
+		// Title
+		ongoingOnly ? std::cout << "Ongoing Orders\n" : std::cout << "All Orders\n";
 		Helper::dLine(123);
+
+		
+		// vector to store indices of ongoing orders in case we want to see only ongoing orders
+		std::vector <int > ongoingOrders;
+
+		// enumerate the list of orders, if the order is ongoing and overdue, change it to canceled and notify
+		bool anyOverdue = false;
+		auto cancelIfOverDue = [ongoingOnly, &anyOverdue](const std::shared_ptr <Order>& order)
+		{
+			if (order->getStatus() == Order::Pending)
+				if (order->isOverdue()) {
+					anyOverdue = true;
+					order->cancelOrder();
+					std::cout << "The order from " << order->getCustomerName()
+						<< " due on " << order->getDeliveryTime()
+						<< " has been canceled due to being overdue\n";
+					if (ongoingOnly)
+						std::cout << " You can find it in all orders menu\n";
+				}
+		};
+		std::for_each(currentSO->orders.begin(), currentSO->orders.end(), cancelIfOverDue);
+		if (anyOverdue)
+		{
+			Helper::delay(3000);
+			continue;
+		}// notify and reload the page
+		
+		// heading
 		std::cout << std::setw(4) << "No." << std::setw(20) << "Customer Name"
 			<< std::setw(17) << "Payment status" << std::setw(23) << "Status"
-			<<std::setw(15)<< "Delivery Time" << std::setw(20) <<  "Total Price (RM)" 
+			<< std::setw(15)<< "Delivery Time" << std::setw(20) <<  "Total Price (RM)" 
 			<< std::setw(20) << "Customer's Health Status" << std::endl;
 		Helper::line(123);
-		std::vector <int > pendingOrders;
+		
 
-		std::sort(currentSO->orders.begin(), currentSO->orders.end());
 		int count = 0;
 		for (int i = 0; i < currentSO->orders.size(); i++)
 		{
-			if ( currentSO->orders[i]->getStatus() == Order::Pending)
-			{
-				if(currentSO->orders[i]->isOverdue())
-					currentSO->orders[i]->cancelOrder();
-
-			}
-			if (pendingOnly) {
-
+			
+			if (ongoingOnly) {
+				ongoingOrders.reserve(currentSO->orders.size());
+				
 				if ((currentSO->orders[i]->getStatus() < Order::Complete))
-					pendingOrders.push_back(i);
+					ongoingOrders.push_back(i);
 				else
 					continue;	
 			}
@@ -265,53 +293,46 @@ void ShopOwnerFlow::allOrders(bool pendingOnly)
 			std::cout << std::setw(4) << ++count;
 			currentSO->orders[i]->summary('s');
 		}
-		if (pendingOnly && pendingOrders.empty())
+
+		
+		if (ongoingOnly && ongoingOrders.empty())
 		{
-			system("CLS");
-			std::cout << "No pending order yet." << std::endl;
-			Helper::line(45);
+			std::cout << "No ongoing orders at the moment." << std::endl;
+			Helper::delay(1000);
 			break;
 		}
 
+		// Prompt to choose
 		Helper::line(123);
-		if (pendingOnly)
-		{
-			std::cout << "Choose the order number to view detail\n"
-				<< "or press P to view all Orders\n"
-				<< "or press B to go back.\n";
-		}
-		else
-		{
-			std::cout << "Choose the order number to view detail\n"
-				<< "or press P to view Pending Orders only\n"
-				<< "or press B to go back.\n";
-		}
-		std::cout << "Your choice: ";
-		int choice{};
+		std::cout << "Choose the order number to view detail\n"
+			<< "or press O to view";
+		(ongoingOnly) ? std::cout << "All Orders\n" : std::cout << "Ongoing Orders";
+		std::cout << "or press B to go back.\n";
 
-		if (!pendingOnly)
-			choice = Helper::readChoice(1, currentSO->orders.size(), "PpBb");
+		std::cout << "Your choice: ";
+		int choice;
+
+		if (!ongoingOnly)
+			choice = Helper::readChoice(1, currentSO->orders.size(), "OoBb");
 		else
-			choice = Helper::readChoice(1, pendingOrders.size(), "pPBb");
+			choice = Helper::readChoice(1, ongoingOrders.size(), "oOBb");
 
 		if (choice == 'B' || choice == 'b')
 		{
 			system("CLS");
 			break;
 		}
-		else if (choice == 'P' || choice == 'p')
+		
+		if (choice == 'P' || choice == 'p')
 		{
-			pendingOnly = !pendingOnly;
+			ongoingOnly = !ongoingOnly;
 			continue;
 		}
+		if (ongoingOnly)
+			viewOrder(currentSO->orders[ongoingOrders[choice - 1]]);
 		else
-		{
-			if (pendingOnly)
-				viewOrder(currentSO->orders [pendingOrders[choice-1]]);
-			else
-				viewOrder(currentSO->orders.at(choice - 1));
-		}
-	
+			viewOrder(currentSO->orders.at(choice - 1));
+
 	}
 
 }
@@ -331,7 +352,8 @@ void ShopOwnerFlow::assignVolunteer(const std::shared_ptr<Order>& order)
 		if (avlblVol.empty())
 		{
 			std::cout << "No available volunteers at this time, you will be directed...\n";
-			break;
+
+			Helper::delay(1000);			break;
 		}
 
 		std::cout <<std::setw(4)<<"No."<< std::setw(18) << "Name"
@@ -355,7 +377,8 @@ void ShopOwnerFlow::assignVolunteer(const std::shared_ptr<Order>& order)
 		order->setDelivery(avlblVol[choice - 1]);
 		avlblVol[choice - 1]->addOrder(order);
 		std::cout << "Volunteer assigned and notified, you will be sent back...\n";
-		break;
+
+		Helper::delay(1000);		break;
 	}
 }
 
@@ -378,7 +401,7 @@ void ShopOwnerFlow::viewOrder(std::shared_ptr<Order>& order)
 		Helper::line(70);
 
 		bool preparationDone = false;
-		//-> if the order is pending:
+		//-> if the order is ongoing:
 		if (order->isReady() && order->getDelivery() == nullptr) {
 			std::cout << "Assign a volunteer (A), ";
 			preparationDone = true;

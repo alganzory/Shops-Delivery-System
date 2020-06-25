@@ -1,13 +1,17 @@
 #include "C_List.h"
 
+/// Members
 std::fstream C_List::dataFile;
 std::string C_List::filePath="CustomerList.txt";
 std::vector<std::shared_ptr<Customer>> C_List::ALL_CUSTOMERS;
+
+/// Getters
 int C_List::getCustomerCount()
 {
 	return ALL_CUSTOMERS.size();
 }
 
+/// Methods
 void C_List::addCustomer(std::shared_ptr<Customer> customer)
 {
 	ALL_CUSTOMERS.push_back(customer);

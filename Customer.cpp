@@ -6,18 +6,26 @@
 #include "Shop.h"
 #include "Helper.h"
 
+/// Constructors
 Customer::Customer(std::string username, std::string password) :User(username, password)
 {
 	cart = std::make_shared<Order>();
 }
-void Customer::setHealthStatus(HealthStatus healthStatus)
-{
-	this->healthStatus = healthStatus;
-}
+
+/// Getters
 Customer::HealthStatus Customer::getHealthStatus() const
 {
 	return healthStatus;
 }
+
+/// Setters
+void Customer::setHealthStatus(HealthStatus healthStatus)
+{
+	this->healthStatus = healthStatus;
+}
+
+
+/// Methods
 void Customer::setInfo(std::string name, int age, double balance, Location location)
 {
 	this->name = name;
@@ -73,6 +81,7 @@ void Customer::welcome()
 	CustomerFlow::mainMenu();
 }
 
+/// Operators
 std::ostream& operator<<(std::ostream& output, const Customer::HealthStatus& healthStatus)
 {
 	const char* c = "0";

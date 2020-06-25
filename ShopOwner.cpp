@@ -3,13 +3,41 @@
 #include "ShopOwnerFlow.h"
 #include "SH_List.h"
 
-
+/// Constructors
 ShopOwner::ShopOwner(std::string username, std::string password):
 	User(username, password)
 {
 	
 }
 
+/// Getters
+std::string ShopOwner::getShopName() const
+{
+	return shop->getName();
+}
+
+int ShopOwner::getShopSize() const
+{
+	return shop->getItemsCount();
+}
+std::shared_ptr<Shop> ShopOwner::getShopPtr()
+{
+	return shop;
+}
+
+/// Setters
+void ShopOwner::setShopName(const std::string& cs)
+{
+	shop->setName(cs);
+}
+
+void ShopOwner::setShopAdress(const std::string& cs)
+{
+	shop->setLocation(Location(cs));
+}
+
+
+/// Methods
 void ShopOwner::setInfo(std::string name, int age, double balance, Location location)
 {
 	this->name = name;
@@ -36,16 +64,6 @@ void ShopOwner::setInfo(std::string name, int age, double balance, Location loca
 	createShop(shopName, shopLocation,startHour,endHour);
 	SH_List::addShop(shop);
 
-}
-
-//Shop ShopOwner::getShop() const
-//{
-//	return shop;
-//}
-
-std::shared_ptr<Shop> ShopOwner::getShopPtr()
-{
-	return shop;
 }
 
 void ShopOwner::createShop(std::string shopName, Location shopLocation,int startTime, int endTime)
@@ -87,21 +105,10 @@ void ShopOwner::rewardVolunteer(std::shared_ptr<Volunteer> volunteer, double rew
 	volunteer->getReward(reward);
 }
 
-
 void ShopOwner::welcome()
 {
 	ShopOwnerFlow::currentSO = shared_from_this();
 	ShopOwnerFlow::mainMenu();
-}
-
-std::string ShopOwner::getShopName() const
-{
-	return shop->getName();
-}
-
-int ShopOwner::getShopSize() const
-{
-	return shop->getItemsCount();
 }
 
 void ShopOwner::setInfoFile(const std::string& cs, int age, double balance, const std::string& location,
@@ -116,13 +123,7 @@ void ShopOwner::setInfoFile(const std::string& cs, int age, double balance, cons
 	createShop(shopname, Location (shoplocation), availableTime1, availableTime2);
 }
 
-void ShopOwner::setShopName(const std::string& cs)
-{
-	shop->setName(cs);
-}
-
-void ShopOwner::setShopAdress(const std::string& cs)
-{
-	shop->setLocation(Location(cs));
-}
-
+//Shop ShopOwner::getShop() const
+//{
+//	return shop;
+//}

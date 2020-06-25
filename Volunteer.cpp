@@ -8,7 +8,7 @@
 
 #include "SH_List.h"
 #include "VolunteerFlow.h"
-
+/// Constructors
 Volunteer::Volunteer()
 {
 }
@@ -17,6 +17,23 @@ Volunteer::Volunteer(std::string username, std::string password) :User(username,
     registeredShops.resize(SH_List::getCount());
 }
 
+/// Getters
+std::pair<Time, Time> Volunteer::getAvailableTimes() const
+{
+    return availableTimes;
+}
+std::string Volunteer::getTransport() const {
+    return transportation;
+}
+bool Volunteer::isAvailable(Time time) {
+    bool available = true;
+    if (time > availableTimes.first && time < availableTimes.second) {
+        return available;
+    }
+}
+
+
+/// Setters
 void Volunteer::setTransport(std::string& transport) {
     transportation = transport;
 }
@@ -25,15 +42,7 @@ void Volunteer::setAvailableTimes(std::pair <int, int>availableTimes) {
     this->availableTimes = {  Time(availableTimes.first, 0), Time(availableTimes.second, 0) };
 }
 
-std::pair<Time, Time> Volunteer::getAvailableTimes() const
-{
-    return availableTimes;
-}
-
-std::string Volunteer::getTransport() const {
-    return transportation;
-}
-
+/// Methods
 void Volunteer::setInfo(std::string name, int age, double balance, Location location) {
     this->name = name;
     this->age = age;
@@ -52,13 +61,6 @@ void Volunteer::setInfo(std::string name, int age, double balance, Location loca
 
     setAvailableTimes({ startHour,endHour });
 
-}
-
-bool Volunteer::isAvailable(Time time) {
-    bool available = true;
-    if (time > availableTimes.first && time < availableTimes.second) {
-        return available;
-    }
 }
 
 void Volunteer::registerToShop(int shopIdx) {

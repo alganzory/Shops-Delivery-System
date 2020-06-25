@@ -2,7 +2,7 @@ CustomerID1
 password1
 Customer One
 20
-999999
+1004
 Jalan Pertama
 S
 
@@ -10,7 +10,7 @@ CustomerID2
 password2
 Customer Two
 35
-0
+21
 Taman Kedua
 H
 

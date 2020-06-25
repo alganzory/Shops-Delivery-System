@@ -9,13 +9,172 @@
 #include "Shop.h"
 #include"ShopOwner.h"
 
+/// Constructors
+Order::Order()
+{
+	orderStatus = Pending;
+	reward = 0;
+	overdue = FALSE;
+	this->deliveryStatus = false;
+	this->paymentStatus = true;
+	this->overdue = false;
+	this->contactless = false;
+}
 
+Order::Order(std::shared_ptr<Customer> customer, std::shared_ptr<Shop> shop) {
+	this->customer = customer;
+	this->shop = shop;
+	this->deliveryStatus = false;
+	this->paymentStatus = false;
+	this->delivery = nullptr;
+	orderStatus = Order::Pending;
+	reward = 0;
+	this->overdue = false;
+	this->contactless = false;
+}
+
+/// Getters
+std::string Order::getDlvryAddress() const
+{
+	return customer->getLocation().getAddress();
+}
+
+std::string Order::getCustomerName() const
+{
+	return customer->getName();
+}
+
+bool Order::isEmpty()
+{
+	return items.empty();
+}
+
+double Order::getTotalPrice() {
+	double totalPrice = 0;
+	for (int i = 0; i < items.size(); i++) {
+		totalPrice += items[i].second * items[i].first->getPrice();
+	}
+	return totalPrice;
+}
+
+std::shared_ptr<Volunteer> Order::getDelivery() {
+	return delivery;
+}
+
+bool Order::getDeliveryStatus()
+{
+	return deliveryStatus;
+}
+
+bool Order::getPaymentStatus()
+{
+	return paymentStatus;
+}
+
+Time Order::getDeliveryTime()
+{
+	return deliveryTime;
+}
+
+int Order::getOrderSize()
+{
+	return items.size();
+}
+
+bool Order::isReady()
+{
+	return std::find(preparationStatus.begin(),
+		preparationStatus.end(), false) == preparationStatus.end();
+}
+double Order::getReward()
+{
+	return this->reward;
+}
+bool Order::getContactlessDlvr() {
+	return contactless;
+}
+std::pair<std::shared_ptr<Item>, int>& Order::getItem(int position)
+{
+	return items.at(position);
+}
+Order::Status Order::getStatus()
+{
+	return orderStatus;
+}
+std::shared_ptr<Shop> Order::getShop()
+{
+	return shop;
+}
+/// Setters
+
+void Order::setStatus(Status newStatus)
+{
+	orderStatus = newStatus;
+}
+
+void Order::setOverdueStatus(bool overdueStatus)
+{
+	overdue = overdueStatus;
+}
+
+void Order::setTotalPrice(double totalPrice) {
+	this->totalPrice = totalPrice;
+}
+
+void Order::setDelivery(std::shared_ptr<Volunteer> volunteer) {
+	delivery = volunteer;
+}
+
+void Order::setPaymentStatus(bool paymentStatus) {
+	this->paymentStatus = paymentStatus;
+}
+
+void Order::setDeliveryStatus(bool deliveryStatus) {
+	this->deliveryStatus = deliveryStatus;
+}
+
+void Order::setDeliveryTime(int hour,int minute)
+{
+	try {
+		this->deliveryTime.setTime(hour, minute);
+	}
+	catch (const char* ){
+		throw;
+	}
+}
+
+void Order::setShop(std::shared_ptr<Shop> shop)
+{
+	this->shop = shop;
+}
+
+void Order::setCustomer(std::shared_ptr<Customer> shared)
+{
+	this->customer = shared;
+}
+
+void Order::setPreparationStatus(int num)
+{
+	preparationStatus[num] = true;
+	
+}
+
+void Order::setReward(double reward) 
+{
+	this->reward = reward;
+}
+
+void Order::setContactlessDlvr(bool contactless) {
+	this->contactless = contactless;
+}
+
+/// Methods
 void Order::cancelOrder()
 {
 
 
 	customer->addBalance (getTotalPrice());
-	shop->getShopOwner().lock()->subtractBalance(totalPrice); 
+	shop->getShopOwner().lock()->subtractBalance(getTotalPrice()); 
 	customer->addBalance (reward);
 	
 	for (int i = 0; i < items.size(); i++)
@@ -27,37 +186,6 @@ void Order::cancelOrder()
 
 
 }
-
-std::string Order::getDlvryAddress() const
-{
-	return customer->getLocation().getAddress();
-}
-
-std::string Order::getCustomerName() const
-{
-	return customer->getName();
-}
-
-Order::Order()
-{
-	orderStatus = Order::Pending;
-	reward = 0;
-	overdue = FALSE;
-	this->deliveryStatus = false;
-	this->paymentStatus = true;
-}
-
-Order::Order(std::shared_ptr<Customer> customer, std::shared_ptr<Shop> shop) {
-	this->customer = customer;
-	this->shop = shop;
-	this->deliveryStatus = false;
-	this->paymentStatus = false;
-	this->delivery = nullptr;
-	orderStatus = Order::Pending;
-	reward = 0;
-	overdue = FALSE;
-}
-
 void Order::addItem(std::shared_ptr<Item> item, int quantity) {
 	//check item if its in the list
 	auto found = std::find_if(items.begin(), items.end(), [item](const std::pair<std::shared_ptr<Item>, int>& rhs) {
@@ -101,60 +229,6 @@ void Order::removeItem(std::pair<std::shared_ptr<Item>, int>& itemReq)
 	items.erase(itemPosition);
 	itemsIndices.erase(itemsIndices.begin() + distance);
 	preparationStatus.erase(preparationStatus.begin() + distance);
-}
-
-void Order::setTotalPrice(double totalPrice) {
-	this->totalPrice = totalPrice;
-}
-
-double Order::getTotalPrice() {
-	double totalPrice = 0;
-	for (int i = 0; i < items.size(); i++) {
-		totalPrice += items[i].second * items[i].first->getPrice();
-	}
-	return totalPrice;
-}
-
-
-void Order::setDelivery(std::shared_ptr<Volunteer> volunteer) {
-	delivery = volunteer;
-}
-
-void Order::setPaymentStatus(bool paymentStatus) {
-	this->paymentStatus = paymentStatus;
-}
-
-void Order::setDeliveryStatus(bool deliveryStatus) {
-	this->deliveryStatus = deliveryStatus;
-}
-
-std::shared_ptr<Volunteer> Order::getDelivery() {
-	return delivery;
-}
-
-bool Order::getDeliveryStatus()
-{
-	return deliveryStatus;
-}
-
-void Order::setDeliveryTime(int hour,int minute)
-{
-	try {
-		this->deliveryTime.setTime(hour, minute);
-	}
-	catch (const char* ){
-		throw;
-	}
-}
-
-bool Order::getPaymentStatus()
-{
-	return paymentStatus;
-}
-
-Time Order::getDeliveryTime()
-{
-	return deliveryTime;
 }
 
 void Order::display(bool showPreparationStatus)
@@ -227,27 +301,6 @@ void Order::summary(char userType)
 	std::cout << '\n';
 }
 
-
-int Order::getOrderSize()
-{
-	return items.size();
-}
-
-std::pair<std::shared_ptr<Item>, int>& Order::getItem(int position)
-{
-	return items.at(position);
-}
-
-void Order::setShop(std::shared_ptr<Shop> shop)
-{
-	this->shop = shop;
-}
-
-void Order::setCustomer(std::shared_ptr<Customer> shared)
-{
-	this->customer = shared;
-}
-
 void Order::buyItems()
 {
 	for (int i = 0; i < static_cast<int>(items.size()); i++)
@@ -256,17 +309,40 @@ void Order::buyItems()
 	}
 }
 
-Order::Status Order::getStatus()
+void Order::reorder(const std::shared_ptr <Order> order)
 {
-	return orderStatus;
+	this->customer = order->customer;
+	this->shop=order->getShop();
+
+	items.clear();
+	itemsIndices.clear();
+	preparationStatus.clear();
+	for (int i = 0; i < order->getOrderSize(); i++)
+	{
+		items.push_back({ shop->items[order->itemsIndices[i]],order->items[i].second });
+		preparationStatus.push_back(false);
+		itemsIndices.push_back(order->itemsIndices[i]);
+	}
 }
 
-void Order::setStatus(Status newStatus)
+bool Order::isOverdue()
 {
-	orderStatus = newStatus;
+	if (getDeliveryTime().getTimeDiff().second < 0)
+	{
+		overdue = TRUE;
+	}
+	return overdue;
 }
 
+void Order::reduceItem(int quantity, std::pair<std::shared_ptr<Item>, int>& itemReq) {
+	itemReq.second -= quantity;
+	if (itemReq.second == 0) {
+		std::cout << "You have 0 items. Order will be automatically removed.\n";
+		removeItem(itemReq);
+	}
+}
 
+/// Operators
 std::ostream& operator<<(std::ostream& output, const Order::Status& status)
 {
 	const char* s = "0";
@@ -317,86 +393,4 @@ bool operator<(const std::shared_ptr<Order>& lhs, const std::shared_ptr<Order>& 
 	else {
 		return lhs->deliveryTime < rhs->deliveryTime;
 	}	
-}
-
-void Order::setPreparationStatus(int num)
-{
-	preparationStatus[num] = true;
-	
-}
-
-
-bool Order::isReady()
-{
-	return std::find(preparationStatus.begin(),
-		preparationStatus.end(), false) == preparationStatus.end();
-}
-
-void Order::setReward(double reward) 
-{
-	this->reward = reward;
-}
-
-double Order::getReward()
-{
-	return this->reward;
-}
-
-void Order::setContactlessDlvr(bool contactless) {
-	this->contactless = contactless;
-}
-
-bool Order::getContactlessDlvr() {
-	return contactless;
-}
-
-void Order::operator = ( Order& order) {
-	this->customer = order.customer;
-	shop->setShopOwner(order.shop->getShopOwner());
-	
-	
-	for (int i = 0; i < order.getOrderSize(); i++)
-	{
-		items.push_back({ shop->items[order.itemsIndices[i]],order.items[i].second });
-		preparationStatus.push_back(false);
-		itemsIndices.push_back(order.itemsIndices[i]);
-	}
-}
-
-std::shared_ptr<Shop> Order::getShop()
-{
-	return shop;
-}
-
-void Order::reorder(const std::shared_ptr <Order> order)
-{
-	this->customer = order->customer;
-	this->shop=order->getShop();
-
-	items.clear();
-	itemsIndices.clear();
-	preparationStatus.clear();
-	for (int i = 0; i < order->getOrderSize(); i++)
-	{
-		items.push_back({ shop->items[order->itemsIndices[i]],order->items[i].second });
-		preparationStatus.push_back(false);
-		itemsIndices.push_back(order->itemsIndices[i]);
-	}
-}
-
-bool Order::isOverdue()
-{
-	if (getDeliveryTime().getTimeDiff().second < 0)
-	{
-		overdue = TRUE;
-	}
-	return overdue;
-}
-
-void Order::reduceItem(int quantity, std::pair<std::shared_ptr<Item>, int>& itemReq) {
-	itemReq.second -= quantity;
-	if (itemReq.second == 0) {
-		std::cout << "You have 0 items. Order will be automatically removed.\n";
-		removeItem(itemReq);
-	}
 }

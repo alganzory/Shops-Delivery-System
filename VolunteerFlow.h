@@ -7,9 +7,11 @@
 class VolunteerFlow
 {
 public:
+	/// Members
 	static std::shared_ptr<Volunteer> currentVolunteer;
 	static std::shared_ptr<Order> currentOrder;
 public:
+	/// Methods
 	static void ongoingOrder();
 	static void myOrders(bool pendingOnly = false);
 	static void registerShop();

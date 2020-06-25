@@ -6,57 +6,57 @@
 #include "ShopOwnerFlow.h"
 #include "VolunteerFlow.h"
 
-
+/// Members
 std::shared_ptr<User> UserFlow::currentUser;
+
+/// Methods
 void UserFlow::welcomeScreen()
 {
 	int choice = -1;
 	system("CLS");
 	while (choice != 99)
 	{
-
 		std::string opener = "\nCOVID-19 SHOPS DELIVERY SYSTEM\n";
 		Helper::stringDisplay(opener);
-		
+
 		Helper::dLine();
-		Helper::displayMenu({ "Log in", "Sign up", "Exit" });
+		Helper::displayMenu({"Log in", "Sign up", "Exit"});
 		Helper::line();
 		std::cout << "Your choice: ";
 		choice = Helper::readChoice(1, 3);
 
 		switch (choice)
 		{
-		case 1:	login();
+		case 1: login();
 			break;
-		case 2:	signUp();
+		case 2: signUp();
 			break;
-		case 3:throw "EXIT";
+		case 3: throw "EXIT";
 			break;
-		default:std::cout << "Please choose the correct number." << std::endl;
+		default: std::cout << "Please choose the correct number." << std::endl;
 		}
 	}
-
 }
 
 std::shared_ptr<User> UserFlow::verifyUsername(std::string username)
 {
 	for (int i = 0; i < C_List::getCustomerCount(); i++)
 	{
-		if (username==C_List::ALL_CUSTOMERS[i]->getUsername())
+		if (username == C_List::ALL_CUSTOMERS[i]->getUsername())
 		{
 			return C_List::ALL_CUSTOMERS[i];
 		}
 	}
 	for (int j = 0; j < V_List::getVolunteersCount(); j++)
 	{
-		if (username==V_List::ALL_VOLUNTEERS[j]->getUsername())
+		if (username == V_List::ALL_VOLUNTEERS[j]->getUsername())
 		{
 			return V_List::ALL_VOLUNTEERS[j];
 		}
 	}
 	for (int k = 0; k < SO_List::getCount(); k++)
 	{
-		if (username==SO_List::SHOPOWNERS[k]->getUsername())
+		if (username == SO_List::SHOPOWNERS[k]->getUsername())
 		{
 			return SO_List::SHOPOWNERS[k];
 		}
@@ -74,7 +74,8 @@ void UserFlow::myProfile()
 {
 	bool isSO = false, isCu = false, isVol = false;
 
-	while (true){
+	while (true)
+	{
 		system("CLS");
 		std::cout << "\nMy Profile\n";
 		Helper::dLine(110);
@@ -111,7 +112,8 @@ void UserFlow::myProfile()
 			isSO = true;
 			std::cout << "(S) Shop Name: " << ShopOwnerFlow::currentSO->getShopName() << "\n";
 			Helper::line(110);
-			std::cout << "(P) Shop Location: " << ShopOwnerFlow::currentSO->getShopPtr()->getLocation().getAddress() << "\n";
+			std::cout << "(P) Shop Location: " << ShopOwnerFlow::currentSO->getShopPtr()->getLocation().getAddress() <<
+				"\n";
 			Helper::line(110);
 			std::cout << "(V) Operation Hour " << ShopOwnerFlow::currentSO->getShopPtr()->getAvailableTimes().first
 				<< " - " << ShopOwnerFlow::currentSO->getShopPtr()->getAvailableTimes().second << "\n";
@@ -157,7 +159,7 @@ void UserFlow::myProfile()
 			int updatedAge{};
 			std::cin >> updatedAge;
 			std::cin.ignore();
-			if (updatedAge == 'c' || updatedAge =='C') continue;
+			if (updatedAge == 'c' || updatedAge == 'C') continue;
 			currentUser->setAge(updatedAge);
 			Helper::line(110);
 			std::cout << "Your age has been updated\n";
@@ -190,13 +192,16 @@ void UserFlow::myProfile()
 				<< "or Press C to cancel: ";
 			int choice = Helper::readChoice(0, 0, "HhSsIiCc");
 			if (choice == 'c' || choice == 'C') continue;
-			if (choice == 'H' || choice == 'h') {
+			if (choice == 'H' || choice == 'h')
+			{
 				CustomerFlow::currentCustomer->setHealthStatus(Customer::HealthStatus::Healthy);
 			}
-			else if (choice == 'S' || choice == 's') {
+			else if (choice == 'S' || choice == 's')
+			{
 				CustomerFlow::currentCustomer->setHealthStatus(Customer::HealthStatus::ShowSymptoms);
 			}
-			else if (choice == 'I' || choice == 'i') {
+			else if (choice == 'I' || choice == 'i')
+			{
 				CustomerFlow::currentCustomer->setHealthStatus(Customer::HealthStatus::Infected);
 			}
 			Helper::line(110);
@@ -213,29 +218,26 @@ void UserFlow::myProfile()
 			Helper::line(110);
 			std::cout << "Your transportation has been updated\n";
 			continue;
-			
 		}
 		if (choice == 'V' || choice == 'v')
 		{
 			std::cout << "Update available hours or Press C to go back: \n"
 				<< "Start hour: ";
-			int startHour = Helper::readChoice(0,24, "cC");
+			int startHour = Helper::readChoice(0, 24, "cC");
 			if (startHour == 'C' || startHour == 'c') continue;
 			std::cout << "End hour: ";
 			int endHour = Helper::readChoice(startHour, 24, "cC");
 			if (endHour == 'C' || endHour == 'c') continue;
-			if(isVol)
-				VolunteerFlow::currentVolunteer->setAvailableTimes({ startHour,endHour });
+			if (isVol)
+				VolunteerFlow::currentVolunteer->setAvailableTimes({startHour, endHour});
 			else
-				ShopOwnerFlow::currentSO->getShopPtr()->setAvailableTimes({ startHour,endHour });
+				ShopOwnerFlow::currentSO->getShopPtr()->setAvailableTimes({startHour, endHour});
 			Helper::line(110);
 			std::cout << "Your available hours have been updated\n";
 			continue;
 		}
 		if (choice == 'S' || choice == 's')
 		{
-
-
 			std::cout << "Update the name of your Shop or press C to go back:\n";
 			std::string shopName;
 			getline(std::cin, shopName);
@@ -255,13 +257,12 @@ void UserFlow::myProfile()
 			Helper::line(110);
 			std::cout << "Your shop address has been updated\n";
 		}
-
-
 	}
 }
 
 
-void UserFlow::signUp() {
+void UserFlow::signUp()
+{
 	//ask for username,p/w,name,age,balance,location,transport,availabletime
 	//depends on volunteer,shopowner,user
 	//use currentUser shared ptr
@@ -269,14 +270,15 @@ void UserFlow::signUp() {
 	// read the input, username and password
 	// check the existence of this user with this username
 	// we will prompt them to login instead
-	
+
 	std::string userName, password, name, location, healthStatus, shop;
-	int age {};
-	double balance {};
+	int age{};
+	double balance{};
 	int character;
-	while (true) {
+	while (true)
+	{
 		system("CLS");
-		
+
 		std::cout << "\nSign up\n";
 		Helper::dLine();
 		std::cout << "Enter your username: ";
@@ -313,30 +315,33 @@ void UserFlow::signUp() {
 		std::cin.ignore();
 		std::cout << "\nEnter your location: ";
 		std::getline(std::cin, location);
-		if (character == 'C' || character == 'c') {
-			std::shared_ptr <Customer> newCustomer = std::make_shared<Customer>(userName, password);
+		if (character == 'C' || character == 'c')
+		{
+			std::shared_ptr<Customer> newCustomer = std::make_shared<Customer>(userName, password);
 			currentUser = newCustomer;
 			C_List::addCustomer(newCustomer);
 		}
-		else if (character == 'S' || character == 's') {
-			std::shared_ptr <ShopOwner> newShopOwner = std::make_shared<ShopOwner>(userName, password);
+		else if (character == 'S' || character == 's')
+		{
+			std::shared_ptr<ShopOwner> newShopOwner = std::make_shared<ShopOwner>(userName, password);
 			currentUser = newShopOwner;
 			SO_List::addShopOwner(newShopOwner);
-			
 		}
-		else if (character == 'V' || character == 'v') {
-			std::shared_ptr <Volunteer> newVolunteer = std::make_shared<Volunteer>(userName, password);
+		else if (character == 'V' || character == 'v')
+		{
+			std::shared_ptr<Volunteer> newVolunteer = std::make_shared<Volunteer>(userName, password);
 			currentUser = newVolunteer;
 			V_List::AddVolunteer(newVolunteer);
 		}
-		else {
+		else
+		{
 			std::cout << "This choice does not exist.";
 			continue;
 		}
 
 		std::cout << "\nJust a few more questions...\n";
 		currentUser->setInfo(name, age, balance, location);
-		
+
 		Helper::line();
 		system("CLS");
 		std::cout << "Account registered successfully, \nyou will be directed to main Menu\n";
@@ -345,7 +350,8 @@ void UserFlow::signUp() {
 	}
 }
 
-void UserFlow::login() {
+void UserFlow::login()
+{
 	//ask for username,p/w,verify them from Helper Function
 	//if not ask to sign up,if gt then cont verify the p/w
 	//if p/w correct then show menu screen
@@ -353,7 +359,6 @@ void UserFlow::login() {
 	system("CLS");
 	while (true)
 	{
-		
 		std::cout << "\nLogin\n";
 		Helper::dLine();
 		std::string userName, password;
@@ -389,5 +394,3 @@ void UserFlow::login() {
 		}
 	}
 }
-
-

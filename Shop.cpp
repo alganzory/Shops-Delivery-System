@@ -5,6 +5,7 @@
 
 #include "ShopOwner.h"
 
+/// Constructors
 Shop::Shop()
 {
 
@@ -17,14 +18,10 @@ Shop::Shop(std::weak_ptr <ShopOwner> shopOwner, std::string name, Location locat
 {
 }
 
+/// Getters
 std::weak_ptr <ShopOwner> Shop::getShopOwner() const
 {
 	return shopOwner;
-}
-
-void Shop::setShopOwner(std::weak_ptr <ShopOwner> shopOwner)
-{
-	this->shopOwner = shopOwner;
 }
 
 std::string Shop::getName() const
@@ -32,9 +29,9 @@ std::string Shop::getName() const
 	return name;
 }
 
-void Shop::setName(std::string name)
+std::pair <Time, Time> Shop::getAvailableTimes() const
 {
-	this->name = name;
+	return availableTimes;
 }
 
 const std::vector<std::shared_ptr<Item>> & Shop::getItems() 
@@ -42,9 +39,17 @@ const std::vector<std::shared_ptr<Item>> & Shop::getItems()
 	return items;
 }
 
-void Shop::setItems(std::vector<std::shared_ptr<Item>> items)
+int Shop::getItemsCount() const
 {
-	this->items = items;
+	return items.size();
+}
+
+bool Shop::isAvailable(Time time)
+{
+	bool available = true;
+	if (time > availableTimes.first && time < availableTimes.second) {
+		return available;
+	}
 }
 
 Location Shop::getLocation() const
@@ -52,11 +57,33 @@ Location Shop::getLocation() const
 	return location;
 }
 
+/// Setters
+void Shop::setShopOwner(std::weak_ptr <ShopOwner> shopOwner)
+{
+	this->shopOwner = shopOwner;
+}
+
+void Shop::setName(std::string name)
+{
+	this->name = name;
+}
+
+void Shop::setItems(std::vector<std::shared_ptr<Item>> items)
+{
+	this->items = items;
+}
+
 void Shop::setLocation(Location location)
 {
 	this->location = location;
 }
 
+void Shop::setAvailableTimes(std::pair<int, int> availableTimes)
+{
+	this->availableTimes = std::pair < Time, Time>(Time(availableTimes.first, 0), Time(availableTimes.second, 0));
+}
+
+/// Methods
 void Shop::storeItem(std::shared_ptr<Item> newItem, int quantity, bool isNew)
 {
 	auto findItem = find(items.begin(), items.end(), newItem->getName());
@@ -83,18 +110,24 @@ void Shop::sellItem(std::shared_ptr<Item> item, int quantity)
 	}
 }
 
-int Shop::getItemsCount() const
-{
-	return items.size();
-}
-
 void Shop::display(char userType) 
 {
 
 	std::cout << std::setw(20) << getName();
-	std::cout << std::setw(25);
-	std::cout << getLocation().getAddress();
-	std::cout << availableTimes.first << "-" << availableTimes.second;
+	if (getLocation().getAddress().length() <= 23)
+	{
+		std::cout << std::setw(25);
+		std::cout << getLocation().getAddress();
+	}
+	else
+	{
+		for (int i = 0; i < 20; i++)
+		{
+			std::cout << getLocation().getAddress().at(i);
+		}
+		std::cout << "...  ";
+	};
+	std::cout << availableTimes.first << "-" << std::setw(8)<<availableTimes.second;
 }
 
 void Shop::recieveOrder(std::shared_ptr<Order> cart)
@@ -129,21 +162,4 @@ void Shop::addVolunteer(const std::shared_ptr<Volunteer>& volunteer)
 	shopOwner.lock()->registeredVolunteers.emplace_back(volunteer);
 }
 
-void Shop::setAvailableTimes(std::pair<int, int> availableTimes)
-{
-	this->availableTimes = std::pair < Time, Time>(Time(availableTimes.first, 0), Time(availableTimes.second, 0));
-}
-
-std::pair <Time, Time> Shop::getAvailableTimes() const
-{
-	return availableTimes;
-}
-
-bool Shop::isAvailable(Time time)
-{
-	bool available = true;
-	if (time > availableTimes.first && time < availableTimes.second) {
-		return available;
-	}
-}
 

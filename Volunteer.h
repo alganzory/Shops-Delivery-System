@@ -7,6 +7,7 @@ class Volunteer :
     public User,
     public std::enable_shared_from_this <Volunteer>
 {
+    /// Members
 private:
     std::string transportation;
     std::pair<Time, Time> availableTimes;
@@ -15,14 +16,22 @@ private:
     std::vector<double> rewards; //useless
 
 public:
+    /// Constructors
     Volunteer();
     Volunteer(std::string username, std::string password);
-    void setTransport(std::string& transport);
-    void setAvailableTimes(std::pair<int, int> availableTimes);
+
+    /// Getters
     std::pair <Time, Time> getAvailableTimes() const;
     std::string getTransport() const;
-    void setInfo(std::string name, int age, double balance, Location location);
     bool isAvailable(Time time);
+
+    /// Setters
+    void setTransport(std::string& transport);
+    void setAvailableTimes(std::pair<int, int> availableTimes);
+
+
+    /// Methods
+    void setInfo(std::string name, int age, double balance, Location location);
     void registerToShop(int shopIdx);
     void respondToOrder(std::shared_ptr<Order> acceptedOrders, bool accept); //useless
     void deliverOrder(std::shared_ptr<Order> acceptedOrders); //useless
@@ -30,6 +39,7 @@ public:
     void welcome() override;
     void display();
 
+    /// Friend Classes
     friend class O_List;
     friend class VolunteerFlow;
     friend class V_List;

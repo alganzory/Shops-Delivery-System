@@ -9,6 +9,7 @@
 class Helper
 {
 public:
+	/// Methods
 	static int readChoice(int low, int high, std::string charChoices="");
 	static void displayMenu(const std::vector <std::string>& menuOptions);
 	static void line(int length = 30);

@@ -3,15 +3,32 @@
 #include <iomanip>
 #include <iostream>
 
+/// Constructors
 Item::Item()
 {
 }
+Item::Item(std::string name, double price, int inStock) :
+	name(name),
+	price(price),
+	inStock(inStock)
+{
+}
 
+/// Getters
 double Item::getPrice() const
 {
 	return price;
 }
+int Item::getInStock() const
+{
+	return inStock;
+}
+std::string Item::getName() const
+{
+	return name;
+}
 
+/// Setters
 void Item::setPrice(double price)
 {
 	this->price = price;
@@ -22,32 +39,20 @@ void Item::setInStock(int inStock)
 	this->inStock = inStock;
 }
 
-Item::Item(std::string name, double price, int inStock) :
-	name(name),
-	price(price),
-	inStock(inStock)
-{
-}
 
+/// Methods
 void Item::addQuantity(const int quantity)
 {
 	inStock += quantity;
 }
 
-int Item::getInStock() const
-{
-	return inStock;
-}
+
 
 void Item::subQuantity(const int quantity)
 {
 	inStock -= quantity;
 }
 
-std::string Item::getName() const
-{
-	return name;
-}
 
 void Item::display(int width1, int width2, const char* append)
 {
@@ -60,7 +65,7 @@ void Item::setName(const std::string& cs)
 	name = cs;
 }
 
-
+/// Operators
 bool operator==(std::shared_ptr<Item> lhs, std::string itemName)
 {
 	return lhs->name == itemName;

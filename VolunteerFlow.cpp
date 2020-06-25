@@ -6,11 +6,12 @@
 
 #include "Helper.h"
 #include "SH_List.h"
+
+/// Members
 std::shared_ptr<Volunteer> VolunteerFlow::currentVolunteer;
 std::shared_ptr<Order> VolunteerFlow::currentOrder = nullptr;
 
-
-
+/// Methods
 void VolunteerFlow::ongoingOrder()
 {
 	while (true) {
@@ -22,6 +23,7 @@ void VolunteerFlow::ongoingOrder()
 			system("CLS");
 			std::cout << "No ongoing orders, you will be directed back to the main menu\n";
 			Helper::line(45);
+			Helper::delay(1000);
 			break;
 		}
 		std::cout << std::setw(20) << "Shop"
@@ -71,6 +73,7 @@ void VolunteerFlow::ongoingOrder()
 			currentOrder = nullptr;
 			std::cout << "Thanks for serving the community...\n";
 			Helper::line(45);
+			Helper::delay(1000);
 			break;
 		}
 	}
@@ -112,11 +115,13 @@ void VolunteerFlow::myOrders(bool pendingOnly)
 			{
 				std::cout << "No pending orders yet." << std::endl;
 				Helper::line(45);
+				Helper::delay(1000);
 			}
 			if (!pendingOnly)
 			{
 				std::cout << "No complete orders yet." << std::endl;
 				Helper::line(45);
+				Helper::delay(1000);
 			}
 			break;
 			
@@ -179,8 +184,8 @@ void VolunteerFlow::registerShop()
 			SH_List::SHOPS[i - 1]->display('v');
 
 			if (currentVolunteer->registeredShops[i - 1])
-				std::cout <<std::right<< std::setw(15)<< "Registered"<<std::left;
-			else std::cout << std::right << std::setw(18) << "Not Registered" << std::left;
+				std::cout << std::setw(18)<< "Registered"<<std::left;
+			else std::cout << std::setw(18) << "Not Registered" << std::left;
 			std::cout << "\n";
 		
 		}
@@ -205,7 +210,9 @@ void VolunteerFlow::registerShop()
 		{
 			currentVolunteer->registerToShop(choice - 1);
 			SH_List::SHOPS[choice - 1]->addVolunteer(currentVolunteer);
+			system("CLS");
 			std::cout << "You have successfully register for this shop\n";
+			Helper::delay(1000);
 			continue;
 	
 		}
@@ -217,6 +224,7 @@ void VolunteerFlow::mainMenu()
 	system("CLS");
 	while (true) {
 		std::string welcoming = "\nWelcome " + currentVolunteer->getName() +'\n';
+		Helper::line(currentVolunteer->getName().length() + 8);
 		Helper::stringDisplay(welcoming);
 		std::cout << "Your balance: " << currentVolunteer->getBalance() << "\n";
 		Helper::dLine();

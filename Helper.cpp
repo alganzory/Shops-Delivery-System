@@ -3,6 +3,8 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+
+/// Methods
 int Helper::readChoice(int low, int high, std::string charChoices)
 {
 	std::string input{};
@@ -40,7 +42,7 @@ void Helper::displayMenu(const std::vector <std::string>& menuOptions)
 	int counter = 0;
 	for (const auto& option : menuOptions)
 	{
-		delay(100);
+	//	delay(100);
 		std::cout << ++counter << "- " << option << std::endl;
 	}
 
@@ -50,7 +52,7 @@ void Helper::line(int length)
 {
 	for (int i=0; i<length; i++)
 	{
-		delay(50);
+	//	delay(50);
 		std::cout << '-';
 	}
 	std::cout << '\n';
@@ -59,7 +61,7 @@ void Helper::dLine(int length)
 {
 	for (int i = 0; i < length; i++)
 	{
-		delay(50);
+	//	delay(50);
 		std::cout << '=';
 	}
 	std::cout << '\n';
@@ -76,7 +78,7 @@ void  Helper:: stringDisplay(std::string str)
 {
 	for (auto character : str)
 	{
-		delay(100);
+	//	delay(100);
 		std::cout << character;
 	}
 }

@@ -4,18 +4,19 @@
 #include <memory>
 #include <sstream>
 
-
+/// Members
 std::fstream SO_List::dataFile;
 std::string SO_List::filePath = "file.txt";
 std::vector <std::shared_ptr <ShopOwner> > SO_List::SHOPOWNERS;
 
 
-
+/// Getters
 int SO_List::getCount()
 {
 	return SHOPOWNERS.size();
 }
 
+/// Methods
 void SO_List::addShopOwner(std::shared_ptr<ShopOwner> newShopOwner)
 {
 	SHOPOWNERS.push_back(newShopOwner);
@@ -33,7 +34,7 @@ void SO_List::readFromFile()
 	std::string item;
 	int age, itemQuantity;
 	double balance, price;
-	int availableTime1, availableTime2;
+	int startHour, endHour;
 	
 	while (std::getline(dataFile, username))
 	{
@@ -45,8 +46,8 @@ void SO_List::readFromFile()
 		std::getline(dataFile, location);
 		std::getline(dataFile, shopname);
 		std::getline(dataFile, shoplocation);
-		dataFile >> availableTime1;
-		dataFile >> availableTime2;
+		dataFile >> startHour;
+		dataFile >> endHour;
 		dataFile.ignore();
 		std::getline(dataFile, empty);
 		
@@ -54,7 +55,7 @@ void SO_List::readFromFile()
 		SHOPOWNERS.emplace_back
 		(std::make_shared<ShopOwner>(username, password)
 		);
-		SHOPOWNERS.back()->setInfoFile(name, age, balance, location, shopname, shoplocation);
+		SHOPOWNERS.back()->setInfoFile(name, age, balance, location, shopname, shoplocation,startHour,endHour);
 		char isBlank;
 		while (getline(dataFile, item)) {
 			if (item.empty())
@@ -68,7 +69,6 @@ void SO_List::readFromFile()
 			s  >> price >> itemQuantity;
 			SHOPOWNERS.back()->addToStock(std::make_shared<Item>(itemName, price, itemQuantity), itemQuantity, true);
 		}		
-		std::cout << "anything " << std::endl;
 	}
 	dataFile.close();
 	// enumerate the array elements and store the read into them
@@ -94,6 +94,8 @@ void SO_List::writeToFile()
 			dataFile << shopOwnerAddress.getAddress() << std::endl;
 			dataFile << SHOPOWNERS[i]->getShopName() << std::endl;
 			dataFile << SHOPOWNERS[i]->shop->getLocation().getAddress() << std::endl;
+			dataFile << SHOPOWNERS[i]->shop->getAvailableTimes().first.getHour() << " "
+				<< SHOPOWNERS[i]->shop->getAvailableTimes().second.getHour() << std::endl;
 			dataFile << "items" << std::endl;
 			//item, price stock
 			items = SHOPOWNERS[i]->shop->getItems();

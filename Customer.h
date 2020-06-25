@@ -6,6 +6,8 @@ class Customer :
 	public User,
 	public std::enable_shared_from_this<Customer>
 {
+
+	/// Members
 public:
 	enum HealthStatus {
 		Healthy,
@@ -16,11 +18,19 @@ private:
 	HealthStatus healthStatus;
 	std::vector <std::shared_ptr<Shop> > availableShops;
 	std::shared_ptr <Order> cart;
-	//bool contactless;
+
+	
 public:
+	/// Constructors
 	Customer(std::string username, std::string password);
-	void setHealthStatus(HealthStatus health);
+
+	/// Getters
 	HealthStatus getHealthStatus() const;
+
+	/// Setters
+	void setHealthStatus(HealthStatus health);
+
+	/// Methods
 	//useless
 	void setInfo(std::string name, int age, double balance, Location location);
 	void placeOrder();
@@ -34,8 +44,13 @@ public:
 	void removeFromCart(std::pair<std::shared_ptr<Item>, int> itemReq);
 	//useless
 	void welcome() override;
-	friend class CustomerFlow;
+
+	/// Operators
 	friend std::ostream& operator << (std::ostream& output, const Customer::HealthStatus& healthStatus);
+
+	/// Friend Classes
+	friend class CustomerFlow;
 	friend class O_List;
 	friend class C_List;
+
 };

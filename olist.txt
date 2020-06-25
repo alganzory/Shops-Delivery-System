@@ -1,10 +1,25 @@
 ShopID1
 CustomerID1
 null
+5
+20
+Cancelled
+1
+0
+0
+0
+10
+1 1
+
+ShopID1
+CustomerID1
+null
 10
 15
-Complete
-1
+Cancelled
+0
+0
+0
 0
 10
 1 2
@@ -12,77 +27,139 @@ Complete
 
 ShopID1
 CustomerID1
+null
+12
+0
+Cancelled
+0
+1
+1
+1
+0
+1 1
+
+ShopID2
+CustomerID1
 VolunteerID1
-8
-10
+12
+40
+Volunteer Found
+0
+1
+0
+1
+5
+1 5
+2 12
+
+ShopID2
+CustomerID1
+VolunteerID2
+14
+20
+Delivering
+0
+1
+0
+0
+5
+2 5
+0 4
+1 21
+
+ShopID1
+CustomerID2
+VolunteerID1
+1
+20
 Delivering
 1
 0
+0
+0
 10
 0 2
-2 1
+2 2
 
 ShopID1
-CustomerID1
+CustomerID2
 null
+2
+2
+Cancelled
+0
 1
-20
-Pending
 1
 0
+1
+2 4
+
+ShopID2
+CustomerID2
+VolunteerID1
+15
+0
+Complete
+1
+1
+0
+0
+5
+2 5
+0 4
+
+ShopID2
+CustomerID2
+null
+18
+0
+Cancelled
+0
+1
+0
+0
+0
+0 7
+2 3
+
+ShopID1
+CustomerID3
+VolunteerID2
+8
+10
+Volunteer Found
+1
+1
+0
+1
 10
 0 2
 2 1
 
 ShopID1
-CustomerID1
-VolunteerID1
-5
-20
-Pending
-1
-0
-10
-0 2
-
-ShopID1
-CustomerID1
+CustomerID3
 null
 2
 3
-Pending
+Cancelled
 0
 1
-0
-
-ShopID1
-CustomerID1
-null
-2
-2
-Pending
-0
 1
 0
-
-ShopID1
-CustomerID3
-VolunteerID1
 2
-2
-Complete
-0
-1
-0
-2 1
-
-ShopID4
-CustomerID3
-null
-8
-4
-Pending
-0
-1
-1000
 1 1
+
+ShopID2
+CustomerID3
+null
+12
+30
+Pending
+0
+1
+0
+1
+7
+1 8
+0 1
+2 5

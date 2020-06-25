@@ -5,25 +5,36 @@
 
 class Item
 {
+
+	/// Members
 private:
 	std::string name;
 	double price{};
 	int inStock{};
 
 public:
-
+	/// Constructors
 	Item();
 	Item(std::string name, double price, int inStock);
+
+	/// Getters
 	double getPrice() const;
-	void setPrice(double price);
-	
 	int getInStock() const;
+	std::string getName() const;
+
+	/// Setters
+	void setPrice(double price);
 	void setInStock(int inStock);
+
+	/// Methods
 	void addQuantity(int quantity);
 	void subQuantity(int quantity);
-	std::string getName() const;
 	void display (int width1 = 30, int width2 =20, const char* append = "\n");
-	friend bool operator==(std::shared_ptr<Item> lhs, std::string itemName); // will be used in finding i
 	void setName(const std::string& cs);
 	// items which are similar
+
+	/// Operators
+	friend bool operator==(std::shared_ptr<Item> lhs, std::string itemName); // will be used in finding i
+
+	
 };

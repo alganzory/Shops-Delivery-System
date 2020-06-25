@@ -9,9 +9,11 @@
 #include "SH_List.h"
 #include "V_List.h"
 
+/// Members
 std::string O_List::filePath = "olist.txt";
 std::fstream O_List::dataFile;
 
+/// Methods
 void O_List::readFromFile()
 {
 	dataFile.open(filePath, std::ios::in);
@@ -21,7 +23,7 @@ void O_List::readFromFile()
 	std::string shopOwner, customer, volunteer, empty;
 	int hour{}, minute{};
 	std::string status;
-	bool deliveryStatus, paymentStatus;
+	bool deliveryStatus, paymentStatus, overdue, contactless;
 	double reward{};
 	int itemIdx{}, itemQuantity{};
 	std::string iteminfo;
@@ -74,6 +76,10 @@ void O_List::readFromFile()
 		orderObj->setDeliveryStatus(deliveryStatus);
 		dataFile >> paymentStatus;
 		orderObj->setPaymentStatus(paymentStatus);
+		dataFile >> overdue;
+		orderObj->setOverdueStatus(overdue);
+		dataFile >> contactless;
+		orderObj->setContactlessDlvr(contactless);
 		dataFile >> reward;
 		dataFile.ignore();
 		orderObj->setReward(reward);
@@ -99,7 +105,6 @@ void O_List::readFromFile()
 
 void O_List::writeToFile() {
 	dataFile.open(filePath, std::ios::out);
-	bool isLast = false;
 	if (!dataFile)
 		std::cout << "fail to open file\n";
 	 // std::vector <std::shared_ptr <Order> > ordersToPrint;
@@ -130,6 +135,8 @@ void O_List::writeToFile() {
 			dataFile << C_List::ALL_CUSTOMERS[i]->orders[j]->orderStatus << '\n';
 			dataFile << C_List::ALL_CUSTOMERS[i]->orders[j]->deliveryStatus << '\n';
 			dataFile << C_List::ALL_CUSTOMERS[i]->orders[j]->paymentStatus << '\n';
+			dataFile << C_List::ALL_CUSTOMERS[i]->orders[j]->overdue << '\n';
+			dataFile << C_List::ALL_CUSTOMERS[i]->orders[j]->contactless << '\n';
 			dataFile << C_List::ALL_CUSTOMERS[i]->orders[j]->reward << '\n';
 
 			auto itemsCount = C_List::ALL_CUSTOMERS[i]->orders[j]->itemsIndices.size();

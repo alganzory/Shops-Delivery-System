@@ -10,23 +10,28 @@ class Customer;
 class Volunteer;
 
 
-
-class Order : public std::enable_shared_from_this <Order>
+class Order : public std::enable_shared_from_this<Order>
 {
+	/// Members
 public:
-	enum Status  // this is the class that groups the statuses together
+	enum Status // this is the class that groups the statuses together
 	{
-		Pending,  // the initial state of the order, the shop owner did not deal with it yet
-		Preparing, // once the shop owner starts preparing the order (the todo check list)
-		VolunteerFound, // once a volunteer is Assigned
-		Delivering, // once a volunteer chooses to deliver
-		Complete, // once the volunteer is done delivering the order
+		Pending,
+		// the initial state of the order, the shop owner did not deal with it yet
+		Preparing,
+		// once the shop owner starts preparing the order (the todo check list)
+		VolunteerFound,
+		// once a volunteer is Assigned
+		Delivering,
+		// once a volunteer chooses to deliver
+		Complete,
+		// once the volunteer is done delivering the order
 		Cancelled // once the shop owner cancel the order
 	};
 
 private:
-	std::vector <std::pair<std::shared_ptr<Item>, int> > items;
-	std::vector <int> itemsIndices;
+	std::vector<std::pair<std::shared_ptr<Item>, int>> items;
+	std::vector<int> itemsIndices;
 	std::shared_ptr<Customer> customer;
 	std::shared_ptr<Shop> shop;
 	double totalPrice;
@@ -34,7 +39,6 @@ private:
 	std::shared_ptr<Volunteer> delivery;
 	bool deliveryStatus;
 	Time deliveryTime;
-
 	Status orderStatus; // this is the status of each order 
 	std::vector<bool> preparationStatus;
 	double reward;
@@ -42,56 +46,64 @@ private:
 	bool overdue;
 
 public:
-	void cancelOrder();
-	std::string getDlvryAddress() const;
-	std::string getCustomerName() const;
-
+	/// Constructors	
 	Order();
 	Order(std::shared_ptr<Customer> customer, std::shared_ptr<Shop> shop);
+
+	/// Getters
+	std::string getDlvryAddress() const;
+	std::string getCustomerName() const;
+	std::shared_ptr<Shop> getShop();
+	std::shared_ptr<Volunteer> getDelivery();
+	std::pair<std::shared_ptr<Item>, int>& getItem(int);
+	Time getDeliveryTime();
+	Status getStatus();
+	double getTotalPrice();
+	double getReward();
+	bool isOverdue();
+	bool isReady();
+	bool getContactlessDlvr();
+	//useless
+	bool getDeliveryStatus();
+	bool getPaymentStatus();
+	bool isEmpty();
+	int getOrderSize();
+
+	/// Setters
+	//useless
+	void setTotalPrice(double totalPrice); //useless
+	void setDelivery(std::shared_ptr<Volunteer> volunteer);
+	void setPaymentStatus(bool paymentStatus);
+	void setDeliveryStatus(bool deliveryStatus);
+	void setShop(std::shared_ptr<Shop> shop);
+	void setCustomer(std::shared_ptr<Customer> shared);
+	void setStatus(Status newStatus);
+	void setDeliveryTime(int hour, int minute);
+	void setPreparationStatus(int num);
+	void setReward(double);
+	void setContactlessDlvr(bool contactless);
+
+	/// Methods
+	void cancelOrder();
+	void setOverdueStatus(bool overdueStatus);
 	void addItem(std::shared_ptr<Item> item, int quantity);
 	void addItem(int itemIdx, int quantity);
 	void removeItem(std::pair<std::shared_ptr<Item>, int>& itemReq);
-	//useless
-	void setTotalPrice(double totalPrice); //useless
-	double getTotalPrice();
-	void setDelivery(std::shared_ptr<Volunteer>volunteer);
-	void setPaymentStatus(bool paymentStatus);
-	void setDeliveryStatus(bool deliveryStatus);
-	std::shared_ptr<Volunteer> getDelivery();
-	//useless
-	bool getDeliveryStatus();
-	void setDeliveryTime(int hour,int minute);
-	bool getPaymentStatus();
-	Time getDeliveryTime();
 	void display(bool showPreparationStatus = false);
 	void summary(char userType = 'c');
-	int getOrderSize();
-	std::pair<std::shared_ptr<Item>, int>& getItem(int);
-	void setShop(std::shared_ptr<Shop> shop);
-	void setCustomer(std::shared_ptr<Customer> shared);
 	void buyItems();
+	void reorder(const std::shared_ptr<Order>);
+	void reduceItem(int quantity, std::pair<std::shared_ptr<Item>, int>& itemReq);
 
-	Status getStatus();
-	void setStatus(Status newStatus);
-
-	friend std::ostream& operator << (std::ostream& output, const Order::Status& status);
+	/// Operators
+	friend std::ostream& operator <<(std::ostream& output, const Order::Status& status);
 	friend std::istream& operator>>(std::istream& input, Status& status);
-	bool isReady();
-	void setPreparationStatus(int num);
-	friend bool operator < (const std::shared_ptr <Order>& lhs, const std::shared_ptr <Order>& rhs);
-	void setReward(double);
-	double getReward();
+	friend bool operator <(const std::shared_ptr<Order>& lhs, const std::shared_ptr<Order>& rhs);
+
+	/// Friend Classes
 	friend class O_List;
 	friend class VolunteerFlow;
 	friend class ShopOwnerFlow;
-	void setContactlessDlvr(bool contactless);
-	bool getContactlessDlvr();
-	void operator = ( Order& order);
-	void reorder(const std::shared_ptr <Order>);
-	std::shared_ptr<Shop> getShop();
-	bool isOverdue();
-	void reduceItem(int quantity,std::pair<std::shared_ptr<Item>, int>& itemReq);
-
 };
 
 #endif

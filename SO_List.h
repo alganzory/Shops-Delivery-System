@@ -7,18 +7,18 @@
 
 class SO_List
 {
-
-
+	/// Members
 public:
-	static std::vector <std::shared_ptr <ShopOwner> > SHOPOWNERS;
+	static std::vector<std::shared_ptr<ShopOwner>> SHOPOWNERS;
 	static std::fstream dataFile;
 	static std::string filePath;
 
 public:
+	/// Getters
 	static int getCount();
-	static void addShopOwner(std::shared_ptr <ShopOwner> newShopOwner);
-	static void readFromFile();
-	static void writeToFile();	
-	
-};
 
+	/// Methods
+	static void addShopOwner(std::shared_ptr<ShopOwner> newShopOwner);
+	static void readFromFile();
+	static void writeToFile();
+};
