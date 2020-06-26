@@ -437,12 +437,12 @@ void ShopOwnerFlow::viewOrder(std::shared_ptr<Order>& order)
 			return;
 		}
 		else if (action == 'S' || action == 's') {
-			todoList(order);
+			orderPreparation(order);
 		}
 	}
 }
 
-void ShopOwnerFlow::todoList(std::shared_ptr<Order>order)
+void ShopOwnerFlow::orderPreparation(std::shared_ptr<Order>order)
 {
 	while (true)
 	{

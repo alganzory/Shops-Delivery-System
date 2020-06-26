@@ -6,7 +6,6 @@
 #include <algorithm>
 #include "Location.h"
 #include "Order.h"
-#include "Time.h"
 
 class User
 {
@@ -18,6 +17,9 @@ protected:
 	int age{};
 	double balance{};
 	Location location;
+	/**
+	 * \brief: the list of orders made or received
+	 */
 	std::vector<std::shared_ptr<Order>> orders;
 
 public:
@@ -33,11 +35,17 @@ public:
 	int getAge() const;
 	double getBalance() const;
 	Location getLocation() const;
+	/**
+	 * \brief : check whether username and password
+	 *			match the input
+	 * \param username : username of user
+	 * \param password : password of user
+	 * \return 
+	 */
 	bool isAuth(std::string username, std::string password) const;
 
 	/// Setters
 	void setPassword(const std::string& cs);
-	//useless
 	void setUsername(const std::string username);
 	void setName(const std::string name);
 	void setAge(const int age);
@@ -50,11 +58,29 @@ public:
 	void removeOrder(std::shared_ptr<Order> order);
 	void addBalance(double amount);
 	void subtractBalance(double amount);
+	/**
+	 * will be overloaded to direct to the respective
+	 * user welcoming screen
+	 */
 	virtual void welcome() = 0;
+	/**
+	 * \brief : will be overloaded to set and ask for
+	 *			info for the respective user type
+	 * \param name 
+	 * \param age 
+	 * \param balance 
+	 * \param location 
+	 */
 	virtual void setInfo(std::string name, int age, double balance, Location location) = 0;
 
 	/// Operators
 	friend bool operator==(const User& lhs, const User& rhs);
+	/**
+	 * \brief : to find objects with string to compare username
+	 * \param lhs: the user to compare 
+	 * \param username :the username to compare
+	 * \return if equals
+	 */
 	friend bool operator==(const std::shared_ptr<User>& lhs, const std::string& username);
 
 	/// Destructor

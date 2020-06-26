@@ -31,7 +31,7 @@ std::string Shop::getName() const
 
 std::pair <Time, Time> Shop::getAvailableTimes() const
 {
-	return availableTimes;
+	return operationTimes;
 }
 
 const std::vector<std::shared_ptr<Item>> & Shop::getItems() 
@@ -44,10 +44,10 @@ int Shop::getItemsCount() const
 	return items.size();
 }
 
-bool Shop::isAvailable(Time time)
+bool Shop::isOperating(Time time)
 {
 	bool available = true;
-	if (time > availableTimes.first && time < availableTimes.second) {
+	if (time > operationTimes.first && time < operationTimes.second) {
 		return available;
 	}
 }
@@ -80,7 +80,7 @@ void Shop::setLocation(Location location)
 
 void Shop::setAvailableTimes(std::pair<int, int> availableTimes)
 {
-	this->availableTimes = std::pair < Time, Time>(Time(availableTimes.first, 0), Time(availableTimes.second, 0));
+	this->operationTimes = std::pair < Time, Time>(Time(availableTimes.first, 0), Time(availableTimes.second, 0));
 }
 
 /// Methods
@@ -127,7 +127,7 @@ void Shop::display(char userType)
 		}
 		std::cout << "...  ";
 	};
-	std::cout << availableTimes.first << "-" << std::setw(8)<<availableTimes.second;
+	std::cout << operationTimes.first << "-" << std::setw(8)<<operationTimes.second;
 }
 
 void Shop::recieveOrder(std::shared_ptr<Order> cart)
@@ -138,6 +138,12 @@ void Shop::recieveOrder(std::shared_ptr<Order> cart)
 void Shop::removeOrder(const std::shared_ptr<Order>& order)
 {
 	shopOwner.lock()->removeOrder(order);
+}
+
+
+void Shop::addVolunteer(const std::shared_ptr<Volunteer>& volunteer)
+{
+	shopOwner.lock()->registeredVolunteers.emplace_back(volunteer);
 }
 
 void Shop::removeVolunteer(const std::shared_ptr<Volunteer>& volunteer)
@@ -154,12 +160,7 @@ void Shop::removeVolunteer(const std::shared_ptr<Volunteer>& volunteer)
 	{
 		std::cout << e << std::endl;
 		return;
-	}	
-}
-
-void Shop::addVolunteer(const std::shared_ptr<Volunteer>& volunteer)
-{
-	shopOwner.lock()->registeredVolunteers.emplace_back(volunteer);
+	}
 }
 
 

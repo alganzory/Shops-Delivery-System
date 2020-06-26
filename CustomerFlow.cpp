@@ -104,7 +104,7 @@ void CustomerFlow::checkout()
 				{
 					throw "The time should be at least 30 mins after now.";
 				}
-				else if (!currentShop->isAvailable(currentCustomer->cart->getDeliveryTime()))
+				else if (!currentShop->isOperating(currentCustomer->cart->getDeliveryTime()))
 				{
 					throw "The shop is not operating on this time.";
 				}
@@ -229,7 +229,7 @@ void CustomerFlow::myCart()
 			choice = Helper::readChoice(0, item.second, "rRbB");
 			if (choice == 'r' || choice == 'R')
 			{
-				currentCustomer->cart->removeItem(item);
+				currentCustomer->removeFromCart(item);
 				system("CLS");
 			}
 			else if (choice == 'b' || choice == 'B')
@@ -244,7 +244,7 @@ void CustomerFlow::myCart()
 				currentCustomer->cart->addItem(item.first, quantity);
 				currentCustomer->cart->removeItem(item);*/
 				system("CLS");
-				currentCustomer->cart->reduceItem(choice, item);
+				currentCustomer->cart->reduceItem(item, choice);
 				
 
 			}
@@ -497,7 +497,7 @@ void CustomerFlow::findAvailableShops()
 	for (const auto& shop : SH_List::SHOPS)
 	{
 		Time::calcLocalTime();
-		if (shop->isAvailable(Time(Time::localHour, Time::localMinute)))
+		if (shop->isOperating(Time(Time::localHour, Time::localMinute)))
 			currentCustomer->availableShops.emplace_back(shop);
 	}
 }
@@ -562,7 +562,7 @@ void CustomerFlow::viewShop()
 
 			try {
 				currentCustomer->cart->setShop(currentShop);
-				currentCustomer->cart->addItem(itemChoice - 1, itemQuantity);
+				currentCustomer->addToCart(itemChoice - 1, itemQuantity);
 				system("CLS");
 				std::cout << itemQuantity << " " << shopItems[itemChoice - 1]->getName() << " is added into the cart.\n";
 				Helper::line(65);

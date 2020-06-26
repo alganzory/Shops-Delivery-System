@@ -10,6 +10,9 @@ class Item
 private:
 	std::string name;
 	double price{};
+	/**
+	 * \brief : in stock quantity
+	 */
 	int inStock{};
 
 public:
@@ -29,12 +32,24 @@ public:
 	/// Methods
 	void addQuantity(int quantity);
 	void subQuantity(int quantity);
+	/**
+	 * \brief : used to display item in style
+	 * \param width1 width between name and price
+	 * \param width2 width between price and quantity
+	 * \param append what to add at the end of the line
+	 */
 	void display (int width1 = 30, int width2 =20, const char* append = "\n");
 	void setName(const std::string& cs);
-	// items which are similar
+
 
 	/// Operators
-	friend bool operator==(std::shared_ptr<Item> lhs, std::string itemName); // will be used in finding i
+	/**
+	 * \brief : used to find an item using the name
+	 * \param lhs : item to compare with
+	 * \param itemName : name of item
+	 * \return 
+	 */
+	friend bool operator==(std::shared_ptr<Item> lhs, std::string itemName); 
 
 	
 };

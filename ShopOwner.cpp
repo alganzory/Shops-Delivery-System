@@ -26,14 +26,14 @@ std::shared_ptr<Shop> ShopOwner::getShopPtr()
 }
 
 /// Setters
-void ShopOwner::setShopName(const std::string& cs)
+void ShopOwner::setShopName(const std::string& shopName)
 {
-	shop->setName(cs);
+	shop->setName(shopName);
 }
 
-void ShopOwner::setShopAdress(const std::string& cs)
+void ShopOwner::setShopAddress(const std::string& shopAddress)
 {
-	shop->setLocation(Location(cs));
+	shop->setLocation(Location(shopAddress));
 }
 
 
@@ -100,10 +100,6 @@ void ShopOwner::sellItem(std::shared_ptr<Item> item, int quantity)
 	this->shop->sellItem(item, quantity);
 }
 
-void ShopOwner::rewardVolunteer(std::shared_ptr<Volunteer> volunteer, double reward)
-{
-	volunteer->getReward(reward);
-}
 
 void ShopOwner::welcome()
 {
@@ -111,10 +107,10 @@ void ShopOwner::welcome()
 	ShopOwnerFlow::mainMenu();
 }
 
-void ShopOwner::setInfoFile(const std::string& cs, int age, double balance, const std::string& location,
+void ShopOwner::setInfoFile(const std::string& name, int age, double balance, const std::string& location,
 	const std::string& shopname, const std::string& shoplocation, int availableTime1, int availableTime2)
 {
-	this->name = cs;
+	this->name = name;
 	this->age = age;
 	this->balance = balance;
 	this->location = Location(location);

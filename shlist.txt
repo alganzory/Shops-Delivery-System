@@ -8,7 +8,7 @@ Shop 1
 Jalan University 1, Taman University
 10 22
 items
-Banana , 7.8 20
+Banana , 7 20
 Apple , 4 12
 Orange , 5 35
 Potatoes , 4 80
@@ -68,7 +68,7 @@ items
 Glue, 7 200
 Notebooks, 20 100
 Papers, 10 200
-Pens, 3.6 80
+Pens, 3 80
 
 ShopID6
 password6
@@ -82,7 +82,7 @@ Kebun Lama
 items
 Popcorn, 20 230
 Pepsi, 3 530
-Revive, 2.5 200
+Revive, 2 200
 Sprite, 2 100
 Coca Cola, 6 150
 
@@ -96,7 +96,7 @@ Shop 7
 Taman Mount Austin
 7 18
 items
-Chicken Popcorn, 9.5 66
+Chicken Popcorn, 9 66
 
 ShopID8
 password8
@@ -108,8 +108,8 @@ Shop 8
 Muar Street
 10 20
 items
-Lolipop, 2.1 50
-Ice cream, 3.4 99
+Lolipop, 2 50
+Ice cream, 3 99
 Candy, 1 400
 Crisps, 2 200
 Oreo, 4 70

@@ -16,18 +16,23 @@ int SO_List::getCount()
 	return SHOPOWNERS.size();
 }
 
+void SO_List::setFilePath(const char* fP)
+{
+	filePath = fP;
+}
+
 /// Methods
 void SO_List::addShopOwner(std::shared_ptr<ShopOwner> newShopOwner)
 {
 	SHOPOWNERS.push_back(newShopOwner);
 }
 
-void SO_List::readFromFile()
+void SO_List::readShopOwners()
 {
 	// read from the file and store in the array.
 	dataFile.open(filePath, std::ios::in);
 	if (!dataFile)
-		std::cout << "fail to open file\n";
+		throw filePath.c_str();
 	
 	dataFile.seekg(0, std::ios::beg);
 	std::string username, password, name, location, shopname, shoplocation, itemName, empty;
@@ -67,21 +72,18 @@ void SO_List::readFromFile()
 			std::istringstream s(item);
 			std::getline(s, itemName, ',');
 			s  >> price >> itemQuantity;
-			SHOPOWNERS.back()->addToStock(std::make_shared<Item>(itemName, price, itemQuantity), itemQuantity, true);
+			SHOPOWNERS.back()->shop->items.emplace_back(std::make_shared<Item>(itemName,price,itemQuantity));
 		}		
 	}
 	dataFile.close();
 	// enumerate the array elements and store the read into them
 }
 
-void SO_List::writeToFile()
+void SO_List::writeShopOwners()
 {
-	// read from the file and store in the array.
-	std::vector<std::shared_ptr<Item>> items;
 	dataFile.open(filePath,std::ios::out);
-	if (!dataFile) {
-		std::cout << "Fail to open file.\n";
-	}
+	if (!dataFile)
+		throw filePath.c_str();
 	else {
 
 		for (int i = 0; i < getCount(); i++) {
@@ -98,7 +100,7 @@ void SO_List::writeToFile()
 				<< SHOPOWNERS[i]->shop->getAvailableTimes().second.getHour() << std::endl;
 			dataFile << "items" << std::endl;
 			//item, price stock
-			items = SHOPOWNERS[i]->shop->getItems();
+			std::vector<std::shared_ptr<Item>> items = SHOPOWNERS[i]->shop->getItems();
 			bool isLast = (i == getCount()-1);
 			for (int j = 0; j < items.size(); j++) {
 				dataFile << items[j]->getName() << ", ";

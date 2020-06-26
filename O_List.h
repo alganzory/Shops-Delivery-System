@@ -4,13 +4,20 @@
 
 class O_List
 {
-public:
 	/// Members
+
+private:
+	
 	static std::string filePath;
 	static std::fstream dataFile;
 	
+public:
+
+	/// Setters
+	static void setFilePath(const char* fP);
+	
 	/// Methods
-	static void readFromFile();
-	static void writeToFile();
+	static void readOrders();
+	static void writeOrders();
 };
 

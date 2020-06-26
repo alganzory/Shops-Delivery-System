@@ -42,16 +42,16 @@ std::shared_ptr<User> UserFlow::verifyUsername(std::string username)
 {
 	for (int i = 0; i < C_List::getCustomerCount(); i++)
 	{
-		if (username == C_List::ALL_CUSTOMERS[i]->getUsername())
+		if (username == C_List::CUSTOMERS[i]->getUsername())
 		{
-			return C_List::ALL_CUSTOMERS[i];
+			return C_List::CUSTOMERS[i];
 		}
 	}
 	for (int j = 0; j < V_List::getVolunteersCount(); j++)
 	{
-		if (username == V_List::ALL_VOLUNTEERS[j]->getUsername())
+		if (username == V_List::VOLUNTEERS[j]->getUsername())
 		{
-			return V_List::ALL_VOLUNTEERS[j];
+			return V_List::VOLUNTEERS[j];
 		}
 	}
 	for (int k = 0; k < SO_List::getCount(); k++)
@@ -259,7 +259,7 @@ void UserFlow::myProfile()
 			std::string shopAdress;
 			getline(std::cin, shopAdress);
 			if (shopAdress == "C" || shopAdress == "c") continue;
-			ShopOwnerFlow::currentSO->setShopAdress(shopAdress);
+			ShopOwnerFlow::currentSO->setShopAddress(shopAdress);
 			Helper::line(110);
 			std::cout << "Your shop address has been updated\n";
 		}
@@ -342,7 +342,7 @@ void UserFlow::signUp()
 		{
 			std::shared_ptr<Volunteer> newVolunteer = std::make_shared<Volunteer>(userName, password);
 			currentUser = newVolunteer;
-			V_List::AddVolunteer(newVolunteer);
+			V_List::addVolunteer(newVolunteer);
 		}
 		else
 		{

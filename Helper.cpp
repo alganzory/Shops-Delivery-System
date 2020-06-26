@@ -1,5 +1,6 @@
 #include "Helper.h"
-
+#include <thread>
+#include <chrono>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -67,11 +68,11 @@ void Helper::dLine(int length)
 	std::cout << '\n';
 }
 
-void Helper:: delay(int s) {
+void Helper:: delay(int ms) {
 	using namespace std::chrono;
 	using namespace std::this_thread;
-	//sleep_until(system_clock::now() + seconds(s));
-	sleep_for(std::chrono::milliseconds(s));
+	//sleep_until(system_clock::now() + seconds(ms));
+	sleep_for(std::chrono::milliseconds(ms));
 }
 
 void  Helper:: stringDisplay(std::string str)

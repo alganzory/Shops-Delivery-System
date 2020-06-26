@@ -5,15 +5,18 @@
 
 class Volunteer :
     public User,
-    public std::enable_shared_from_this <Volunteer>
+    public std::enable_shared_from_this <Volunteer> // to enable getting a shared_ptr using this ptr
 {
     /// Members
 private:
+	
     std::string transportation;
     std::pair<Time, Time> availableTimes;
-    std::vector<bool> registeredShops; // this array is like a map between shop index and registration status
-    std::vector<std::shared_ptr<Order>> acceptedOrders;
-    std::vector<double> rewards; //useless
+    /**
+     * \brief: the list of boolean representing
+     *          whether the shop is registered 
+     */
+    std::vector<bool> registeredShops; 
 
 public:
     /// Constructors
@@ -27,15 +30,33 @@ public:
 
     /// Setters
     void setTransport(std::string& transport);
+    /**
+     * \brief : set the start time and end time that the 
+     *           volunteer available
+     * \param availableTimes : the start hour and the end hour
+     */
     void setAvailableTimes(std::pair<int, int> availableTimes);
 
 
     /// Methods
     void setInfo(std::string name, int age, double balance, Location location);
+    /** 
+     * \brief : set the registered shop of the index
+     *          when volunteer registered to the shop
+     * \param shopIdx : the index representing the shop
+     */
     void registerToShop(int shopIdx);
-    void respondToOrder(std::shared_ptr<Order> acceptedOrders, bool accept); //useless
-    void deliverOrder(std::shared_ptr<Order> acceptedOrders); //useless
+    /**
+     * \brief : to deliver the order to customer
+     * \param order : ongoing order
+     */
+    void handoverOrder(std::shared_ptr<Order>& order); 
     void getReward(double reward);
+    /**
+     * \brief : function override from
+     *          User class to 
+     *          welcome and as menu
+     */
     void welcome() override;
     void display();
 

@@ -8,17 +8,27 @@
 class SO_List
 {
 	/// Members
-public:
-	static std::vector<std::shared_ptr<ShopOwner>> SHOPOWNERS;
+private:
+
 	static std::fstream dataFile;
 	static std::string filePath;
 
 public:
+	/**
+	 * \brief :list of all shop owners registered
+	 */
+	static std::vector<std::shared_ptr<ShopOwner>> SHOPOWNERS;
+
+public:
+	
 	/// Getters
 	static int getCount();
 
+	/// Setters
+	static void setFilePath(const char* fP);
+	
 	/// Methods
 	static void addShopOwner(std::shared_ptr<ShopOwner> newShopOwner);
-	static void readFromFile();
-	static void writeToFile();
+	static void readShopOwners();
+	static void writeShopOwners();
 };

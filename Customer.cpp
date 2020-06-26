@@ -52,12 +52,6 @@ void Customer::placeOrder()
 	cart = std::make_shared<Order>();
 
 }
-void Customer::rewardVolunteer(std::shared_ptr <Volunteer> volunteer, double reward)
-{
-	//exception check to see if there is enough balance
-	volunteer->getReward(reward);
-	balance -= reward;
-}
 
 void Customer::addToCart(std::shared_ptr<Item> item, int quantity)
 {
@@ -69,7 +63,7 @@ void Customer::addToCart(int itemIdx, int quantity)
 	this->cart->addItem(itemIdx, quantity);
 }
 
-void Customer::removeFromCart(std::pair<std::shared_ptr<Item>, int> itemReq)
+void Customer::removeFromCart(std::pair<std::shared_ptr<Item>, int>& itemReq)
 {
 	this->cart->removeItem(itemReq);
 }

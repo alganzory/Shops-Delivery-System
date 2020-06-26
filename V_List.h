@@ -7,19 +7,27 @@
 
 class V_List
 {
+private:
+	static std::fstream dataFile;
+	static std::string filePath;
+
 public:
 	/// Members
-	static std::vector<std::shared_ptr<Volunteer>> ALL_VOLUNTEERS;
-	static std::fstream vFile;
-	static std::string filePath;
+	/**
+	 * \brief : list of volunteers registered
+	 */
+	static std::vector<std::shared_ptr<Volunteer>> VOLUNTEERS;
+
 
 	/// Getters
 	static int getVolunteersCount();
 
+	/// Setters
+	static void setFilePath(const char* fP);
+
 	/// Methods
-	static void AddVolunteer(std::shared_ptr<Volunteer> Volunteer);
-	//useless
-	static void RemoveVolunteer(std::shared_ptr<Volunteer> Volunteer);
-	static void ReadVolunteers();
-	static void WriteVolunteers();
+	static void addVolunteer(std::shared_ptr<Volunteer> Volunteer);
+
+	static void readVolunteers();
+	static void writeVolunteers();
 };

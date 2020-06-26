@@ -66,21 +66,12 @@ void Volunteer::setInfo(std::string name, int age, double balance, Location loca
 void Volunteer::registerToShop(int shopIdx) {
     registeredShops[shopIdx] = true;
 }
-void Volunteer::respondToOrder(std::shared_ptr<Order> order, bool acceptance)
-{
-	if (acceptance == true)
-	{
-		acceptedOrders.push_back(order);
-		const auto orderPos = find(orders.begin(), orders.end(), order);
-		orders.erase(orderPos);
-	}
-}
 
-void Volunteer::deliverOrder(std::shared_ptr<Order> order)
+void Volunteer::handoverOrder(std::shared_ptr<Order>& order)
 {
 	order->setDeliveryStatus(true);
-	const auto orderPos = find(acceptedOrders.begin(), acceptedOrders.end(), order);
-	acceptedOrders.erase(orderPos);
+	order->setStatus(Order::Complete);
+	
 }
 
 void Volunteer::getReward(double reward) {

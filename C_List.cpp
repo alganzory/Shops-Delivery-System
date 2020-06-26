@@ -3,24 +3,29 @@
 /// Members
 std::fstream C_List::dataFile;
 std::string C_List::filePath="CustomerList.txt";
-std::vector<std::shared_ptr<Customer>> C_List::ALL_CUSTOMERS;
+std::vector<std::shared_ptr<Customer>> C_List::CUSTOMERS;
 
 /// Getters
 int C_List::getCustomerCount()
 {
-	return ALL_CUSTOMERS.size();
+	return CUSTOMERS.size();
+}
+
+void C_List::setFilePath(const char* fP)
+{
+	filePath = fP;
 }
 
 /// Methods
 void C_List::addCustomer(std::shared_ptr<Customer> customer)
 {
-	ALL_CUSTOMERS.push_back(customer);
+	CUSTOMERS.push_back(customer);
 }
 
 void C_List::removeCustomer(std::shared_ptr<Customer> customer)
 {
-	auto foundCustomer=std::find(ALL_CUSTOMERS.begin(),ALL_CUSTOMERS.end(),customer);
-	ALL_CUSTOMERS.erase(foundCustomer);
+	auto foundCustomer=std::find(CUSTOMERS.begin(),CUSTOMERS.end(),customer);
+	CUSTOMERS.erase(foundCustomer);
 
 }
 
@@ -28,9 +33,7 @@ void C_List::readCustomers()
 {
 	dataFile.open(filePath,std::ios::in); 
 	if (!dataFile)
-	{
-		std::cout << "fail" << std::endl;
-	}
+		throw filePath.c_str();
 	
 	std::string username;
 	std::string password;
@@ -74,22 +77,24 @@ void C_List::readCustomers()
 void C_List::writeCustomer()
 {
 	dataFile.open(filePath,std::ios::out);
+	if (!dataFile)
+		throw filePath.c_str();
 	for (int i = 0; i < getCustomerCount(); i++)
 	{
-		dataFile << ALL_CUSTOMERS[i]->username << std::endl;
-		dataFile << ALL_CUSTOMERS[i]->password << std::endl;
-		dataFile << ALL_CUSTOMERS[i]->name << std::endl;
-		dataFile << ALL_CUSTOMERS[i]->age << std::endl;
-		dataFile << ALL_CUSTOMERS[i]->balance << std::endl;
-		Location address = ALL_CUSTOMERS[i]->getLocation();
+		dataFile << CUSTOMERS[i]->username << std::endl;
+		dataFile << CUSTOMERS[i]->password << std::endl;
+		dataFile << CUSTOMERS[i]->name << std::endl;
+		dataFile << CUSTOMERS[i]->age << std::endl;
+		dataFile << CUSTOMERS[i]->balance << std::endl;
+		Location address = CUSTOMERS[i]->getLocation();
 		dataFile << address.getAddress() << std::endl;
-		if (ALL_CUSTOMERS[i]->healthStatus == Customer::Healthy) {
+		if (CUSTOMERS[i]->healthStatus == Customer::Healthy) {
 			dataFile << "H" << std::endl;
 		}
-		else if (ALL_CUSTOMERS[i]->healthStatus == Customer::Infected) {
+		else if (CUSTOMERS[i]->healthStatus == Customer::Infected) {
 			dataFile << "I" << std::endl;
 		}
-		else if (ALL_CUSTOMERS[i]->healthStatus == Customer::ShowSymptoms) {
+		else if (CUSTOMERS[i]->healthStatus == Customer::ShowSymptoms) {
 			dataFile << "S" << std::endl;
 		}
 		if (i != getCustomerCount() - 1)	dataFile << std::endl;

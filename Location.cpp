@@ -10,6 +10,11 @@ Location::Location(std::string address)
 	this->address=address;
 }
 
+Location::Location(std::pair<int, int> coordinates)
+{
+	this->geoLocation = coordinates;
+}
+
 /// Getters
 std::string Location::getAddress() const
 {

@@ -8,7 +8,7 @@ int SH_List::getCount()
 	return SHOPS.size();
 }
 /// Setters
-void SH_List::setList()
+void SH_List::readShops()
 {
 	SHOPS.reserve(SO_List::getCount()); 
 	for (auto &shopOwner: SO_List::SHOPOWNERS)

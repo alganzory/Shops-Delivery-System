@@ -60,15 +60,11 @@ void VolunteerFlow::ongoingOrder()
 		}
 		if (option == 'H' || option == 'h') {
 			system("CLS");
-			currentOrder->setStatus(Order::Complete);
-			double reward = currentOrder->getReward();
+			currentVolunteer->handoverOrder(currentOrder);
+			const auto reward = currentOrder->getReward();
 			if (reward > 0) {
 				currentVolunteer->getReward(reward); 
 				std::cout << "You have been tipped: " << reward << "\n";
-			}
-			else
-			{
-				system("CLS");
 			}
 			currentOrder = nullptr;
 			std::cout << "Thanks for serving the community...\n";
@@ -170,7 +166,7 @@ void VolunteerFlow::myOrders(bool pendingOnly)
 	}
 }
 
-void VolunteerFlow::registerShop()
+void VolunteerFlow::registerShops()
 {
 	while (true)
 	{
@@ -260,7 +256,7 @@ void VolunteerFlow::mainMenu()
 			break;
 		case 3: myOrders(false);
 			break;
-		case 4: registerShop();
+		case 4: registerShops();
 			system("CLS");
 			break;
 		case 5: UserFlow::myProfile();
