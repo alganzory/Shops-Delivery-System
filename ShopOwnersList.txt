@@ -9,7 +9,7 @@ Jalan University 1, Taman University
 10 22
 items
 Banana , 7 20
-Apple , 4 12
+Apple , 4 55
 Orange , 5 35
 Potatoes , 4 80
 Chili , 5 100

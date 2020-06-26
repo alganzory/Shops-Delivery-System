@@ -36,7 +36,7 @@ public:
 	 */
 	static void removeCustomer(std::shared_ptr<Customer> customer);
 	static void readCustomers();
-	static void writeCustomer();
+	static void writeCustomers();
 
 
 	//	friend std::istream& operator >>(std::istream& input, const Customer::HealthStatus& health);

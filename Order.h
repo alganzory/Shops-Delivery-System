@@ -41,7 +41,7 @@ private:
 	std::vector<int> itemsIndices;
 	std::shared_ptr<Customer> customer;
 	std::shared_ptr<Shop> shop;
-	double totalPrice;
+	double totalPrice{};
 	bool paymentStatus;
 	/**
 	 * \brief : the volunteer assigned the delivery

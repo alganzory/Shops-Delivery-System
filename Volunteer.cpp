@@ -26,10 +26,11 @@ std::string Volunteer::getTransport() const {
     return transportation;
 }
 bool Volunteer::isAvailable(Time time) {
-    bool available = true;
+	const bool available = true;
     if (time > availableTimes.first && time < availableTimes.second) {
         return available;
     }
+    else return !available;
 }
 
 

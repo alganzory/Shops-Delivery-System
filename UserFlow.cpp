@@ -31,8 +31,7 @@ void UserFlow::welcomeScreen()
 			break;
 		case 2: signUp();
 			break;
-		case 3: throw "EXIT";
-			break;
+		case 3: throw "*** See You Soon ***";
 		default: std::cout << "Please choose the correct number." << std::endl;
 		}
 	}
@@ -139,7 +138,7 @@ void UserFlow::myProfile()
 			if (updatedName == "C" || updatedName == "c") continue;
 			currentUser->setName(updatedName);
 			Helper::line(110);
-			std::cout << "Your name has been updated\n";
+			Helper::dPrint("Your name has been updated\n");
 			continue;
 		}
 		if (choice == 'd' || choice == 'D')
@@ -150,7 +149,7 @@ void UserFlow::myProfile()
 			if (updatedPass == "C" || updatedPass == "c") continue;
 			currentUser->setPassword(updatedPass);
 			Helper::line(110);
-			std::cout << "Your password has been updated\n";
+			Helper::dPrint("Your password has been updated\n");
 			continue;
 		}
 		if (choice == 'A' || choice == 'a')
@@ -168,7 +167,7 @@ void UserFlow::myProfile()
 			}
 			currentUser->setAge(updatedAge);
 			Helper::line(110);
-			std::cout << "Your age has been updated\n";
+			Helper::dPrint("Your age has been updated\n");
 			continue;
 		}
 		if (choice == 'L' || choice == 'l')
@@ -179,7 +178,7 @@ void UserFlow::myProfile()
 			if (updatedAddress == "C" || updatedAddress == "c") continue;
 			currentUser->setLocation(Location(updatedAddress));
 			Helper::line(110);
-			std::cout << "Your Location has been updated\n";
+			Helper::dPrint( "Your Location has been updated\n");
 			continue;
 		}
 		if (choice == 'U' || choice == 'u')
@@ -189,12 +188,12 @@ void UserFlow::myProfile()
 			if (choice == 'C' || choice == 'c') continue;
 			currentUser->setBalance(currentUser->balance + choice);
 			Helper::line(110);
-			std::cout << "Your balance has been updated\n";
+			Helper::dPrint("Your balance has been updated\n");
 			continue;
 		}
 		if (choice == 'H' || choice == 'h')
 		{
-			std::cout << "Enter updated health status (Healthy (H), Showing Symptoms (S) or Infected (I),\n"
+			std::cout << "Enter updated health status (Healthy (H), Showing Symptoms (S) or Infected (I)),\n"
 				<< "or Press C to cancel: ";
 			int choice = Helper::readChoice(0, 0, "HhSsIiCc");
 			if (choice == 'c' || choice == 'C') continue;
@@ -211,7 +210,7 @@ void UserFlow::myProfile()
 				CustomerFlow::currentCustomer->setHealthStatus(Customer::HealthStatus::Infected);
 			}
 			Helper::line(110);
-			std::cout << "Your Health Status has been updated\n";
+			Helper::dPrint("Your Health Status has been updated\n");
 			continue;
 		}
 		if (choice == 'T' || choice == 't')
@@ -222,7 +221,7 @@ void UserFlow::myProfile()
 			if (updatedTransport == "C" || updatedTransport == "c") continue;
 			VolunteerFlow::currentVolunteer->setTransport(updatedTransport);
 			Helper::line(110);
-			std::cout << "Your transportation has been updated\n";
+			Helper::dPrint("Your transportation has been updated\n");
 			continue;
 		}
 		if (choice == 'V' || choice == 'v')
@@ -239,7 +238,7 @@ void UserFlow::myProfile()
 			else
 				ShopOwnerFlow::currentSO->getShopPtr()->setAvailableTimes({startHour, endHour});
 			Helper::line(110);
-			std::cout << "Your available hours have been updated\n";
+			Helper::dPrint("Your available hours have been updated\n");
 			continue;
 		}
 		if (choice == 'S' || choice == 's')
@@ -250,7 +249,7 @@ void UserFlow::myProfile()
 			if (shopName == "C" || shopName == "c") continue;
 			ShopOwnerFlow::currentSO->setShopName(shopName);
 			Helper::line(110);
-			std::cout << "Your shop name has been updated\n";
+			Helper::dPrint("Your shop name has been updated\n");
 			continue;
 		}
 		if (choice == 'P' || choice == 'p')
@@ -261,7 +260,7 @@ void UserFlow::myProfile()
 			if (shopAdress == "C" || shopAdress == "c") continue;
 			ShopOwnerFlow::currentSO->setShopAddress(shopAdress);
 			Helper::line(110);
-			std::cout << "Your shop address has been updated\n";
+			Helper::dPrint("Your shop address has been updated\n");
 		}
 	}
 }
@@ -269,14 +268,6 @@ void UserFlow::myProfile()
 
 void UserFlow::signUp()
 {
-	//ask for username,p/w,name,age,balance,location,transport,availabletime
-	//depends on volunteer,shopowner,user
-	//use currentUser shared ptr
-
-	// read the input, username and password
-	// check the existence of this user with this username
-	// we will prompt them to login instead
-
 	std::string userName, password, name, location, healthStatus, shop;
 	int age{};
 	double balance{};
@@ -286,12 +277,25 @@ void UserFlow::signUp()
 		system("CLS");
 
 		std::cout << "\nSign up\n";
-		Helper::dLine();
+		Helper::dLine(55);
+		std::cout << "Please fill in the details or press C to cancel\n";
+		std::cout << "Note: username and password can't contain spaces\n";
+		Helper::line(55);
 		std::cout << "Enter your username: ";
 		std::cin >> userName;
+		std::cin.ignore();
+		if (userName == "C" || userName == "c") {
+			system("CLS");
+			break;
+		}
+		
 		std::cout << "\nEnter a password: ";
 		std::cin >> password;
 		std::cin.ignore();
+		if (password == "C" || password == "c") {
+			system("CLS");
+			break;
+		}
 
 		// perform the check of the user
 

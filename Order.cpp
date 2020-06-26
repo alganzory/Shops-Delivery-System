@@ -445,10 +445,14 @@ std::istream& operator>>(std::istream& input, Order::Status& status)
 
 bool operator<(const std::shared_ptr<Order>& lhs, const std::shared_ptr<Order>& rhs)
 {
-	if (lhs->deliveryTime == rhs->deliveryTime)
-		return lhs->customer->getHealthStatus() < rhs->customer->getHealthStatus();
-	else
+
+	if (lhs->getStatus() == rhs->getStatus())
 	{
+		if (lhs->deliveryTime == rhs->deliveryTime)
+			return rhs->customer->getHealthStatus() < lhs->customer->getHealthStatus();
 		return lhs->deliveryTime < rhs->deliveryTime;
 	}
+	else 
+		return lhs->getStatus() < rhs->getStatus();
+	
 }

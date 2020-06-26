@@ -79,7 +79,7 @@ void V_List::readVolunteers()
 
 void V_List::writeVolunteers()
 {
-	dataFile.open("VolunteerList.txt", std::ios::out);
+	dataFile.open(filePath, std::ios::out);
 	if (!dataFile)
 		throw filePath.c_str();
 	

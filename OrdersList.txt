@@ -1,0 +1,124 @@
+ShopID1
+CustomerID1
+VolunteerID1
+16
+30
+Volunteer Found
+0
+1
+0
+1
+0
+1 1
+
+ShopID1
+CustomerID1
+VolunteerID1
+15
+50
+Delivering
+0
+1
+0
+1
+5
+1 5
+2 12
+
+ShopID1
+CustomerID1
+VolunteerID1
+15
+0
+Complete
+1
+1
+0
+0
+5
+2 5
+0 4
+
+ShopID1
+CustomerID1
+null
+13
+0
+Cancelled
+0
+0
+1
+0
+10
+0 2
+2 2
+
+ShopID1
+CustomerID2
+null
+16
+15
+Pending
+0
+1
+0
+0
+10
+1 1
+
+ShopID1
+CustomerID2
+null
+14
+20
+Cancelled
+0
+1
+0
+0
+5
+2 5
+0 4
+1 21
+
+ShopID1
+CustomerID2
+VolunteerID2
+12
+20
+Complete
+1
+1
+0
+0
+1
+2 4
+
+ShopID1
+CustomerID2
+VolunteerID4
+18
+0
+Complete
+1
+1
+0
+0
+0
+0 7
+2 3
+
+ShopID1
+CustomerID3
+null
+16
+15
+Pending
+0
+1
+0
+0
+10
+1 2
+2 1
+

@@ -40,5 +40,11 @@ public:
 	 * \param str :the string to display
 	 */
 	static void stringDisplay (std::string str);
+	/**
+	 * \brief used to display a string with a delay after
+	 * \param str the string to be printed
+	 * \param ms the time of delay after printing
+	 */
+	static void dPrint(const std::string& str, int ms = 1000);
 };
 

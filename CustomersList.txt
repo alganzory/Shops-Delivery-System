@@ -1,0 +1,31 @@
+CustomerID1
+password1
+Customer One
+20
+1004
+Jalan Pertama
+S
+
+CustomerID2
+password2
+Customer Two
+35
+21
+Taman Kedua
+H
+
+CustomerID3
+password3
+Customer Three
+43
+6914
+Lorong Ketiga
+I
+
+CustomerID4
+password4
+Customer Four
+3
+80
+Johor Jaya
+I

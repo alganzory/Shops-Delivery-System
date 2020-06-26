@@ -74,7 +74,7 @@ void C_List::readCustomers()
 	dataFile.close();
 }
 
-void C_List::writeCustomer()
+void C_List::writeCustomers()
 {
 	dataFile.open(filePath,std::ios::out);
 	if (!dataFile)
@@ -102,16 +102,3 @@ void C_List::writeCustomer()
 	dataFile.close();
 }
 
-/*std::istream& operator >>(std::istream& input, const Customer::HealthStatus& health) {
-	//const char* i = "0";
-	switch (health)
-	{
-	case Customer::Healthy: input >> health;
-		break;
-	case Customer::ShowSymptoms: input >> health;
-		break;
-	case Customer::Infected:  input >> health;
-		break;
-	}
-	return input;
-}*/

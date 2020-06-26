@@ -11,14 +11,14 @@ void readFromFiles()
 	bool allRead = false;
 	while (!allRead){
 		try {
-			SO_List::setFilePath("shlist.txt");
+			SO_List::setFilePath("ShopOwnersList.txt");
 			SO_List::readShopOwners();
 			SH_List::readShops();
-			C_List::setFilePath("CustomerList.txt");
+			C_List::setFilePath("CustomersList.txt");
 			C_List::readCustomers();
-			V_List::setFilePath("VolunteerList.txt");
+			V_List::setFilePath("VolunteersList.txt");
 			V_List::readVolunteers();
-			O_List::setFilePath("olist.txt");
+			O_List::setFilePath("OrdersList.txt");
 			O_List::readOrders();
 			allRead = true;
 			
@@ -37,7 +37,7 @@ void writeToFiles()
 	
 	while (!allwritten) {
 		try {
-			C_List::writeCustomer();
+			C_List::writeCustomers();
 			V_List::writeVolunteers();
 			SO_List::writeShopOwners();
 			O_List::writeOrders();
@@ -77,16 +77,15 @@ int main()
 	
 	SetConsoleCtrlHandler(CtrlHandler, TRUE);
 
-	std::cout << std::left;
-	Time::calcLocalTime();
-	
 	try
 	{
+		std::cout << std::left;
+		Time::calcLocalTime();
 		UserFlow::welcomeScreen();
 	}
-	catch (const char* e)
+	catch (const char* exit)
 	{
-		std::cout << "***Thanks for using our program***\n";
+		Helper::stringDisplay(exit);
 	}
 
 	writeToFiles();

@@ -33,18 +33,14 @@ void O_List::readOrders()
 	int itemIdx{}, itemQuantity{};
 	std::string iteminfo;
 	int depth{};
-	///std::cerr << ++depth << std::endl;
-	///
 	while (std::getline(dataFile, shopOwner))
 	{
 		
 		dataFile >> customer;
 		dataFile >> volunteer;
-		std::cerr << ++depth << std::endl;
 		int customerIdx{}, shopOwnerIdx{}, volunteerIdx{};
 
-		for (int i = 0; i < C_List::CUSTOMERS.size(); i++) {
-			//std::cerr << ++depth << std::endl;
+		for (auto i = 0; i < C_List::CUSTOMERS.size(); i++) {
 			if (C_List::CUSTOMERS[i]->getUsername() == customer) {
 				customerIdx = i;
 				break;
@@ -53,7 +49,6 @@ void O_List::readOrders()
 
 
 		for (int i = 0; i < SO_List::SHOPOWNERS.size(); i++) {
-			//std::cerr << ++depth << std::endl;
 			if (SO_List::SHOPOWNERS[i]->getUsername() == shopOwner) {
 				shopOwnerIdx = i;
 				break;
@@ -62,7 +57,6 @@ void O_List::readOrders()
 
 		if ( volunteer != "null")
 			for (int i = 0; i < V_List::VOLUNTEERS.size(); i++) {
-			//	std::cerr << ++depth << std::endl;
 				if (V_List::VOLUNTEERS[i]->getUsername() == volunteer) {
 					volunteerIdx = i;
 					break;

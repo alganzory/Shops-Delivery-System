@@ -46,10 +46,11 @@ int Shop::getItemsCount() const
 
 bool Shop::isOperating(Time time)
 {
-	bool available = true;
+	const bool available = true;
 	if (time > operationTimes.first && time < operationTimes.second) {
 		return available;
 	}
+	else return !available;
 }
 
 Location Shop::getLocation() const

@@ -112,6 +112,7 @@ void CustomerFlow::checkout()
 			}
 			catch (const char* errorMsg) {
 				std::cout << errorMsg << std::endl;
+				Helper::line(70);
 				continue;
 			}
 			
@@ -135,15 +136,20 @@ void CustomerFlow::checkout()
 		double reward=0;
 		if (ans=='Y'||ans=='y')
 		{
-			std::cout << "Your balance: " << currentCustomer->getBalance() - currentCustomer->cart->getTotalPrice() << std::endl;
-			std::cout<<"Enter the amount of the tip: RM";
-			reward=Helper::readChoice(0,currentCustomer->getBalance()-currentCustomer->cart->getTotalPrice());
+			const double remainingBalance = currentCustomer->getBalance() - currentCustomer->cart->getTotalPrice();
+			do 
+			{
+				std::cout << "Your balance: " << remainingBalance << std::endl;
+				std::cout << "Enter the amount of the tip: RM";
+				std::cin >> reward;
+			} while ((reward < 0 || reward > remainingBalance) && std::cout << "Insufficient balance\n");
+			std::cin.ignore();
+			
 			currentCustomer->cart->setReward(reward);
 			currentCustomer->balance -= reward;
 		}
 		Helper::line(80);
 		if (currentCustomer->getHealthStatus() >= Customer::ShowSymptoms) {
-			system("CLS");
 			std::cout << "For your safety and the volunteer's, you will be offered contactless delivery\n"
 				<< "We wish you a speedy recovery!\n";
 			currentCustomer->cart->setContactlessDlvr(true);
@@ -169,8 +175,9 @@ void CustomerFlow::checkout()
 		std::weak_ptr <ShopOwner> shopOwner = currentShop->getShopOwner();
 		shopOwner.lock()->addBalance(currentCustomer->cart->getTotalPrice());
 		currentCustomer->placeOrder();
-		Helper::delay(10000);
+		
 		std::cout << "Your order has been placed successfully,\nyou will be directed to main menu...\n";
+		Helper::delay(4000);
 		Helper::line(40);
 		mainMenu();
 		break;
@@ -181,10 +188,10 @@ void CustomerFlow::checkout()
 
 void CustomerFlow::myCart()
 {
-	system("CLS");
+	
 	while (true) {
 		
-
+		system("CLS");
 		if (currentCustomer->cart->getOrderSize()==0)
 		{
 			
@@ -520,13 +527,14 @@ void CustomerFlow::displayShops()
 void CustomerFlow::viewShop()
 {
 
-	system("CLS");
+	
 	while (true)
 	{
+		system("CLS");
 		std::cout << "\nList of items in ";
 		// display the shop
 		std::cout << currentShop->getName() << " :\n";
-		std::cout <<"Shop Address"<< currentShop->getLocation().getAddress() << std::endl;
+		std::cout <<"Shop Address: "<< currentShop->getLocation().getAddress() << std::endl;
 		Helper::dLine(65);
 		// list shop items
 		int numItems = currentShop->getItemsCount();
@@ -571,7 +579,6 @@ void CustomerFlow::viewShop()
 			catch (int maxQuantity)
 			{
 				currentCustomer->cart->setShop(nullptr);
-				system("CLS");
 				std::cout << "You can only add up to " << maxQuantity << " of this item\nplease try again or press B to cancel...\n";
 			}			
 		}

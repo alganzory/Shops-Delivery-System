@@ -18,13 +18,25 @@ void VolunteerFlow::ongoingOrder()
 		system("CLS");
 		std::cout << "\nOngoing Order:\n";
 		Helper::dLine(110);
-		if (currentOrder == nullptr)
-		{
-			system("CLS");
-			std::cout << "No ongoing orders, you will be directed back to the main menu\n";
-			Helper::line(45);
-			Helper::delay(1000);
-			break;
+
+		// this is a boolean that checks if any order for this volunteer has status delivering
+		// uses function std::any_of which checks for a condition on the range given (first line)
+		// the condition is defined on 2nd line using the lambda function that returns true
+		// if an order has status delivering
+		auto anyOngoing = std::find_if(currentVolunteer->orders.begin(), currentVolunteer->orders.end(),
+			[](const std::shared_ptr <Order>& order) {return order->getStatus() == Order::Delivering; });
+		
+		if (currentOrder == nullptr ){
+			if (anyOngoing != currentVolunteer->orders.end())
+			{
+				currentOrder = *anyOngoing;
+				
+			}
+			else {
+				Helper::dPrint("No ongoing orders, you will be directed back to the main menu\n", 2000);
+				Helper::line(45);
+				break;
+			}
 		}
 		std::cout << std::setw(20) << "Shop"
 			<< std::setw(20) << "Shop Address"
@@ -77,11 +89,6 @@ void VolunteerFlow::ongoingOrder()
 
 void VolunteerFlow::myOrders(bool pendingOnly)
 {
-	// This function displays the list of orders
-	// if the pendingOnly flag is activated, only the orders that have the 
-	// VolunteerFound status should be displayed
-	// if not then display the order with status complete
-	// then the user should be prompted to choose to view an Order
 	while (true)
 	{
 		system("CLS");
@@ -94,14 +101,9 @@ void VolunteerFlow::myOrders(bool pendingOnly)
 		for (int i=0; i<currentVolunteer->orders.size();i++)
 		{
 			if (pendingOnly && currentVolunteer->orders[i]->getStatus() == Order::VolunteerFound)
-			{
 				orders.push_back(currentVolunteer->orders[i]);
-				
-			}
 			else if (!pendingOnly&& currentVolunteer->orders[i]->getStatus() == Order::Complete)
-			{
 				orders.push_back(currentVolunteer->orders[i]);
-			}
 		}
 	
 		if (orders.empty())
@@ -228,16 +230,20 @@ void VolunteerFlow::mainMenu()
 		std::cout << "Choose an option from the following:\n";
 
 		int anyPending = 0;
+		bool anyOngoing = false;
 		for (const auto& order : currentVolunteer->orders)
 		{
 			if (order->getStatus() == Order::VolunteerFound) {
 				anyPending++;
 			}
+			else if (order->getStatus() == Order::Delivering || currentOrder != nullptr)
+				anyOngoing = true;
 		}
 
 		
+		
 		std::vector <std::string > menuOptions = {
-			"Ongoing delivery (" + std::to_string (currentOrder != nullptr) + ")",
+			"Ongoing delivery (" + std::to_string (anyOngoing) + ")",
 			"Pending orders ("+std::to_string(anyPending)+")",
 			"Complete orders", "Register for a shop", "My profile", "Log out"
 		};
