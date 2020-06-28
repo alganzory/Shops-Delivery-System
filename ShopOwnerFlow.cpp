@@ -15,8 +15,7 @@ void ShopOwnerFlow::editItem(const std::shared_ptr<Item> item)
 {
 	while (true)
 	{
-		system("CLS");
-		std::cout << '\n'; //clrscr
+		std::cout << "\n\n";
 		std::cout << "Edit item" << std::endl;
 		Helper::line(60);
 		std::cout << std::setw(30) << "Name" << std::setw(20)
@@ -57,7 +56,7 @@ void ShopOwnerFlow::editItem(const std::shared_ptr<Item> item)
 void ShopOwnerFlow::addNewItem()
 {
 	while (true) {
-		system("CLS");
+		std::cout << "\n\n";
 		std::cout << "\nAdd Item\n";
 		Helper::dLine();
 
@@ -110,7 +109,7 @@ void ShopOwnerFlow::myShop()
 {
 	while (true)
 	{
-		system("CLS");
+		std::cout << "\n\n";
 		std::cout<<'\n' << currentSO->getShopName() << '\n'; //update
 		Helper::dLine();
 		int numItems = currentSO->getShopSize();
@@ -152,9 +151,11 @@ void ShopOwnerFlow::myShop()
 
 
 
-		if (choice == 'n' or choice == 'N') ShopOwnerFlow::addNewItem();
+		if (choice == 'n' or choice == 'N') {
+			ShopOwnerFlow::addNewItem();
+			continue;
+		}
 		if (choice == 'b' or choice == 'B') {
-			system("CLS");
 			break;
 		}
 
@@ -164,7 +165,6 @@ void ShopOwnerFlow::myShop()
 		catch (const std::out_of_range& error)
 		{
 			std::cout << "Please choose an item from the ones shown\n";
-			Helper::delay(1000);
 			continue;
 		}
 	}
@@ -174,7 +174,7 @@ void ShopOwnerFlow::mainMenu()
 {
 	
 	while (true) {
-		system("CLS");
+		std::cout << "\n\n";
 		std::string welcoming = "\nWelcome " + currentSO->getName() + '\n';
 		Helper::stringDisplay(welcoming);
 		Helper::line(currentSO->getName().length() + 8);
@@ -191,7 +191,9 @@ void ShopOwnerFlow::mainMenu()
 		}
 
 		std::vector <std::string > menuOptions = {
-			"My Shop", "Ongoing orders (" + std::to_string(anyOngoing)+")", "All Orders ("+ std::to_string(currentSO->orders.size())+")", "My profile", "Log out"
+			"My Shop", "Ongoing orders (" + std::to_string(anyOngoing)+")", 
+			"All Orders ("+ std::to_string(currentSO->orders.size())+")", 
+			"My profile", "Log out"
 		};
 
 		Helper::displayMenu(menuOptions);
@@ -209,7 +211,7 @@ void ShopOwnerFlow::mainMenu()
 		case 3: allOrders();
 			break;
 		case 4: UserFlow::myProfile();
-			system("CLS");
+
 			break;
 		default:
 			currentSO= nullptr;
@@ -224,16 +226,15 @@ void ShopOwnerFlow::allOrders(bool ongoingOnly)
 	
 	while (true)
 	{
-		system("CLS");
+		std::cout << "\n\n";
 
 		// if empty go back
 		
 		if (currentSO->orders.empty())
 		{
-			system("CLS");
+			Helper::line(45);
 			std::cout << "No Order Yet." << std::endl;
 			Helper::line(45);
-			Helper::delay(2500);
 			break;
 		}
 		// sorting the list of orders
@@ -265,7 +266,6 @@ void ShopOwnerFlow::allOrders(bool ongoingOnly)
 		std::for_each(currentSO->orders.begin(), currentSO->orders.end(), cancelIfOverDue);
 		if (anyOverdue)
 		{
-			Helper::delay(3000);
 			continue;
 		}// notify and reload the page
 		
@@ -298,7 +298,7 @@ void ShopOwnerFlow::allOrders(bool ongoingOnly)
 		if (ongoingOnly && ongoingOrders.empty())
 		{
 			std::cout << "No ongoing orders at the moment." << std::endl;
-			Helper::delay(1000);
+			Helper::line(123);
 			break;
 		}
 
@@ -319,7 +319,6 @@ void ShopOwnerFlow::allOrders(bool ongoingOnly)
 
 		if (choice == 'B' || choice == 'b')
 		{
-			system("CLS");
 			break;
 		}
 		
@@ -340,7 +339,7 @@ void ShopOwnerFlow::allOrders(bool ongoingOnly)
 void ShopOwnerFlow::assignVolunteer(const std::shared_ptr<Order>& order)
 {
 	while (true) {
-		system("CLS");
+		std::cout << "\n\n";
 		std::cout << "Assign a Volunteer for this Order\n";
 		Helper::dLine(80);
 		std::cout << "Order time: " << order->getDeliveryTime()
@@ -353,7 +352,8 @@ void ShopOwnerFlow::assignVolunteer(const std::shared_ptr<Order>& order)
 		{
 			std::cout << "No available volunteers at this time, you will be directed...\n";
 
-			Helper::delay(1000);			break;
+			Helper::line(80);
+			break;
 		}
 
 		std::cout <<std::setw(4)<<"No."<< std::setw(18) << "Name"
@@ -378,14 +378,15 @@ void ShopOwnerFlow::assignVolunteer(const std::shared_ptr<Order>& order)
 		avlblVol[choice - 1]->addOrder(order);
 		std::cout << "Volunteer assigned and notified, you will be sent back...\n";
 
-		Helper::delay(1000);		break;
+		Helper::line(120);		
+		break;
 	}
 }
 
 void ShopOwnerFlow::viewOrder(std::shared_ptr<Order>& order)
 {
 	while (true) {
-		system("CLS");
+		std::cout << "\n\n";
 		std::cout << "\nOrder Details: \n";
 		Helper::dLine(120);
 		std::cout << std::setw(20) << "Customer Name"
@@ -446,7 +447,7 @@ void ShopOwnerFlow::orderPreparation(std::shared_ptr<Order>order)
 {
 	while (true)
 	{
-		system("CLS");
+		std::cout << "\n\n";
 		Helper::dLine(110);
 		std::cout << "Delivery Time: " << order->getDeliveryTime() << std::endl;
 		Helper::line(110);

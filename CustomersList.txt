@@ -1,8 +1,8 @@
 CustomerID1
 password1
-Customer One
+Customer oNE
 20
-1004
+867
 Jalan Pertama
 S
 
@@ -10,7 +10,7 @@ CustomerID2
 password2
 Customer Two
 35
-21
+56
 Taman Kedua
 H
 
@@ -18,7 +18,7 @@ CustomerID3
 password3
 Customer Three
 43
-6914
+6983
 Lorong Ketiga
 I
 

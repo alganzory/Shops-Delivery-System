@@ -21,7 +21,7 @@ void readFromFiles()
 			O_List::setFilePath("OrdersList.txt");
 			O_List::readOrders();
 			allRead = true;
-			
+		
 		}
 		catch (const char* filePath)
 		{
@@ -53,6 +53,8 @@ void writeToFiles()
 	
 }
 
+// To catch closing of console event on windows
+// to write files
 BOOL WINAPI CtrlHandler(DWORD fdwCtrlType)
 {
 	switch (fdwCtrlType)
@@ -90,4 +92,5 @@ int main()
 
 	writeToFiles();
 
+	return 0;
 }

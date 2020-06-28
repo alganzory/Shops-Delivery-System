@@ -16,7 +16,7 @@ void CustomerFlow::makeAnOrder()
 	findAvailableShops();
 	while (true)
 	{
-		system("CLS");
+		std::cout << "\n\n";
 		std::cout << "\nList of available shops for you at this time\n";
 		Helper::dLine(70);
 		CustomerFlow::displayShops();
@@ -25,9 +25,7 @@ void CustomerFlow::makeAnOrder()
 		int shopChoices = currentCustomer->availableShops.size();
 		if(shopChoices==0)
 		{
-			system("CLS");
 			std::cout << "No available shop right now.";
-			Helper::delay(1000);
 			mainMenu();
 			break;
 		}
@@ -35,7 +33,7 @@ void CustomerFlow::makeAnOrder()
 			<< "or Press B to go back: ";
 		int chosenIdx = Helper::readChoice(1, shopChoices, "Bb");
 		if (chosenIdx == 'B' || chosenIdx == 'b') {
-			system("CLS");
+
 			break;
 		}
 		auto chosenShop = currentCustomer->availableShops[chosenIdx - 1];
@@ -61,7 +59,7 @@ void CustomerFlow::checkout()
 {
 	while (true)
 	{
-		system("CLS");
+		std::cout << "\n\n";
 		// Display the order and the total price
 		std::cout << "\nReview Order\n";
 		Helper::dLine(70);
@@ -90,7 +88,6 @@ void CustomerFlow::checkout()
 
 			if (!isTime)
 			{
-				system("CLS");
 				return;
 			}
 
@@ -175,9 +172,8 @@ void CustomerFlow::checkout()
 		std::weak_ptr <ShopOwner> shopOwner = currentShop->getShopOwner();
 		shopOwner.lock()->addBalance(currentCustomer->cart->getTotalPrice());
 		currentCustomer->placeOrder();
-		
+		Helper::line(40);
 		std::cout << "Your order has been placed successfully,\nyou will be directed to main menu...\n";
-		Helper::delay(4000);
 		Helper::line(40);
 		mainMenu();
 		break;
@@ -191,15 +187,13 @@ void CustomerFlow::myCart()
 	
 	while (true) {
 		
-		system("CLS");
+		std::cout << "\n\n";
 		if (currentCustomer->cart->getOrderSize()==0)
 		{
 			
 			std::cout << "Your cart has no items yet." << '\n';
 			std::cout << "You will be directed back...\n";
 			Helper::dLine(70);
-			Helper::delay(1000);
-			system("CLS");
 			
 			break;
 		}
@@ -216,7 +210,6 @@ void CustomerFlow::myCart()
 		choice = Helper::readChoice(1, currentCustomer->cart->getOrderSize(), "BbCc");
 		if (choice == 'B' || choice == 'b')
 		{
-			system("CLS");
 			break;
 		}
 		else if (choice == 'C' || choice == 'c')
@@ -237,23 +230,15 @@ void CustomerFlow::myCart()
 			if (choice == 'r' || choice == 'R')
 			{
 				currentCustomer->removeFromCart(item);
-				system("CLS");
 			}
 			else if (choice == 'b' || choice == 'B')
 			{
-				system("CLS");
 				continue;
 				
 			}
 			else
 			{
-				/*int quantity = item.second - choice;
-				currentCustomer->cart->addItem(item.first, quantity);
-				currentCustomer->cart->removeItem(item);*/
-				system("CLS");
 				currentCustomer->cart->reduceItem(item, choice);
-				
-
 			}
 
 		}	
@@ -266,7 +251,7 @@ void CustomerFlow::myOrders(bool ongoingOnly)
 {
 	while (true)
 	{
-		system("CLS");
+		std::cout << "\n\n";
 		std::cout << (ongoingOnly ? "\nOngoing Orders" : "\nAll Orders") << '\n';
 		Helper::dLine(110);
 		int ongoingCount = 0;
@@ -289,15 +274,13 @@ void CustomerFlow::myOrders(bool ongoingOnly)
 		std::for_each(currentCustomer->orders.begin(),currentCustomer->orders.end(), cancelIfOverDue);
 		if (anyOverdue)
 		{
-			Helper::delay(3000);
+			Helper::line(110);
 			continue;
 		}
 		
 		
 		if (currentCustomer->orders.empty())
 		{
-			system("CLS");
-			Helper::delay(1000);
 			std::cout << "No orders yet, you will be directed to main menu...\n";
 			Helper::line();
 			mainMenu();
@@ -315,8 +298,6 @@ void CustomerFlow::myOrders(bool ongoingOnly)
 			}
 			
 			if (!ongoingCount) {
-				system("CLS");
-				Helper::delay(1000);
 				std::cout << "No ongoing orders, you will be directed to main menu...\n";
 				Helper::line();
 				mainMenu();
@@ -361,7 +342,6 @@ void CustomerFlow::myOrders(bool ongoingOnly)
 
 		if (choice == 'B' || choice == 'b')
 		{
-			system("CLS");
 			break;
 		}
 		if (!ongoingOnly && (choice == 'O' || choice == 'o')) myOrders(true);
@@ -383,7 +363,7 @@ void CustomerFlow::myOrders(bool ongoingOnly)
 void CustomerFlow::viewOrder(const std::shared_ptr<Order>& order)
 {
 	while (true) {
-		system("CLS");
+		std::cout << "\n\n";
 		// Display:
 		std::cout << "\nView Order\n";
 		Helper::dLine(110);
@@ -424,14 +404,14 @@ void CustomerFlow::viewOrder(const std::shared_ptr<Order>& order)
 			}
 			currentShop = order->getShop();
 			currentCustomer->cart->reorder(order);
-			system("CLS");
+			Helper::line(110);
 			std::cout << "Order added to cart, you will be directed to your cart...\n";
 			myCart();
 			break;
 		}
 		if (choice == 'C' || choice == 'c') {
 			order->cancelOrder();
-			system("CLS");
+			Helper::line();
 			std::cout << "Order has been canceled, you will be directed to main menu...\n";
 			Helper::line();
 			break;
@@ -444,7 +424,7 @@ void CustomerFlow::viewOrder(const std::shared_ptr<Order>& order)
 void CustomerFlow::mainMenu()
 {
 	while (true) {
-		system("CLS");
+		std::cout << "\n\n";
 		std::string welcoming = "\nWelcome " + currentCustomer->getName() +'\n';
 		Helper::stringDisplay(welcoming);
 		Helper::line(currentCustomer->getName().length() + 8);
@@ -486,7 +466,6 @@ void CustomerFlow::mainMenu()
 		case 3: myCart();
 			break;
 		case 4: UserFlow::myProfile();
-			system("CLS");
 			break;
 		default:
 			currentCustomer = nullptr;
@@ -530,7 +509,7 @@ void CustomerFlow::viewShop()
 	
 	while (true)
 	{
-		system("CLS");
+		std::cout << "\n\n";
 		std::cout << "\nList of items in ";
 		// display the shop
 		std::cout << currentShop->getName() << " :\n";
@@ -560,7 +539,7 @@ void CustomerFlow::viewShop()
 			break;
 		}
 		if (itemChoice == 'B' || itemChoice == 'b') {
-			system("CLS");
+
 			break;
 		}
 		while (true) {
@@ -571,7 +550,7 @@ void CustomerFlow::viewShop()
 			try {
 				currentCustomer->cart->setShop(currentShop);
 				currentCustomer->addToCart(itemChoice - 1, itemQuantity);
-				system("CLS");
+				Helper::line(65);
 				std::cout << itemQuantity << " " << shopItems[itemChoice - 1]->getName() << " is added into the cart.\n";
 				Helper::line(65);
 				break;

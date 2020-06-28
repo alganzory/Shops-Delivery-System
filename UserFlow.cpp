@@ -13,9 +13,9 @@ std::shared_ptr<User> UserFlow::currentUser;
 void UserFlow::welcomeScreen()
 {
 	int choice = -1;
-	system("CLS");
 	while (choice != 99)
 	{
+		std::cout << "\n\n";
 		std::string opener = "\nCOVID-19 SHOPS DELIVERY SYSTEM\n";
 		Helper::stringDisplay(opener);
 
@@ -31,7 +31,7 @@ void UserFlow::welcomeScreen()
 			break;
 		case 2: signUp();
 			break;
-		case 3: throw "*** See You Soon ***";
+		case 3: throw "*** See You Soon ***\n";
 		default: std::cout << "Please choose the correct number." << std::endl;
 		}
 	}
@@ -75,7 +75,7 @@ void UserFlow::myProfile()
 
 	while (true)
 	{
-		system("CLS");
+		std::cout << "\n\n";
 		std::cout << "\nMy Profile\n";
 		Helper::dLine(110);
 		std::cout << "Here are your info, press the letter corresponding to the info to change it...\n"
@@ -160,9 +160,9 @@ void UserFlow::myProfile()
 			std::cin.ignore();
 			if (updatedAge == 'c' || updatedAge == 'C') continue;
 			if (updatedAge < 5) {
+
 				std::cout << "The minimum age to use this program is 5 year old.\nPlease "
 					"enter the right age.\nYou will be directed back now.\n";
-				Helper::delay(3000);
 				continue;
 			}
 			currentUser->setAge(updatedAge);
@@ -274,7 +274,7 @@ void UserFlow::signUp()
 	int character;
 	while (true)
 	{
-		system("CLS");
+		std::cout << "\n\n";
 
 		std::cout << "\nSign up\n";
 		Helper::dLine(55);
@@ -285,7 +285,6 @@ void UserFlow::signUp()
 		std::cin >> userName;
 		std::cin.ignore();
 		if (userName == "C" || userName == "c") {
-			system("CLS");
 			break;
 		}
 		
@@ -293,7 +292,6 @@ void UserFlow::signUp()
 		std::cin >> password;
 		std::cin.ignore();
 		if (password == "C" || password == "c") {
-			system("CLS");
 			break;
 		}
 
@@ -358,9 +356,8 @@ void UserFlow::signUp()
 		currentUser->setInfo(name, age, balance, location);
 
 		Helper::line();
-		system("CLS");
 		std::cout << "Account registered successfully, \nyou will be directed to main Menu\n";
-		Helper::line();
+		std::cout << "\n\n";
 		break;
 	}
 }
@@ -371,9 +368,9 @@ void UserFlow::login()
 	//if not ask to sign up,if gt then cont verify the p/w
 	//if p/w correct then show menu screen
 	//incorrect ask to enter again
-	system("CLS");
 	while (true)
 	{
+		std::cout << "\n\n";
 		std::cout << "\nLogin\n";
 		Helper::dLine();
 		std::string userName, password;
@@ -402,10 +399,9 @@ void UserFlow::login()
 		{
 			currentUser->welcome();
 		}
-		else
-		{
-			system("CLS");
+		else{
 			std::cout << "Incorrect password, please try again...\n";
+			std::cout << "\n\n";
 		}
 	}
 }

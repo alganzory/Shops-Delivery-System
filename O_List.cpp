@@ -154,5 +154,3 @@ void O_List::writeOrders() {
 	}
 	dataFile.close();
 }
-// for each customer we iterate over the list of orders they have and write each order to the file 
-// in the same format they are being read in, thanks for watching, *sticker* you are very good (y)

@@ -15,7 +15,7 @@ std::shared_ptr<Order> VolunteerFlow::currentOrder = nullptr;
 void VolunteerFlow::ongoingOrder()
 {
 	while (true) {
-		system("CLS");
+		std::cout << "\n\n";
 		std::cout << "\nOngoing Order:\n";
 		Helper::dLine(110);
 
@@ -67,11 +67,11 @@ void VolunteerFlow::ongoingOrder()
 			<< "or go back (B)?: ";
 		int option = Helper::readChoice(0, 0, "HhBb");
 		if (option == 'B' || option == 'b') {
-			system("CLS");
+
 			break;
 		}
 		if (option == 'H' || option == 'h') {
-			system("CLS");
+
 			currentVolunteer->handoverOrder(currentOrder);
 			const auto reward = currentOrder->getReward();
 			if (reward > 0) {
@@ -81,7 +81,6 @@ void VolunteerFlow::ongoingOrder()
 			currentOrder = nullptr;
 			std::cout << "Thanks for serving the community...\n";
 			Helper::line(45);
-			Helper::delay(1000);
 			break;
 		}
 	}
@@ -91,7 +90,7 @@ void VolunteerFlow::myOrders(bool pendingOnly)
 {
 	while (true)
 	{
-		system("CLS");
+		std::cout << "\n\n";
 		std::cout << std::endl;
 		std::sort(currentVolunteer->orders.begin(), currentVolunteer->orders.end());
 		
@@ -108,18 +107,15 @@ void VolunteerFlow::myOrders(bool pendingOnly)
 	
 		if (orders.empty())
 		{
-			system("CLS");
 			if (pendingOnly)
 			{
 				std::cout << "No pending orders yet." << std::endl;
 				Helper::line(45);
-				Helper::delay(1000);
 			}
 			if (!pendingOnly)
 			{
 				std::cout << "No complete orders yet." << std::endl;
 				Helper::line(45);
-				Helper::delay(1000);
 			}
 			break;
 			
@@ -160,7 +156,6 @@ void VolunteerFlow::myOrders(bool pendingOnly)
 		
 		if(choice=='B'||choice=='b')
 		{
-			system("CLS");
 			break;
 		}
 	
@@ -172,7 +167,7 @@ void VolunteerFlow::registerShops()
 {
 	while (true)
 	{
-		system("CLS");
+		std::cout << "\n\n";
 		std::cout << "\nAvailable Shops for you:\n";
 		Helper::dLine(110);
 		int numShops = SH_List::SHOPS.size();
@@ -208,9 +203,8 @@ void VolunteerFlow::registerShops()
 		{
 			currentVolunteer->registerToShop(choice - 1);
 			SH_List::SHOPS[choice - 1]->addVolunteer(currentVolunteer);
-			system("CLS");
 			std::cout << "You have successfully register for this shop\n";
-			Helper::delay(1000);
+			std::cout << "\n\n";
 			continue;
 	
 		}
@@ -221,10 +215,11 @@ void VolunteerFlow::mainMenu()
 {
 	
 	while (true) {
-		system("CLS");
+		std::cout << "\n\n";
 		std::string welcoming = "\nWelcome " + currentVolunteer->getName() +'\n';
-		Helper::line(currentVolunteer->getName().length() + 8);
 		Helper::stringDisplay(welcoming);
+		Helper::line(currentVolunteer->getName().length() + 8);
+		
 		std::cout << "Your balance: " << currentVolunteer->getBalance() << "\n";
 		Helper::dLine();
 		std::cout << "Choose an option from the following:\n";
@@ -263,10 +258,8 @@ void VolunteerFlow::mainMenu()
 		case 3: myOrders(false);
 			break;
 		case 4: registerShops();
-			system("CLS");
 			break;
 		case 5: UserFlow::myProfile();
-			system("CLS");
 			break;
 		default:
 			currentVolunteer= nullptr;
@@ -279,7 +272,7 @@ void VolunteerFlow::mainMenu()
 void VolunteerFlow::viewOrder(const std::shared_ptr<Order>& order)
 {
 	while (true) {
-		system("CLS");
+		std::cout << "\n\n";
 		std::cout << "\nView Order\n";
 		Helper::dLine(110);
 		std::cout << ">>> Order Status: " << order->getStatus() << "\n";
@@ -303,7 +296,6 @@ void VolunteerFlow::viewOrder(const std::shared_ptr<Order>& order)
 
 		if (choice == 'b' || choice == 'B')
 		{
-			system("CLS");
 			break;
 		}
 		if (choice == 'D' || choice == 'd')

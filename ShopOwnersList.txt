@@ -2,17 +2,20 @@ ShopID1
 password1
 Shop Owner One
 29
-1251
+1318
 Taman University
 Shop 1
 Jalan University 1, Taman University
 10 22
 items
-Banana , 7 20
-Apple , 4 55
-Orange , 5 35
-Potatoes , 4 80
+Banana , 7 18
+Apple , 4 57
+Orange , 5 30
+Potatoes , 4 71
 Chili , 5 100
+Brocli, 10 100
+carrtos, 5 70
+a7a, 20 200
 
 ShopID2
 password2
@@ -38,6 +41,8 @@ Shop 3
 Jalan Ledang, Taman Johor Jaya
 12 20
 items
+biscuits, 2 38
+cake, 5 29
 
 ShopID4
 password4
@@ -47,7 +52,7 @@ Shop Owner Four
 Gelang Patah
 Shop 4
 Jalan Gelang Patah
-14 24
+16 24
 items
 Nasi lemak, 5 300
 Mangoes, 13 150
@@ -94,7 +99,7 @@ Shop Owner Seven
 Taman Molek
 Shop 7
 Taman Mount Austin
-7 18
+7 12
 items
 Chicken Popcorn, 9 66
 

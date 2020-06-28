@@ -71,7 +71,6 @@ void Customer::removeFromCart(std::pair<std::shared_ptr<Item>, int>& itemReq)
 void Customer::welcome()
 {
 	CustomerFlow::currentCustomer = shared_from_this();
-	system("CLS");
 	CustomerFlow::mainMenu();
 }
 

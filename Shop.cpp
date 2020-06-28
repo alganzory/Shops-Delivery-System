@@ -81,7 +81,7 @@ void Shop::setLocation(Location location)
 
 void Shop::setAvailableTimes(std::pair<int, int> availableTimes)
 {
-	this->operationTimes = std::pair < Time, Time>(Time(availableTimes.first, 0), Time(availableTimes.second, 0));
+	this->operationTimes = { Time(availableTimes.first, 0), Time(availableTimes.second, 0) };
 }
 
 /// Methods

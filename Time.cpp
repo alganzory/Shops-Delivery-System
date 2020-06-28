@@ -54,14 +54,6 @@ void Time::setTime(int hr, int m)
 	{
 		throw "Invalid time input, make sure it's in 24-hour format...";
 	}
-	/*if (hr == localHour && m-localHour < 30)
-	{
-		throw "The time should be at least 30 mins after now.";
-	}
-	if (hr<localHour)
-	{
-		throw "The time has passed. Please enter the time 30 mins after now.";
-	}*/
 	hour = hr;
 	minute = m;
 }

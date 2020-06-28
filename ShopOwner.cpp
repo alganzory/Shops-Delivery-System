@@ -119,7 +119,4 @@ void ShopOwner::setInfoFile(const std::string& name, int age, double balance, co
 	createShop(shopname, Location (shoplocation), availableTime1, availableTime2);
 }
 
-//Shop ShopOwner::getShop() const
-//{
-//	return shop;
-//}
+

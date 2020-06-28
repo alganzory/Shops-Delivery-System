@@ -59,12 +59,12 @@ public:
 	void addBalance(double amount);
 	void subtractBalance(double amount);
 	/**
-	 * will be overloaded to direct to the respective
+	 * will be overridden to direct to the respective
 	 * user welcoming screen
 	 */
 	virtual void welcome() = 0;
 	/**
-	 * \brief : will be overloaded to set and ask for
+	 * \brief : will be overridden to set and ask for
 	 *			info for the respective user type
 	 * \param name 
 	 * \param age 

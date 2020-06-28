@@ -93,7 +93,3 @@ void Volunteer::display()
         << availableTimes.second
         << "\n";
 }
-
-
-//operators overloading
-//friend 
