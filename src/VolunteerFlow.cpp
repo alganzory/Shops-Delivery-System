@@ -1,11 +1,11 @@
-#include "VolunteerFlow.h"
+#include "../include/VolunteerFlow.h"
 
 
 #include <iomanip>
 
 
-#include "Helper.h"
-#include "SH_List.h"
+#include "../include/Helper.h"
+#include "../include/SH_List.h"
 
 /// Members
 std::shared_ptr<Volunteer> VolunteerFlow::currentVolunteer;

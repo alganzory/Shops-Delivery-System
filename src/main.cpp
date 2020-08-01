@@ -1,9 +1,9 @@
-#include "UserFlow.h"
-#include "SH_List.h"
-#include "O_List.h"
-#include "Time.h"
+#include "../include/UserFlow.h"
+#include "../include/SH_List.h"
+#include "../include/O_List.h"
+#include "../include/Time.h"
 #include <Windows.h> 
-#include "Helper.h"
+#include "../include/Helper.h"
 
 
 void readFromFiles()
@@ -11,14 +11,14 @@ void readFromFiles()
 	bool allRead = false;
 	while (!allRead){
 		try {
-			SO_List::setFilePath("ShopOwnersList.txt");
+			SO_List::setFilePath("data/ShopOwnersList.txt");
 			SO_List::readShopOwners();
 			SH_List::readShops();
-			C_List::setFilePath("CustomersList.txt");
+			C_List::setFilePath("data/CustomersList.txt");
 			C_List::readCustomers();
-			V_List::setFilePath("VolunteersList.txt");
+			V_List::setFilePath("data/VolunteersList.txt");
 			V_List::readVolunteers();
-			O_List::setFilePath("OrdersList.txt");
+			O_List::setFilePath("data/OrdersList.txt");
 			O_List::readOrders();
 			allRead = true;
 		

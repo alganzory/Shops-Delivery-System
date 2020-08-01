@@ -1,7 +1,7 @@
-#include "ShopOwner.h"
-#include "Helper.h"
-#include "ShopOwnerFlow.h"
-#include "SH_List.h"
+#include "../include/ShopOwner.h"
+#include "../include/Helper.h"
+#include "../include/ShopOwnerFlow.h"
+#include "../include/SH_List.h"
 
 /// Constructors
 ShopOwner::ShopOwner(std::string username, std::string password):

@@ -1,4 +1,5 @@
-#include "SO_List.h"
+#include "../include/SO_List.h"
+
 
 
 #include <memory>

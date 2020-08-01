@@ -1,10 +1,10 @@
-#include "Customer.h"
+#include "../include/Customer.h"
 
 #include <memory>
 
-#include "CustomerFlow.h"
-#include "Shop.h"
-#include "Helper.h"
+#include "../include/CustomerFlow.h"
+#include "../include/Shop.h"
+#include "../include/Helper.h"
 
 /// Constructors
 Customer::Customer(std::string username, std::string password) :User(username, password)

@@ -1,4 +1,4 @@
-#include "SH_List.h"
+#include "../include/SH_List.h"
 
 /// Members
 std::vector<std::shared_ptr<Shop> > SH_List::SHOPS;

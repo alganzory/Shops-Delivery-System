@@ -1,11 +1,11 @@
-#include "ShopOwnerFlow.h"
+#include "../include/ShopOwnerFlow.h"
 
 #include <iomanip>
 
 
-#include "Helper.h"
-#include "UserFlow.h"
-#include "User.h"
+#include "../include/Helper.h"
+#include "../include/UserFlow.h"
+#include "../include/User.h"
 
 /// Members
 std::shared_ptr <ShopOwner> ShopOwnerFlow::currentSO;

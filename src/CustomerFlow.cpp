@@ -1,10 +1,10 @@
-#include "CustomerFlow.h"
+#include "../include/CustomerFlow.h"
 
 #include <iomanip>
 #include <sstream>
 
-#include "Helper.h"
-#include "SH_List.h"
+#include "../include/Helper.h"
+#include "../include/SH_List.h"
 
 /// Members
 std::shared_ptr<Customer> CustomerFlow::currentCustomer;

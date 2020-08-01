@@ -1,9 +1,9 @@
-#include "Shop.h"
+#include "../include/Shop.h"
 
 #include <iomanip>
 
 
-#include "ShopOwner.h"
+#include "../include/ShopOwner.h"
 
 /// Constructors
 Shop::Shop()

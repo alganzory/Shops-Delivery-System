@@ -1,13 +1,13 @@
-#include "O_List.h"
+#include "../include/O_List.h"
 
 
 #include <fstream>
 #include <iostream>
 #include <sstream>
 
-#include "C_List.h"
-#include "SH_List.h"
-#include "V_List.h"
+#include "../include/C_List.h"
+#include "../include/SH_List.h"
+#include "../include/V_List.h"
 
 /// Members
 std::string O_List::filePath = "olist.txt";

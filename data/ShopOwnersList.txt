@@ -15,7 +15,6 @@ Potatoes , 4 71
 Chili , 5 100
 Brocli, 10 100
 carrtos, 5 70
-a7a, 20 200
 
 ShopID2
 password2
