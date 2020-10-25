@@ -482,7 +482,7 @@ void CustomerFlow::findAvailableShops()
 	currentCustomer->availableShops.clear(); 
 	for (const auto& shop : SH_List::SHOPS)
 	{
-		Time::calcLocalTime();
+//		Time::calcLocalTime();
 		if (shop->isOperating(Time(Time::localHour, Time::localMinute)))
 			currentCustomer->availableShops.emplace_back(shop);
 	}

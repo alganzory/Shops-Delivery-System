@@ -11,14 +11,14 @@ void readFromFiles()
 	bool allRead = false;
 	while (!allRead){
 		try {
-			SO_List::setFilePath("data/ShopOwnersList.txt");
+			SO_List::setFilePath("../data/ShopOwnersList.txt");
 			SO_List::readShopOwners();
 			SH_List::readShops();
-			C_List::setFilePath("data/CustomersList.txt");
+			C_List::setFilePath("../data/CustomersList.txt");
 			C_List::readCustomers();
-			V_List::setFilePath("data/VolunteersList.txt");
+			V_List::setFilePath("../data/VolunteersList.txt");
 			V_List::readVolunteers();
-			O_List::setFilePath("data/OrdersList.txt");
+			O_List::setFilePath("../data/OrdersList.txt");
 			O_List::readOrders();
 			allRead = true;
 		

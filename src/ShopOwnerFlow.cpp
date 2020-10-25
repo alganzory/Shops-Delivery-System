@@ -100,7 +100,7 @@ void ShopOwnerFlow::addNewItem()
 		std::cin >> ans;
 		std::cin.ignore();
 
-		if (ans == 'B' or ans == 'b') break;
+		if (ans == 'B' || ans == 'b') break;
 	}
 
 }
@@ -151,11 +151,11 @@ void ShopOwnerFlow::myShop()
 
 
 
-		if (choice == 'n' or choice == 'N') {
+		if (choice == 'n' || choice == 'N') {
 			ShopOwnerFlow::addNewItem();
 			continue;
 		}
-		if (choice == 'b' or choice == 'B') {
+		if (choice == 'b' || choice == 'B') {
 			break;
 		}
 
