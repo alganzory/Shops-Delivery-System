@@ -1,0 +1,119 @@
+ShopID1
+password1
+Shop Owner One
+29
+1318
+Taman University
+Shop 1
+Jalan University 1, Taman University
+10 22
+items
+Banana , 7 18
+Apple , 4 57
+Orange , 5 30
+Potatoes , 4 71
+Chili , 5 100
+Brocli, 10 100
+carrtos, 5 70
+
+ShopID2
+password2
+Shop Owner Two
+37
+9000
+Taman Mutiara Rini
+Shop 2
+Jalan Mutiara, Taman Mutiara Rini
+8 22
+items
+Water Bottle , 25 110
+Tupperware , 50 100
+Dishwashing Liquid , 5 150
+
+ShopID3
+password3
+Shop Owner Three
+40
+5000
+Taman Johor Jaya
+Shop 3
+Jalan Ledang, Taman Johor Jaya
+12 20
+items
+biscuits, 2 38
+cake, 5 29
+
+ShopID4
+password4
+Shop Owner Four
+20
+500
+Gelang Patah
+Shop 4
+Jalan Gelang Patah
+16 24
+items
+Nasi lemak, 5 300
+Mangoes, 13 150
+Onions, 2 300
+Tomatoes, 15 140
+Carrots, 12 80
+
+ShopID5
+password5
+Shop Owner Five
+34
+1600
+Gereja, Taman Pendidik
+Shop 5
+Gereja, Taman Pendidik
+14 20
+items
+Glue, 7 200
+Notebooks, 20 100
+Papers, 10 200
+Pens, 3 80
+
+ShopID6
+password6
+Shop Owner Six
+40
+50000
+Kebun Teh
+Shop 6
+Kebun Lama
+12 18
+items
+Popcorn, 20 230
+Pepsi, 3 530
+Revive, 2 200
+Sprite, 2 100
+Coca Cola, 6 150
+
+ShopID7
+password7
+Shop Owner Seven
+50
+450000
+Taman Molek
+Shop 7
+Taman Mount Austin
+7 12
+items
+Chicken Popcorn, 9 66
+
+ShopID8
+password8
+Shop Owner Eight
+48
+0
+Permas Jaya
+Shop 8
+Muar Street
+10 20
+items
+Lolipop, 2 50
+Ice cream, 3 99
+Candy, 1 400
+Crisps, 2 200
+Oreo, 4 70
